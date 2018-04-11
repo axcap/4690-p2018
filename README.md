@@ -1,8 +1,7 @@
 ## Text recognition
 
 
-## The purpose of the software is to recognise text from any surface, with
-uneven lighting.
+## The purpose of the software is to recognise text from any surface, with uneven lighting.
 
 ## Tasks:
 
