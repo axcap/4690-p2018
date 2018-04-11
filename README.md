@@ -1,10 +1,10 @@
-### Text recognition
+## Text recognition
 
 
 ## The purpose of the software is to recognise text from any surface, with
-## uneven lighting.
+uneven lighting.
 
-## Subtasks:
+## Tasks:
 
 1. Identify text segments from a picture
 2. Local light invariant (manage to detect text with uneven lighting)
