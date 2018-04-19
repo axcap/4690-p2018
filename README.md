@@ -26,6 +26,16 @@ did the final sum get to, who did you buy from.
 4. Use CNN on the rectangular images, with 0-paddings to get even rectangles
 5. Separate words by spaces.
 
+
+
+Start:
+ - English alphabet
+ - Numbers only
+ - Computer print (not hand written)
+
+ - Write an interface/documentation 
+
+
 # Moderate
 Uneven lighting
 
@@ -35,11 +45,3 @@ Uneven lighting
 # Hard
 
 1. Detect text anywhere.
-
-
-Start:
-
- - English alphabet
- - Numbers only
- - Computer print (not hand written)
- 
