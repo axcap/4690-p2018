@@ -67,7 +67,15 @@ INPUT: image RGB
 INPUT: Binary image - matrix with variable size
 - Text on white background, straight lines
 
+- boundary box around character - use projection histogram
+ 
+
 ##### 3. Classification
 INPUT: Binary image - matrix with 16x16 pixels (mnist dataset)
 
 - character Classification
+
+
+
+
+#### Acknowledgment:

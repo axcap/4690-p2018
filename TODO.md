@@ -22,7 +22,6 @@
 
 
 
-
 ## Schedule: DEADLINES & REPORTS
 
 ### DAY 1: Init project
