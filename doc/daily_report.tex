@@ -1,8 +1,44 @@
-Day 1:
+\documentclass[11pt,a4paper,english]{article}
+\usepackage[english]{babel}
+\usepackage{marginnote}
+\usepackage[utf8]{inputenc}
+\usepackage[top=1in]{geometry}
 
-- Feedback on project proposal
-- Overview of project
-  - simplification
-    - binary image -> numbers -> straight text -> Classify
-- init; github - atom
-- first test of charcter Segmentation
+\newenvironment{loggentry}[2]% date, heading
+{\noindent\textbf{#2}\marginnote{#1}\\}{\vspace{0.5cm}}
+
+
+\title{UNIK4690 Project}
+\author{
+  Akhsarbek Gozoev  - akhsarbg \\
+  Sadegh Hoseinpoor - sadeghh\\
+  Key Long Wong - keylw
+}
+        
+
+\begin{document}
+
+\maketitle
+\section*{Dairy}
+
+\begin{loggentry}{19.04.18}{Day1}
+\begin{itemize}
+  \item{Feedback on project proposal}
+  \item{Overview of project}
+    \begin{itemize}
+     \item{simplification}
+     \item{binary image $\rightarrow$ numbers $\rightarrow$ straight text $\rightarrow$ Classify}
+   \end{itemize}
+  \item{init; github - atom}
+  \item{first test of charcter Segmentation}
+\end{itemize}
+
+\end{loggentry}
+
+\begin{loggentry}{01.01.01}{Day X}
+    Data
+\end{loggentry}
+
+
+
+\end{document}
