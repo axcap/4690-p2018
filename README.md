@@ -24,19 +24,50 @@ did the final sum get to, who did you buy from.
 4. Use CNN on the rectangular images, with 0-paddings to get even rectangles
 5. Separate words by spaces.
 
-
 #### Easy
- - Numbers only
- - Computer text/numbers
- - Write an interface/documentation
+- Numbers only
+- Computer text/numbers
+- Write an interface/documentation
+- binary image
 
 #### Moderate
- - Uneven lighting
- - English alphabet
- - Hand written text
-
-1. Use local grey level transformation
-
+- Uneven lighting
+- English alphabet
+- Hand written text
+- Use local grey level transformation
+- greylevel image
 
 #### Hard
-1.  Detect text anywhere.
+- Detect text anywhere.
+- RGB
+
+
+### Structure
+- src
+- res
+  - datasets
+  - images
+  - misc
+- doc
+
+
+### Project datasets/libraries
+  OpenCV
+  TenserFlow
+  Numpy
+
+
+
+####  Project Overview
+##### 1. Find text
+INPUT: image RGB
+- Text bounder box, rotation on hold
+
+##### 2. Find characters
+INPUT: Binary image - matrix with variable size
+- Text on white background, straight lines
+
+##### 3. Classification
+INPUT: Binary image - matrix with 16x16 pixels (mnist dataset)
+
+- character Classification
