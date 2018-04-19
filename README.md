@@ -1,9 +1,8 @@
-## Text recognition
+# Text recognition
 
+### The purpose of the software is to recognise text from any surface, with uneven lighting.
 
-## The purpose of the software is to recognise text from any surface, with uneven lighting.
-
-## Tasks:
+### Tasks:
 
 1. Identify text segments from a picture
 2. Local light invariant (manage to detect text with uneven lighting)
@@ -15,10 +14,9 @@
 did the final sum get to, who did you buy from.
 
 
-## Approach
+### Approach
 
-# Easy
-- Start (easy)with single sheet of paper with homogenous lighting and clear text.
+- Start (easy) with single sheet of paper with homogenous lighting and clear text.
 1. Find rotation of the text, Hough transform
 2. Use morphological operations; opening/closing to separate characters
 3. Use projection histogram to find border around sentences and then characters
@@ -27,21 +25,18 @@ did the final sum get to, who did you buy from.
 5. Separate words by spaces.
 
 
-
-Start:
- - English alphabet
+#### Easy
  - Numbers only
- - Computer print (not hand written)
+ - Computer text/numbers
+ - Write an interface/documentation
 
- - Write an interface/documentation 
-
-
-# Moderate
-Uneven lighting
+#### Moderate
+ - Uneven lighting
+ - English alphabet
+ - Hand written text
 
 1. Use local grey level transformation
 
 
-# Hard
-
-1. Detect text anywhere.
+#### Hard
+1.  Detect text anywhere.
