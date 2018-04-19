@@ -35,3 +35,11 @@ Uneven lighting
 # Hard
 
 1. Detect text anywhere.
+
+
+Start:
+
+ - English alphabet
+ - Numbers only
+ - Computer print (not hand written)
+ 
