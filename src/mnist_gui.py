@@ -84,8 +84,6 @@ if __name__ == "__main__":
                     r = sess.run(y_, feed_dict={x_: img})
                     print(r)
                     print(np.argmax(r))
-                    screen.fill(bgColor)
-
                     
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
                 status = pygame.mouse.get_pressed()
