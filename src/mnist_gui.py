@@ -82,8 +82,7 @@ if __name__ == "__main__":
                     img = ((1/256)* (255-img))
                     img = np.reshape(img, (1, 28*28))
                     r = sess.run(y_, feed_dict={x_: img})
-                    print(r)
-                    print(np.argmax(r))
+                    print("%d : %.2f%%" % (np.argmax(r), r[0][np.argmax(r)]*100))
                     
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
                 status = pygame.mouse.get_pressed()
