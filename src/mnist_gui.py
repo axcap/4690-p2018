@@ -22,10 +22,10 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 def drawPixel(x, y):
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect((x*10, y*10), (10, 10)), 0)    
+    pygame.draw.circle(screen, (0, 0, 0), (x*10, y*10), 10, 0)
 
 def clearPixel(x, y):
-    pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)    
+    pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)
 
 def initGraph():
     x = tf.placeholder(tf.float32, [None, 784])
@@ -38,7 +38,15 @@ def initGraph():
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
     sess = tf.InteractiveSession()
     return y, x, sess
-    
+
+def get_surface_data(screen):
+    img = pygame.surfarray.array3d(screen)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.resize(img, (28,28))
+    img = np.transpose(img)
+    img = ((1/256)* (255-img))
+    return img
+
 if __name__ == "__main__":
     
     pygame.init()
@@ -75,13 +83,9 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT: sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    img = pygame.surfarray.array3d(screen)
-                    img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE) 
-                    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)                    
-                    img = cv2.resize(img, (28,28))
-                    img = ((1/256)* (255-img))
-                    img = np.reshape(img, (1, 28*28))
-                    r = sess.run(y_, feed_dict={x_: img})
+                    arr = get_surface_data(screen)
+                    X = np.reshape(arr, (1, 28*28))                        
+                    r = sess.run(y_, feed_dict={x_: X})
                     print("%d : %.2f%%" % (np.argmax(r), r[0][np.argmax(r)]*100))
                     
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
@@ -91,13 +95,8 @@ if __name__ == "__main__":
                     pos = pygame.mouse.get_pos()
                     x,y = pos[0]//10, pos[1]//10
                     drawPixel(x, y)
-                elif status[1] == 1:
+                elif status[2] == 1:
                     #clear the screen
                     screen.fill(bgColor)
-                elif status[2] == 1:
-                    #clear pixel under mouse
-                    pos = pygame.mouse.get_pos()
-                    x,y = pos[0]//10, pos[1]//10
-                    clearPixel(x, y)
                 pygame.display.update()
 
