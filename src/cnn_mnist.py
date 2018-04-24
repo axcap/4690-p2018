@@ -6,6 +6,7 @@ from __future__ import print_function
 # Imports
 from matplotlib import pyplot as plt
 import cv2
+import os
 from pathlib import Path
 import numpy as np
 import tensorflow as tf
@@ -14,13 +15,35 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 from tensorflow.examples.tutorials.mnist import input_data
 #tf.logging.set_verbosity(tf.logging.INFO)
 
+
+def confusion_matrix(dataset, nn):
+    """This function takes dataset and tensorflow network and calculates the confusion matrix.
+
+    Args:
+        dataset (tensorflow DataSet): Dataset with train_data and labels.
+        nn      (Tensor): Tensorflow function.
+
+    Returns:
+        numpy array: Confusion matrix with shape n_classes x n_classes.
+
+    """
+    sess = tf.Session()
+    y = tf.argmax(nn, 1).eval({X: dataset.images})
+    y_ = tf.argmax(dataset.labels, 1).eval()
+    init_op = tf.initialize_all_variables()
+    sess.run(init_op)
+
+    confusion = tf.confusion_matrix(labels=y_, predictions=y, num_classes=10).eval()
+    return confusion
+
+
 # Our application logic will be added here
 if __name__ == "__main__":
 
     # Parameters
     learning_rate = 0.001
-    training_epochs = 15
-    batch_size = 100
+    training_epochs = 1
+    batch_size = 10
     display_step = 1
 
     # Network Parameters
@@ -48,9 +71,9 @@ if __name__ == "__main__":
     }
 
     # Hidden fully connected layer with 256 neurons
-    layer_1 = tf.add(tf.matmul(X, weights['h1']), biases['b1'])
+    layer_1 = tf.nn.leaky_relu(tf.add(tf.matmul(X, weights['h1']), biases['b1']))
     # Hidden fully connected layer with 256 neurons
-    layer_2 = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2'])
+    layer_2 = tf.nn.leaky_relu(tf.add(tf.matmul(layer_1, weights['h2']), biases['b2']))
     # Output fully connected layer with a neuron for each class
     logits = tf.matmul(layer_2, weights['out']) + biases['out']
 
@@ -84,66 +107,39 @@ if __name__ == "__main__":
                 # Display logs per epoch step
             if epoch % display_step == 0:
                 print("Epoch:", '%04d' % (epoch+1), "cost={:.9f}".format(avg_cost))
-        print("Optimization Finished!")
+                print("Optimization Finished!")
 
         save_path = saver.save(sess, "../res/model/mnist")
         print("Model saved in path: %s" % save_path)
-        
+
         # Test model
         network = tf.nn.softmax(logits)  # Apply softmax to logits
         correct_prediction = tf.equal(tf.argmax(network, 1), tf.argmax(Y, 1))
         # Calculate accuracy
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         print("Accuracy:", accuracy.eval({X: mnist.test.images, Y: mnist.test.labels}))
-        
+
+
+
+        conf = confusion_matrix(mnist.test, network)
+        print("Acc: ", np.sum(conf.diagonal())/np.sum(conf))
+        print("Confusion:", conf)
+        plt.imshow(conf)
+        plt.show()
+
         print("\n\n\n")
-        img = cv2.imread('../res/images/9.png');
-        img_small = cv2.resize(img, (28,28))
-        img_grey = cv2.cvtColor(255-img_small, cv2.COLOR_BGR2GRAY)
-        demo = np.reshape(img_grey, (1, -1))
-        demo = (1/256)*demo
+        dirname = '../res/images/input/'
+        for filename in os.listdir(dirname):
+            path = dirname+filename
+            img = cv2.imread(path);
+            img_small = cv2.resize(img, (28,28))
+            img_grey = cv2.cvtColor(255-img_small, cv2.COLOR_BGR2GRAY)
+            demo = np.reshape(img_grey, (1, -1))
+            demo = (1/256)*demo
 
-        output = network.eval({X: demo})
-        index = np.argmax(output)
-        print(output)
-        print("%d : %.2f%%" % (index, np.amax(output)*100))    
-        plt.imshow(np.reshape(demo, (28,28)))
-        plt.show()
-        
-        
-        demo = np.array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                         [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,]])
-
-        demo = np.reshape(demo, (1, 28*28))
-        output = network.eval({X: demo})
-        index = np.argmax(output)
-        print(output)
-        print("%d : %.2f%%" % (index, np.amax(output)*100))    
-        plt.imshow(np.reshape(demo, (28,28)))
-        plt.show()
+            output = network.eval({X: demo})
+            index = np.argmax(output)
+            #print(output)
+            print("%d : %.2f%%" % (index, np.amax(output)*100))
+            plt.imshow(np.reshape(demo, (28,28)))
+            plt.show()
