@@ -1,4 +1,4 @@
-class FCNN:
+class FC:
 
     
 
