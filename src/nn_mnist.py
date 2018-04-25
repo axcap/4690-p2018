@@ -27,7 +27,7 @@ if __name__ == "__main__":
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
     sess = tf.InteractiveSession()
 
-    path = "res/model/mnist_demo"
+    path = "res/model/nn_mnist/mnist_demo"
     saver = tf.train.Saver()
     if Path(path+".index").is_file():
         saver.restore(sess, path)
