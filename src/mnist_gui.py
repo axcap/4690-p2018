@@ -3,46 +3,23 @@
 #RMB to clear one pixel under the cursor
 #Middle mouse click to clear screen (auto clear after Enter)
 
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 # Imports
 from matplotlib import pyplot as plt
 import cv2
 from pathlib import Path
 import numpy as np
-import tensorflow as tf
 import sys, pygame
-
-old_v = tf.logging.get_verbosity()
-tf.logging.set_verbosity(tf.logging.ERROR)
-from tensorflow.examples.tutorials.mnist import input_data
-
+from nn_mnist import NN_MNIST
 
 def drawPixel(x, y):
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect((x*10, y*10), (10, 10)), 0)    
+    pygame.draw.circle(screen, (0, 0, 0), (x*10, y*10), 10, 0)
 
 def clearPixel(x, y):
     pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)    
 
-def initGraph():
-    x = tf.placeholder(tf.float32, [None, 784])
-    W = tf.Variable(tf.zeros([784, 10]))
-    b = tf.Variable(tf.zeros([10]))
-    y = tf.nn.softmax(tf.matmul(x, W) + b)
-
-    y_ = tf.placeholder(tf.float32, shape = [None, 10])
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
-    train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
-    sess = tf.InteractiveSession()
-    return y, x, sess
     
-if __name__ == "__main__":
-    
-    pygame.init()
-    
+if __name__ == "__main__":    
+    pygame.init()    
     bgColor = (255, 255, 255)
     lines = False
     size = width, height = 280, 280
@@ -57,18 +34,8 @@ if __name__ == "__main__":
             pygame.draw.line(screen, (0,0,0), [0, i*10], [840, i*10], 1)
 
 
-    y_, x_ , sess = initGraph()
-    sess = tf.InteractiveSession()
-
-    path = "../res/model/mnist_demo"
-    saver = tf.train.Saver()
-    if Path(path+".index").is_file():
-        saver.restore(sess, path)
-        print("Model restored")
-    else:
-        print("Model not found")
-        exit(1)
-
+    nn = NN_MNIST()
+    nn.train(None, force_retrain=False)
     
     while True:
         for event in pygame.event.get():
@@ -81,8 +48,7 @@ if __name__ == "__main__":
                     img = cv2.resize(img, (28,28))
                     img = ((1/256)* (255-img))
                     img = np.reshape(img, (1, 28*28))
-                    r = sess.run(y_, feed_dict={x_: img})
-                    print(r)
+                    r = nn.forward(img)
                     print(np.argmax(r))
                     
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
@@ -92,13 +58,8 @@ if __name__ == "__main__":
                     pos = pygame.mouse.get_pos()
                     x,y = pos[0]//10, pos[1]//10
                     drawPixel(x, y)
-                elif status[1] == 1:
+                elif status[2] == 1:
                     #clear the screen
                     screen.fill(bgColor)
-                elif status[2] == 1:
-                    #clear pixel under mouse
-                    pos = pygame.mouse.get_pos()
-                    x,y = pos[0]//10, pos[1]//10
-                    clearPixel(x, y)
                 pygame.display.update()
-
+                
