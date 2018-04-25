@@ -14,91 +14,62 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 from tensorflow.examples.tutorials.mnist import input_data
 #tf.logging.set_verbosity(tf.logging.INFO)
 
-
-# Our application logic will be added here
-if __name__ == "__main__":
-    x = tf.placeholder(tf.float32, [None, 784])
-    W = tf.Variable(tf.zeros([784, 10]))
-    b = tf.Variable(tf.zeros([10]))
-    y = tf.nn.softmax(tf.matmul(x, W) + b)
-
-    y_ = tf.placeholder(tf.float32, shape = [None, 10])
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
-    train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
-    sess = tf.InteractiveSession()
-
-    path = "res/model/nn_mnist/mnist_demo"
-    saver = tf.train.Saver()
-    if Path(path+".index").is_file():
-        saver.restore(sess, path)
-        print("Model restored")
-    else:
-        print("Not trained")
+class NN_MNIST:
+    sess = None
+    model_path = None
+    
+    def __init__(self, model_path="res/model/nn_mnist/mnist_demo"):
+        self.x = tf.placeholder(tf.float32, [None, 784])
+        self.W = tf.Variable(tf.zeros([784, 10]))
+        self.b = tf.Variable(tf.zeros([10]))
+        self.y = tf.nn.softmax(tf.matmul(self.x, self.W) + self.b)
         
-        mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)    
-        tf.global_variables_initializer().run()
-        np.set_printoptions(linewidth=9999999)
-        for _ in range(1000):
-            batch_xs, batch_ys = mnist.train.next_batch(100)
-            '''
-            a = np.reshape(batch_xs[0], (28,28))
-            print(a, "\n\n"),       
-            plt.imshow(a)
-            plt.show()
-            '''
-            sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-        correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
-        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        print("Accuracity: "+str(sess.run(accuracy,
-                                        feed_dict={x: mnist.test.images, y_: mnist.test.labels})))
-        tf.logging.set_verbosity(old_v)
+        self.y_ = tf.placeholder(tf.float32, shape = [None, 10])
+        self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
+        self.train_step = tf.train.GradientDescentOptimizer(0.5).minimize(self.cross_entropy)
+        self.sess = tf.InteractiveSession()
+    
+        self.model_path = model_path
 
-        save_path = saver.save(sess, path)
-        print("Model saved in path: %s" % save_path)
+    def train(self, dataset, force_retrain = False):
+        saver = tf.train.Saver()
+        if force_retrain or not Path(self.model_path+".index").is_file():
+            print("New training started")
+            tf.global_variables_initializer().run()
+            for _ in range(1000):
+                batch_xs, batch_ys = dataset.train.next_batch(100)
+                self.sess.run(self.train_step, feed_dict={self.x: batch_xs, self.y_: batch_ys})
+                
+            correct_prediction = tf.equal(tf.argmax(self.y,1), tf.argmax(self.y_,1))
+            accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+            print("Accuracity: "+str(self.sess.run(accuracy,
+                                              feed_dict={self.x: dataset.test.images,
+                                                         self.y_: dataset.test.labels})))
+            #tf.logging.set_verbosity(old_v)            
+            save_path = saver.save(self.sess, self.model_path)
+            print("Model saved in path: %s" % save_path)
+        else:
+            saver.restore(self.sess, self.model_path)
+            print("Model restored")       
+        
 
+    def forward(self, data):
+        return self.sess.run(self.y, feed_dict={self.x: data})
 
+np.set_printoptions(linewidth=9999999)
 
-    img = cv2.imread('res/images/1.png');
-    img_small = cv2.resize(img, (28,28))
-    img_grey = cv2.cvtColor(255-img_small, cv2.COLOR_BGR2GRAY)
-    demo = np.reshape(img_grey, (1, -1))
-    demo = ((1/256)*demo);
-    demo = (1/256)*demo
+#Load training data 
+mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)
+nn = NN_MNIST()
 
-    demo = np.array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.5019608, 1., 1., 0.2509804, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 0.5019608, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7490196, 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.2509804, 1., 0.7490196, 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,],
-                     [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,]])
+nn.train(mnist, force_retrain=True)
 
-    demo = np.reshape(demo, (1, 28*28))
-    print(type(demo))
-    r = sess.run(y, feed_dict={x: demo})
-    print(r)
-    print(np.argmax(r))
+img = cv2.imread('res/images/1.png');
+img_small = cv2.resize(img, (28,28))
+img_grey = cv2.cvtColor(255-img_small, cv2.COLOR_BGR2GRAY)
+print(img_grey)
 
-    plt.imshow(np.reshape(demo, (28,28)))
-    plt.show()
+data = (1/256)*img_grey
+data = np.reshape(data, (1, 28*28))
+r = nn.forward(data)
+print(np.argmax(r))
