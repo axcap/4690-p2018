@@ -4,12 +4,15 @@
 #Middle mouse click to clear screen (auto clear after Enter)
 
 # Imports
+from tensorflow.examples.tutorials.mnist import input_data
 from matplotlib import pyplot as plt
-import cv2
+from nn_mnist import NN_MNIST
 from pathlib import Path
+
+import cv2
 import numpy as np
 import sys, pygame
-from nn_mnist import NN_MNIST
+np.set_printoptions(linewidth=9999999)
 
 def drawPixel(x, y):
     pygame.draw.circle(screen, (0, 0, 0), (x*10, y*10), 10, 0)
@@ -17,7 +20,27 @@ def drawPixel(x, y):
 def clearPixel(x, y):
     pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)    
 
-    
+def image2data(img):
+    #convert to grayscale
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    #Fit neural network input size
+    img = cv2.resize(img, (28,28))
+    #Invert colors and rotate from graph to display coordinates
+    img = 255-img.transpose()
+    #Create kernel for convolution
+    kernel = np.ones((3,3),np.float32)/25
+    #Aply 3x3 kernel to smoothen up our image
+    img = cv2.filter2D(img,-1,kernel)
+    #Convert from 0-255 to 0-1 range
+    #img = ((1/256)*img)
+    #Normalize image values after smoothening
+    img = img * (255/img.max())
+    print(img.astype(np.int))
+    #Flatten out to feed into network
+    img = np.reshape(img, (1, 28*28))    
+    return img
+
+
 if __name__ == "__main__":    
     pygame.init()    
     bgColor = (255, 255, 255)
@@ -25,7 +48,7 @@ if __name__ == "__main__":
     size = width, height = 280, 280
     screen = pygame.display.set_mode(size)
     screen.fill(bgColor)
-    pygame.display.update()
+
 
     if lines == True:
         for i in range(84):
@@ -35,21 +58,20 @@ if __name__ == "__main__":
 
 
     nn = NN_MNIST()
-    nn.train(None, force_retrain=False)
-    
+    mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)
+    nn.train(mnist, force_retrain=False)
+
+    pygame.display.update()    
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     img = pygame.surfarray.array3d(screen)
-                    img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE) 
-                    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)                    
-                    img = cv2.resize(img, (28,28))
-                    img = ((1/256)* (255-img))
-                    img = np.reshape(img, (1, 28*28))
-                    r = nn.forward(img)
-                    print(np.argmax(r))
+                    data = image2data(img)                    
+                    r = nn.forward(data)
+                    index = np.argmax(r) 
+                    print("Class: %d - %.2f%%" % (index, r[0, index]*100))
                     
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
                 status = pygame.mouse.get_pressed()
