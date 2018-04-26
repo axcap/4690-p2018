@@ -138,7 +138,7 @@ if __name__ == "__main__":
     
     nn = NN_MNIST()
     nn.set_params(1e-4, 500, 200)
-    print("Time used: ", timeit.timeit('nn.train(mnist, force_retrain=False, save_model=True)', number=1, globals=globals()))
+    print("Time used: ", timeit.timeit('nn.train(mnist, force_retrain=False, save_model=False)', number=1, globals=globals()))
     #nn.train(mnist, force_retrain=True)
 
     conf = nn.confusion_matrix(mnist.test)
