@@ -4,6 +4,7 @@
 #Middle mouse click to clear screen (auto clear after Enter)
 
 # Imports
+from tensorflow.examples.tutorials.mnist import input_data
 from matplotlib import pyplot as plt
 from nn_mnist import NN_MNIST
 from pathlib import Path
@@ -57,7 +58,7 @@ if __name__ == "__main__":
 
 
     nn = NN_MNIST()
-    mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+    mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)
     nn.train(mnist, force_retrain=False)
 
     pygame.display.update()    
