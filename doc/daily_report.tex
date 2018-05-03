@@ -4,6 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[top=1in]{geometry}
 
+\usepackage{graphicx} %behandle grafikk
+\usepackage{float}
+\usepackage[hidelinks]{hyperref} %trykkbar referering
+\usepackage{gensymb}
+
 \newenvironment{loggentry}[2]% date, heading
 {\noindent\textbf{#2}\marginnote{#1}\\}{\vspace{0.5cm}}
 
@@ -19,9 +24,23 @@
 \begin{document}
 
 \maketitle
-\section*{Dairy}
+\section*{Project description}
+\noindent \\ \textbf{The purpose of the software is to recognise text from any
+surface with uneven lighting.}
+\noindent \\
+\noindent \\ As we want to test the prof of concept first we simplyfied the SW
+to just be:
+\noindent \\ \textit{\textbf{Recognise numbers [0-9] from a binary img,
+with computer printed numbers on homogenous background.}}
+\noindent \\
+\noindent \\ 
 
-\begin{loggentry}{19.04.18}{Day1}
+
+
+
+\newpage
+\section*{Report}
+\begin{loggentry}{19.04.18}{Week 1}
 \begin{itemize}
   \item{Feedback on project proposal}
   \item{Overview of project}
@@ -34,7 +53,9 @@
 \end{itemize}
 \end{loggentry}
 
-\begin{loggentry}{26.04.18}{Day 2}
+
+\newpage
+\begin{loggentry}{26.04.18}{Week 2}
 \begin{itemize}
   \item{Charcter Segmentation - Projection Histograms - OpenCV}
   \begin{itemize}
@@ -43,6 +64,14 @@
     projection histogram on the X-axis can discover where the charecters
     appear.}
   \end{itemize}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[height=4cm]{res/0-9_segmented_out.png}
+    \caption{[0-9] segmented with projection histogram}
+    \label{fig:0-9_segmented_out}
+  \end{figure}
+
   \item{Classification - Perceptron neural network - TenserFlow}
     \begin{itemize}
       \item{MNIST dataset - Datasett consisting of several thousand handwritten
@@ -63,13 +92,22 @@
       \item{Theoretic accuracy of the network with 2 hidden layers ~98\%}
       \begin{itemize}
         \item{Measured accuracy ~97\%}
+
+        \begin{figure}[H]
+          \centering
+          \includegraphics[height=1cm]{res/classification_first_print.png}
+          \caption{First output with classification. input see Figure ~\ref{fig:0-9_segmented_out}}
+          \label{fig:classification_first_print}
+        \end{figure}
+
       \end{itemize}
     \end{itemize}
 \end{itemize}
 \end{loggentry}
 
 
-\begin{loggentry}{03.05.18}{Day3}
+\newpage
+\begin{loggentry}{03.05.18}{Week 3}
 \begin{itemize}
   \item{----}
   \item{----}
