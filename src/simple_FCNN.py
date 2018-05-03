@@ -50,9 +50,9 @@ class simple_FCNN:
 
         # parameters
         self.biases = {
-            'b1' : tf.Variable(tf.truncated_normal([128])),
-            'b2' : tf.Variable(tf.truncated_normal([32])),
-            'b3' : tf.Variable(tf.truncated_normal([10]))
+            'b1' : tf.Variable(tf.zeros([128])),
+            'b2' : tf.Variable(tf.zeros([32])),
+            'b3' : tf.Variable(tf.zeros([10]))
         }
 
         # hidden layers
@@ -62,12 +62,11 @@ class simple_FCNN:
                                     + self.biases['b2'])
 
         #output layer
-        self.Y = tf.nn.softmax(tf.matmul(self.h2, self.weights['w3'])
-                                    + self.biases['b3'])
+        self.Y = tf.matmul(self.h2, self.weights['w3']) + self.biases['b3']
 
         # graph model
-        self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.Y_ * tf.log(self.Y), reduction_indices=[1]))
-        self.train_step = tf.train.GradientDescentOptimizer(0.002).minimize(self.cross_entropy)
+        self.loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=self.Y, labels=self.Y_))
+        self.train_step = tf.train.GradientDescentOptimizer(0.02).minimize(self.loss_op)
         self.sess = tf.Session()
 
         return
@@ -115,7 +114,6 @@ def file_rendering(path):
 if __name__ == "__main__":
     np.set_printoptions(linewidth=9999999)
 
-    layers = [784, 64, 32, 10]
     nn = simple_FCNN()
 
     nn.design_model()
@@ -134,5 +132,6 @@ if __name__ == "__main__":
         data = file_rendering(path)
         r = nn.forward(data)
 
+        print('r: ', r)
         index = np.argmax(r)
-        print("%d : %.2f%%" % (index, np.amax(r)*100))
+        print("%d : %.2f%%" % (index, np.amax(r)))
