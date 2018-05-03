@@ -33,7 +33,7 @@ def segment_symbols(img, pHist):
         if pHist[i] != 0:
             x1 = i
             for k in range(i, len(pHist)):
-                if pHist[k] == 0:
+                if pHist[k] == 0 :
                     skip = k-i
                     x2 = k
                     points.append((x1, x2))
@@ -63,6 +63,7 @@ def image2data(img):
     #Flatten out to feed into network
     img = np.reshape(img, (1, 28*28))    
     return img
+
 
 if __name__ == "__main__":
     # Load an  image
