@@ -15,38 +15,24 @@ def find_lines(img):
     #plt.imshow(edges,cmap = 'gray')
     #plt.show()
 
-    lines = cv2.HoughLines(edges,1,np.pi/180,100)
-    for x in lines[0]:
-        print(x)
+    lines = cv2.HoughLinesP(edges,1,np.pi/180,200)
+
+    #print(lines[0][0])
+    #for x,y,z,a in lines[0]:
+    #    print(x, y, z, a)
     #plt.imshow(lines)
     #plt.show()
 
+    N = lines.shape[0]
+    for i in range(N):
+        x1 = lines[i][0][0]
+        y1 = lines[i][0][1]
+        x2 = lines[i][0][2]
+        y2 = lines[i][0][3]
 
-    for rho,theta in lines[0]:
-        a = np.cos(theta)
-        b = np.sin(theta)
-        x0 = a*rho
-        y0 = b*rho
-        x1 = int(x0 + 1000*(-b))
-        y1 = int(y0 + 1000*(a))
-        x2 = int(x0 - 1000*(-b))
-        y2 = int(y0 - 1000*(a))
-
-        cv2.line(img,(x1,y1),(x2,y2),(0,0,255),2)
+        cv2.line(img,(x1,y1),(x2,y2),(0,0,255),10)
 
     cv2.imwrite('houghlines3.jpg',img)
-
-
-    '''
-    # Probabolistic Hoguh transform
-
-    minLineLength = 100
-    maxLineGap = 10
-    lines = cv2.HoughLinesP(edges,1,np.pi/180,100,minLineLength,maxLineGap)
-    for x1,y1,x2,y2 in lines[0]:
-        cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
-    cv2.imwrite('houghlines5.jpg',img)
-    '''
 
 
 if __name__ == "__main__":
