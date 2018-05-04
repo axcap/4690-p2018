@@ -5,8 +5,21 @@ import numpy as np
 import sys
 import cv2
 
+def correct_angle(angle):
+        if angle < -45:
+	        angle = -(90 + angle)
+ 
+        # otherwise, just take the inverse of the angle to make
+        # it positive
+        else:
+	        angle = -angle
+
+        return angle
+
+        
 #image_path = "res/images/numbers_"+str(degrees)+"degree.png"
 image_path = sys.argv[1]
+
 # load the image from disk
 img = cv2.imread(image_path)
 img = cv2.resize(img, (0,0), fx=0.5, fy=0.5) 
@@ -33,13 +46,7 @@ print("Original angle: "+str(angle))
 # range [-90, 0); as the rectangle rotates clockwise the
 # returned angle trends to 0 -- in this special case we
 # need to add 90 degrees to the angle
-if angle < -45:
-	angle = -(90 + angle)
- 
-# otherwise, just take the inverse of the angle to make
-# it positive
-else:
-	angle = -angle
+angle = correct_angle(angle)
 print("Corrected angle: "+str(angle))        
 
 # rotate the image to deskew it
