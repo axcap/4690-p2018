@@ -4,13 +4,13 @@ from skimage.filters.rank import median
 from skimage.morphology import disk
 import test_find_contour as test 
 
-IMAGE_PATH = '../../res/images/'
 
 def detect_text(image):
     """
         input: image
         return: list of text segments images
     """
+    # may not need edge, if we do SWT
     edge_img = cv2.Canny(image,100,200)
      
     blur_image = cv2.medianBlur(edge_img, 5)
@@ -36,6 +36,7 @@ def detect_text(image):
     return text_area_found
 
 def main():
+    IMAGE_PATH = '../../res/images/'
     image_filename = 'text_example2.png'
     image = cv2.imread(IMAGE_PATH+image_filename,0)
     text_area = detect_text(image)
