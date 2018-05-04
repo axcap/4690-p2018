@@ -9,8 +9,9 @@ def histogramProjection(img, direction = 'vertical'):
             col = img[:,i]
         elif direction is 'horisontal':
             col = img[i,:]
-            
-        summ = np.sum(col != 255)
+
+        #black background anticipated
+        summ = np.sum(col != 0)
         sumCols.append(summ)
     return sumCols
 
@@ -29,11 +30,11 @@ def segment_hist(img, hist):
     p1 = 0
     p2 = 0
     points = []
-    for i in range(len(hist)):        
+    for i in range(len(hist)):
         if skip != 0:
             skip -= 1
             continue
-        
+
         if hist[i] != 0:
             p1 = i
             for j in range(i, len(hist)):
