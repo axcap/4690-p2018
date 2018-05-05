@@ -5,7 +5,6 @@ computer 'written' digits/letters
 
 
  TODO
- * Traverse multiple font files from directory
  * Code refactoring
 '''
 
