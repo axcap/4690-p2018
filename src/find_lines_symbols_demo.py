@@ -10,16 +10,17 @@ if __name__ == "__main__":
     # Set last argument to 0 to load in grayscale
     img = cv2.imread('res/images/lorem.png');
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_grey = cv2.bitwise_not(img_grey)
     y,x = img_grey.shape
-    cv2.imshow("img_grey", img_grey);        
+    cv2.imshow("img_grey", img_grey);
     cv2.waitKey(0)
-    
+
     #nn = NN_MNIST()
     #nn.train(None) #no training done in demo
-    
+
     linesHist = utils.find_lines(img_grey)
     lines = utils.segment_lines(img, linesHist)
-    
+
     text = ""
     for l in lines:
         single_line = img_grey[l[0]:l[1], 0:x]
@@ -31,13 +32,13 @@ if __name__ == "__main__":
             single_symbol = img_grey[l[0]:l[1], s[0]:s[1]]
             cv2.imshow("Symbol", single_symbol)
             cv2.waitKey(0)
-            #data = image2data(single_symbol)
+            #data = cv2.resize(single_symbol, (28,28))
             #r = nn.forward(data)
             #index = np.argmax(r)
             #text += str(index)
             #print("Class: %d - %.2f%%" % (index, r[0, index]*100))
 
 
-            
-                    
-    print("Extracted text: %s\n" % text)    
+
+
+    print("Extracted text: %s\n" % text)
