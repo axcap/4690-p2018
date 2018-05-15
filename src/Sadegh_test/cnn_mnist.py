@@ -114,12 +114,12 @@ def cnn_model_fn(features, labels, mode):
             global_step=tf.train.get_global_step())
         return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
 
-        # Add evaluation metrics (for EVAL mode)
-        eval_metric_ops = {
-            "accuracy": tf.metrics.accuracy(
-            labels=labels, predictions=predictions["classes"])}
-        return tf.estimator.EstimatorSpec(
-            mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
+    # Add evaluation metrics (for EVAL mode)
+    eval_metric_ops = {
+        "accuracy": tf.metrics.accuracy(
+        labels=labels, predictions=predictions["classes"])}
+    return tf.estimator.EstimatorSpec(
+        mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
 def main(unused_argv):
@@ -132,13 +132,13 @@ def main(unused_argv):
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
+        model_fn=cnn_model_fn, model_dir="./tmp/mnist_convnet_model")
 
     # Set up logging for predictions
     # Log the values in the "Softmax" tensor with label "probabilities"
     #tensors_to_log = {"probabilities": "softmax_tensor"}
     #logging_hook = tf.train.LoggingTensorHook(
-    #tensors=tensors_to_log, every_n_iter=50)
+        #tensors=tensors_to_log, every_n_iter=50)
 
     # Train the model
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -149,29 +149,47 @@ def main(unused_argv):
         shuffle=True)
     mnist_classifier.train(
         input_fn=train_input_fn,
-        steps=200)#,
+        steps=1)#,
         #hooks=[logging_hook])
 
     # Evaluate the model and print results
+
+    #print("eval_data info:")
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": eval_data},
         y=eval_labels,
         num_epochs=1,
         shuffle=False)
     eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
+
+    #print(np.shape(eval_data))
+    #print(eval_data)
+    #print("one of eval_data: ")
+    #print(eval_data[0].dtype)
+    #print(np.shape(eval_data[0]))
+
     print(eval_results)
+
+    data = np.array(data_input())
+    predict(data,mnist_classifier)
 
 
 def predict(new_samples, mnist_classifier):
     predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-        x={"x": new_samples[0]},
+        x={"x": new_samples},
         num_epochs=1,
         shuffle=False)
 
-    predictions = list(mnist_classifier.predict(input_fn=predict_input_fn))
-    predicted_classes = [p["classes"] for p in predictions]
+    predictions = mnist_classifier.predict(input_fn=predict_input_fn)
 
+    #print(predictionss)
+    predicted_classes = [p["classes"] for p in predictions]
     print( "New Samples, Class Predictions:    {}\n".format(predicted_classes))
+
+    #print(predictions)
+
+    #for prediction in predictions:
+    #    print('result: {0}'.format(prediction))
 
 def data_input():
     # Load an  image
@@ -189,12 +207,13 @@ def data_input():
     #text = ""
     data_list = []
     for s in symbols:
-        single_symbol = img_grey_1[:, s[0]:s[1]]
-        data = cv2.resize(single_symbol, (28,28))
+        single_symbol = img_grey[:, s[0]:s[1]]
+        data = np.float32(cv2.resize(single_symbol, (28,28)))
+        #print(data)
         #cv2.imshow("Symbol", data)
         #cv2.waitKey(0)
 
-        data_list.append(data)
+        data_list.append(data.reshape(784))
 
 
     #text += str(index)
@@ -203,11 +222,11 @@ def data_input():
 
 
 if __name__ == "__main__":
-    #tf.app.run()
+    tf.app.run()
 
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
+        model_fn=cnn_model_fn, model_dir="./tmp/mnist_convnet_model")
 
-    data = data_input()
-    print(np.shape(data))
+    data = np.array(data_input())
+    print("\n\n\nPREDICT\n\n\n")
     predict(data, mnist_classifier)
