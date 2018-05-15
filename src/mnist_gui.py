@@ -18,7 +18,7 @@ def drawPixel(x, y):
     pygame.draw.circle(screen, (0, 0, 0), (x*10, y*10), 10, 0)
 
 def clearPixel(x, y):
-    pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)    
+    pygame.draw.rect(screen, bgColor, pygame.Rect((x*10, y*10), (10, 10)), 0)
 
 def image2data(img):
     #convert to grayscale
@@ -37,12 +37,12 @@ def image2data(img):
     img = img * (255/img.max())
     print(img.astype(np.int))
     #Flatten out to feed into network
-    img = np.reshape(img, (1, 28*28))    
+    img = np.reshape(img, (1, 28*28))
     return img
 
 
-if __name__ == "__main__":    
-    pygame.init()    
+if __name__ == "__main__":
+    pygame.init()
     bgColor = (255, 255, 255)
     lines = False
     size = width, height = 280, 280
@@ -61,18 +61,18 @@ if __name__ == "__main__":
     mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)
     nn.train(mnist, force_retrain=False)
 
-    pygame.display.update()    
+    pygame.display.update()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     img = pygame.surfarray.array3d(screen)
-                    data = image2data(img)                    
+                    data = image2data(img)
                     r = nn.forward(data)
-                    index = np.argmax(r) 
+                    index = np.argmax(r)
                     print("Class: %d - %.2f%%" % (index, r[0, index]*100))
-                    
+
             if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
                 status = pygame.mouse.get_pressed()
                 if status[0] == 1:
@@ -84,4 +84,3 @@ if __name__ == "__main__":
                     #clear the screen
                     screen.fill(bgColor)
                 pygame.display.update()
-                
