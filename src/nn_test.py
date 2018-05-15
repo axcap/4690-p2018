@@ -35,7 +35,7 @@ if __name__ == "__main__":
     binary = cv2.bitwise_not(gray)
     y,x = binary.shape
 
-    nn = NN_MNIST()
+    nn = NN_MNIST(model_path="res/model/nn_mnist/mnist_demo")
     dataset = input_data.read_data_sets("res/datasets/FNIST/", one_hot=True, validation_size=10)
     nn.train(dataset, force_retrain=False)
 
