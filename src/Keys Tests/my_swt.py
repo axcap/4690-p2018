@@ -3,8 +3,6 @@ import numpy as np
 import math
 
 
-
-
 def swt(image):
     [M,N] = image.shape
     rays = []
@@ -62,65 +60,110 @@ def swt(image):
         cv2.imwrite('angle.jpg', theta)
         
     return swt
-                
+              
+class Component:
+    components_list = None
+    label_id = None
+    coord = None
+
+    def __init__(self, component_list, label_id, coord):
+        self.components_list = component_list
+        self.label_id = label_id
+        self.coord = coord
 
 def connect_component(image):
     ## One compnent at a time
+    ## component is a list of list cordinate of each component
     [M,N] = image.shape
     label_id = 1
     label_image = np.zeros((M,N))
-
+    components = []
     for x in range(N):
         for y in range(M):
             cur_p = image[y,x]
             if label_image[y,x] == 0 and image[y,x] != np.inf: 
                 que = []
                 que.append((x,y))
-                connect_from_que(image, label_image, que, label_id, image[y,x])
+                new_component = make_new_component(image, label_image, que, label_id, image[y,x])
+                components.append(new_component)
                 label_id += 1
-    return label_image
+    return label_image, components
 
-
-def connect_from_que(image, label_image, que, label_id, label_value):
+def make_new_component(image, label_image, que, label_id, label_value):
+    new_component = []
+    [x,y] = que[0]
+    N,S,E,W = y,y,x,x
     while que:
         [x,y] = que.pop(0)
+        new_component.append((x,y))
         if label_image[y,x] == 0 and image[y,x] != np.inf:
-            a = np.max([image[y,x], label_value])
-            b = np.min([image[y,x], label_value])
-            if a/b < 3.0:
-                label_image[y,x] = label_id
-                add_neighbour(image, label_image, [x,y], que)  
+            if(y < N):
+                N = y
+            elif(y > S):
+                S = y
+            if(x > E):
+                E = x
+            elif(x < W):
+                W = x
+            label_image[y,x] = label_id
+            add_neighbour(image, label_image, [x,y], que)
+    return Component(new_component, label_id, [N,S,E,W])
     
 def add_neighbour(image, label_image, coord, que):
     [M,N] = image.shape
-    x,y = coord
-    neighboor = [[y+1,x],[y,x+1],[y-1,x],[y,x-1]] # TODO add more neighboors
+    c_x,c_y = coord
+    neighboor = [[c_y+1,c_x],[c_y,c_x+1],[c_y-1,c_x],[c_y,c_x-1],[c_y+1,c_x+1],[c_y+1,c_x-1],[c_y-1,c_x+1],[c_y-1,c_x-1]]
     for y,x in neighboor:
-        if x > 0 and x < N and y > 0 and y < M:
-            que.append((x,y))       
+        if y >= M or y <= 0 or x >= N or x <= 0:
+            continue
+        a = np.max([image[y,x], image[c_y, c_x]])
+        b = np.min([image[y,x], image[c_y, c_x]])
+        if a/b <= 3.0:
+            if x > 0 and x < N and y > 0 and y < M:
+                que.append((x,y))       
 
 
+def find_letter(label_image, compoments):
+    letters = []
+    for i,component in enumerate(compoments):
+        [N,S,E,W] = component.coord
+        width, height = E - W, S - N
+        diameter = np.sqrt(width * width + height * height)
+        # if width < 1 or height < 1:
+        #     # print(width,height)
+        #     label_image[label_image == i] = 0
+        #     continue
+
+        # if width / height > 10 or height / width > 10:
+        #     label_image[label_image == i] = 0
+        #     continue
+
+        letters.append(component)
+    return label_image, letters
 
 def draw_mask(mask, label_id):
     img = mask == label_id
     img = img.astype(np.uint8)  #convert to an unsigned byte
     mask*=255
+    cv2.imwrite('test.png', mask)
     cv2.imshow("text area", mask) 
     cv2.waitKey()
     cv2.destroyAllWindows()
-
 
 def main():
     import test_find_contour as test 
     import text_segmentation as text_seg
 
     IMAGE_PATH = '../../res/images/'
-    image_filename = 'text_example2.png'
+    image_filename = 'ReceiptSwiss.jpg'
     image = cv2.imread(IMAGE_PATH+image_filename,0)
     
     SWT = swt(image)
-    CC = connect_component(SWT)
-    draw_mask(CC, 30)
+    print(SWT)
+    CC,cc_list = connect_component(SWT)
+    find_letter(CC,cc_list)
+    print(CC)
+    draw_mask(CC, 0)
 
 
 if __name__ == '__main__':

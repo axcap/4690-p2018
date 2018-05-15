@@ -17,7 +17,6 @@ def swt(image):
     mag_g = np.sqrt(step_x_g * step_x_g + step_y_g * step_y_g)
     np.set_printoptions(threshold=np.nan)
 
-
     for x in range(edges.shape[1]):
         for y in range(edges.shape[0]):
             if edges[y, x] > 0:
@@ -61,7 +60,6 @@ def swt(image):
             swt[y, x] = min(median, swt[y, x])
     if True:
         cv2.imwrite('swt.jpg', swt * 100)
-
     return swt
 
 def main():
