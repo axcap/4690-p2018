@@ -11,7 +11,7 @@ def histogramProjection(img, direction = 'vertical'):
             col = img[i,:]
 
         #black background anticipated
-        summ = np.sum(col != 0)
+        summ = np.sum(col >= 100)
         sumCols.append(summ)
     return sumCols
 
