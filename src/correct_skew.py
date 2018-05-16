@@ -105,7 +105,7 @@ img = cv2.imread(image_path)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray = cv2.bitwise_not(gray)
 
-gray = utils.rotate2target(gray, target_angle)
+gray = utils.rotate2angle(gray, target_angle)
 
 # threshold the image, setting all foreground pixels to
 # 255 and all background pixels to 0
@@ -127,7 +127,7 @@ print("Corrected angle2: "+str(angle2))
 
 
 # rotate the image to deskew it
-rotated = utils.rotate2target(thresh, angle2)
+rotated = utils.rotate2angle(thresh, angle2)
 
 thresh = cv2.threshold(rotated, 0, 255,
 	cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
@@ -135,7 +135,7 @@ thresh = cv2.threshold(rotated, 0, 255,
 angle3 = final_correct_angle(thresh);
 print("Corrected angle3: "+str(angle3))
 
-rotated2 = utils.rotate2target(rotated, angle3)
+rotated2 = utils.rotate2angle(rotated, angle3)
 
 cv2.putText(img, "Original",
 	    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
