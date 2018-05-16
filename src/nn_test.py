@@ -25,6 +25,24 @@ def imshow(text, img):
     plt.pause(0.1)
     input()
 
+def rotate2target(img, angle):
+    (h, w) = img.shape[:2]
+
+    edge = max(img.shape[:2])
+    img_big = np.zeros((edge, edge), dtype=np.uint8)
+    (h_big, w_big) = img_big.shape[:2]
+
+    start_x = (w_big - w) // 2
+    start_y = (h_big - h) // 2
+
+    img_big[start_y:start_y+h, start_x:start_x+w] = img
+
+    center = (w_big/2, h_big/2)
+
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    final = cv2.warpAffine(img_big, M, (w_big, h_big))
+    return final
+
 if __name__ == "__main__":
 
     image_path = sys.argv[1]
@@ -35,37 +53,43 @@ if __name__ == "__main__":
     binary = cv2.bitwise_not(gray)
     y,x = binary.shape
 
-    nn = NN_MNIST(model_path="res/model/nn_mnist/mnist_demo")
+    nn = NN_MNIST(model_path="res/model/nn_fnist/fnist_demo")
     dataset = input_data.read_data_sets("res/datasets/FNIST/", one_hot=True, validation_size=10)
     nn.train(dataset, force_retrain=False)
 
-    linesHist = utils.find_lines(binary)
-    lines = utils.segment_lines(binary, linesHist)
-    print(len(lines))
+    for angle in [0, 90, 180, 270]:
+        binary = rotate2target(binary, angle)
 
-    output = ""
-    start = time.time()
-    for i, l in enumerate(lines):
-        single_line = binary[l[0]:l[1], 0:x]
-        #imshow("line", single_line)
-        symbolHist = utils.find_symbol(single_line)
-        symbols    = utils.segment_symbols(binary, symbolHist)
-        print("%d/%d lines processed" % (i, len(lines)))
-        line_out = ""
-        for s in symbols:
-            single_symbol = binary[l[0]:l[1], s[0]:s[1]]
-            single_symbol[single_symbol > 30] = 255
-            single_symbol[single_symbol <= 30] = 0
-            #print(single_symbol)
-            data = cv2.resize(single_symbol, (28,28))
-            r = nn.forward(np.reshape(data, (1, 28*28)))
-            index = np.argmax(r)
-            #print(single_symbol)
-            #print("Class: %d - %.2f%%" % (index, r[0, index]*100))
-            line_out += " " + str(index)
-            #imshow("Symbol", data)
+        linesHist = utils.find_lines(binary)
+        lines = utils.segment_lines(binary, linesHist)
+        output = ""
+        start = time.time()
+        for i, l in enumerate(lines):
+            single_line = binary[l[0]:l[1], 0:x]
+            symbolHist = utils.find_symbol(single_line)
+            symbols    = utils.segment_symbols(binary, symbolHist)
 
-        output += line_out[1:] + "\n"
+            #print("%d/%d lines processed" % (i, len(lines)))
+            line_out = ""
+            for s in symbols:
+                single_symbol = binary[l[0]:l[1], s[0]:s[1]]
+                single_symbol[single_symbol > 30] = 255
+                single_symbol[single_symbol <= 30] = 0
+                #print(single_symbol)
+                data = cv2.resize(single_symbol, (28,28))
+                r = nn.forward(np.reshape(data, (1, 28*28)))
+                index = np.argmax(r)
+                #print(single_symbol)
+                #print("Class: %d - %.2f%%" % (index, r[0, index]*100))
+                line_out += " " + str(index)
+                #imshow("Symbol", data)
+
+            output += line_out[1:] + "\n"
+
+
+        print(output, "\n\n")
+
+    exit()
 
     with open('res/images/results/tall_result.txt','w+') as fd:
         fd.write(output)
