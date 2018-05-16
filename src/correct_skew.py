@@ -26,25 +26,6 @@ def imshow(text, img):
     plt.pause(0.1)
     input("<Hit Enter To Continue>")
 
-def rotate2target(img, angle):
-    (h, w) = img.shape[:2]
-
-    edge = max(img.shape[:2])
-    img_big = np.zeros((edge, edge), dtype=np.uint8)
-    (h_big, w_big) = img_big.shape[:2]
-
-    start_x = (w_big - w) // 2
-    start_y = (h_big - h) // 2
-
-    img_big[start_y:start_y+h, start_x:start_x+w] = img
-
-    center = (w_big/2, h_big/2)
-
-    M = cv2.getRotationMatrix2D(center, angle, 1.0)
-    final = cv2.warpAffine(img_big, M, (w_big, h_big),
-                           flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-    return final
-
 #Returns angle with closest to 90degree modulo
 def correct_angle(angle):
     if angle < 0:
@@ -124,7 +105,7 @@ img = cv2.imread(image_path)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray = cv2.bitwise_not(gray)
 
-gray = rotate2target(gray, target_angle)
+gray = utils.rotate2target(gray, target_angle)
 
 # threshold the image, setting all foreground pixels to
 # 255 and all background pixels to 0
@@ -146,7 +127,7 @@ print("Corrected angle2: "+str(angle2))
 
 
 # rotate the image to deskew it
-rotated = rotate2target(thresh, angle2)
+rotated = utils.rotate2target(thresh, angle2)
 
 thresh = cv2.threshold(rotated, 0, 255,
 	cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
@@ -154,7 +135,7 @@ thresh = cv2.threshold(rotated, 0, 255,
 angle3 = final_correct_angle(thresh);
 print("Corrected angle3: "+str(angle3))
 
-rotated2 = rotate2target(rotated, angle3)
+rotated2 = utils.rotate2target(rotated, angle3)
 
 cv2.putText(img, "Original",
 	    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)

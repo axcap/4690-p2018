@@ -1,6 +1,25 @@
 import numpy as np
 import cv2
 
+def rotate2angle(img, angle, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE):
+    (h, w) = img.shape[:2]
+
+    edge = max(img.shape[:2])
+    img_big = np.zeros((edge, edge), dtype=np.uint8)
+    (h_big, w_big) = img_big.shape[:2]
+
+    start_x = (w_big - w) // 2
+    start_y = (h_big - h) // 2
+
+    img_big[start_y:start_y+h, start_x:start_x+w] = img
+
+    center = (w_big/2, h_big/2)
+
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    final = cv2.warpAffine(img_big, M, (w_big, h_big),
+                           flags=flags, borderMode=borderMode)
+    return final
+
 def histogramProjection(img, direction = 'vertical'):
     n = img.shape[1] if direction is 'vertical' else img.shape[0]
     sumCols = []
