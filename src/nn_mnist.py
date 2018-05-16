@@ -110,6 +110,10 @@ class NN_MNIST:
     def forward(self, data):
         return self.sess.run(self.network, feed_dict={self.X: data})
 
+    def forward_raw(self, data):
+        return self.sess.run(self.logits, feed_dict={self.X: data})
+
+
     def confusion_matrix(self, dataset):
         """This function takes dataset and tensorflow network and calculates the confusion matrix.
         Args:
