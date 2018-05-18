@@ -1,16 +1,17 @@
 from __future__ import absolute_import
-from __future__ import division
 from __future__ import print_function
+from __future__ import division
 
 import tensorflow as tf
 old_v = tf.logging.get_verbosity()
-tf.logging.set_verbosity(tf.logging.ERROR)
-#tf.logging.set_verbosity(tf.logging.DEBUG)
+tf.logging.set_verbosity(tf.logging.DEBUG)
 
 from tensorflow.examples.tutorials.mnist import input_data
 from matplotlib import pyplot as plt
 from pathlib import Path
 from tqdm import tqdm
+import utils as utils
+import shutil
 
 import utils as utils
 import numpy as np
@@ -23,169 +24,167 @@ np.set_printoptions(edgeitems=9999999)
 
 dataset_path = "res/datasets/ROTFNIST/"
 
-def cnn_model_fn2(features, labels, mode):
-  """Model function for CNN."""
-  # Input Layer
-  # Reshape X to 4-D tensor: [batch_size, width, height, channels]
-  # MNIST images are 28x28 pixels, and have one color channel
-  input_layer = tf.reshape(features["x"], [-1, 28, 28, 1])
+class RNIST:
+  def cnn_model_fn(self, features, labels, mode):
+    """Model function for CNN."""
+    # Input Layer
+    # Reshape X to 4-D tensor: [batch_size, width, height, channels]
+    # MNIST images are 28x28 pixels, and have one color channel
+    input_layer = tf.reshape(
+      features["x"],
+      [-1, 28, 28, 1])
 
-  conv1 = tf.layers.conv2d(
+    conv1 = tf.layers.conv2d(
       inputs=input_layer,
       filters=25,
       kernel_size=5,
       padding="same",
       activation=tf.nn.relu)
 
-  conv1 = tf.reshape(conv1, [-1, 28 * 28 * 1])
+    conv1 = tf.reshape(
+      conv1,
+      [-1, 28*28*25])
 
-  logits = tf.layers.dense(inputs=conv1, units=1, activation=None)
+    logits = tf.layers.dense(inputs=conv1, units=4)
 
-  # Add dropout operation; 0.6 probability that element will be kept
-  #dropout = tf.layers.dropout(
-  #    inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
-
-  #cost = tf.reduce_mean(tf.square(logits - labels))
-  loss = tf.losses.mean_squared_error(labels, logits)
-
-  predictions = {
-      "classes": tf.argmax(input=logits),
-      "probabilities": tf.losses.mean_squared_error(labels, logits)
-  }
-
-  if mode == tf.estimator.ModeKeys.PREDICT:
-    print("PREDICT")  
-    return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
-
-  # Configure the Training Op (for TRAIN mode)
-  if mode == tf.estimator.ModeKeys.TRAIN:
-    print("TRAINT")
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-    train_op = optimizer.minimize(loss = loss)
-    print("111111111111")
-    with tf.Session() as sess:
-      print(sess.run(tf.shape(loss)))
-      #print(sess.run(tf.shape(conv1)))
-      #print(sess.run(loss))
-      pass
-    
-    return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
-
-  # Add evaluation metrics (for EVAL mode)
-  eval_metric_ops = {
-      "accuracy": tf.metrics.accuracy(
-          labels=labels, predictions=predictions["classes"])}
-  return tf.estimator.EstimatorSpec(
-      mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
-
-
-def cnn_model_fn(features, labels, mode):
-  """Model function for CNN."""
-  # Input Layer
-  # Reshape X to 4-D tensor: [batch_size, width, height, channels]
-  # MNIST images are 28x28 pixels, and have one color channel
-  input_layer = tf.reshape(
-    features["x"],
-    [-1, 28, 28, 1])
-
-  conv1 = tf.layers.conv2d(
-    inputs=input_layer,
-    filters=25,
-    kernel_size=5,
-    padding="same",
-    activation=tf.nn.relu)
-
-  conv1 = tf.reshape(
-    conv1,
-    [-1, 28*28*25])
-
-  logits = tf.layers.dense(
-    inputs=conv1,
-    units=1)
-
-  predictions = {
+    predictions = {
       # Generate predictions (for PREDICT and EVAL mode)
       "classes": tf.argmax(input=logits, axis=1),
       # Add `softmax_tensor` to the graph. It is used for PREDICT and by the
       # `logging_hook`.
       "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
-  }
-  if mode == tf.estimator.ModeKeys.PREDICT:
-    return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
+    }
 
-  # Calculate Loss (for both TRAIN and EVAL modes)
-  loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+    if mode == tf.estimator.ModeKeys.PREDICT:
+      return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
 
-  # Configure the Training Op (for TRAIN mode)
-  if mode == tf.estimator.ModeKeys.TRAIN:
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-    train_op = optimizer.minimize(loss=loss,
-                                  global_step=tf.train.get_global_step())
+    # Calculate Loss (for both TRAIN and EVAL modes)
+    loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+    #loss = tf.losses.mean_squared_error(labels, logits)
 
-    return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
+    # Configure the Training Op (for TRAIN mode)
+    if mode == tf.estimator.ModeKeys.TRAIN:
+      print("TRAIN")
+      optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+      train_op = optimizer.minimize(loss=loss, global_step=tf.train.get_global_step())
+      return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
 
-  # Add evaluation metrics (for EVAL mode)
-  eval_metric_ops = {
+    # Add evaluation metrics (for EVAL mode)
+    eval_metric_ops = {
       "accuracy": tf.metrics.accuracy(
-          labels=labels, predictions=predictions["classes"])}
-  return tf.estimator.EstimatorSpec(
+        labels=labels, predictions=predictions["classes"])}
+    return tf.estimator.EstimatorSpec(
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
-def main(unused_argv):
-  # Load training and eval data
-  dataset = input_data.read_data_sets(dataset_path, validation_size=10)
 
-  train_data = dataset.train.images
-  train_labels = np.zeros((len(dataset.train.labels), 1), dtype=np.int32)
-  eval_data = dataset.train.images
-  eval_labels = np.zeros((len(dataset.train.labels), 1), dtype=np.int32)
+  def __init__(self, model_path="res/model/rotfnist"):
+    self.model_path = model_path
 
-  print(len(train_data), len(train_labels))
-  print(len(eval_data), len(eval_labels))
+    # Create the Estimator
+    self.dataset_classifier = tf.estimator.Estimator(
+      model_fn=self.cnn_model_fn, model_dir=self.model_path)
 
-  # Create the Estimator
-  dataset_classifier = tf.estimator.Estimator(
-      model_fn=cnn_model_fn, model_dir="/tmp/rotfnist")
+  def set_params(self, learning_rate, num_epochs, batch_size, steps = 1):
+    self.learning_rate   = learning_rate
+    self.num_epochs      = num_epochs
+    self.batch_size      = batch_size
+    self.steps           = steps
 
-  # Train the model
-  print("Training started")
-  train_input_fn = tf.estimator.inputs.numpy_input_fn(
-    x={"x": train_data},
-    y=train_labels,
-    batch_size=100,
-    num_epochs=1000,
-    shuffle=True)
-  
-  dataset_classifier.train(input_fn = train_input_fn, steps=1)    
-  
-  print("Evaluation started")
-  eval_data = dataset.train.images
-  eval_labels = np.zeros((len(dataset.train.images), 1), dtype=np.int32) #np.asarray(fnist.train.labels, dtype=np.int32)
+  def train(self, dataset, force_retrain = False):
+    old_v = tf.logging.get_verbosity()
+    tf.logging.set_verbosity(tf.logging.INFO)
 
-  # Evaluate the model and print results
-  eval_input_fn = tf.estimator.inputs.numpy_input_fn(
+    train_data = dataset.train.images
+    train_labels = np.asarray(dataset.train.labels, dtype=np.int32)
+    train_labels = np.asarray(dataset.train.labels, dtype=np.int32)
+    eval_data = dataset.test.images
+    eval_labels = np.asarray(dataset.test.labels, dtype=np.int32)
+
+    if (force_retrain):
+      shutil.rmtree(self.model_path)
+
+    # Train the model
+    train_input_fn = tf.estimator.inputs.numpy_input_fn(
+      x={"x": train_data},
+      y=train_labels,
+      batch_size=self.batch_size,
+      num_epochs=self.num_epochs,
+      shuffle=True)
+
+    self.dataset_classifier.train(input_fn = train_input_fn, steps=self.steps)
+
+    # Evaluate the model and print results
+    eval_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": eval_data},
       y=eval_labels,
       num_epochs=1,
       shuffle=False)
+    eval_results = self.dataset_classifier.evaluate(input_fn=eval_input_fn)
+    print(eval_results)
 
-  eval_results = dataset_classifier.evaluate(input_fn=eval_input_fn)
-  print("Results: ", eval_results)
+    tf.logging.set_verbosity(old_v)
 
-  for x in range(10):
-    img = np.reshape(train_data[x], (28,28))
 
+  def predict(self, data):
+    # Evaluate the model and print results
     predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-      x={"x": img.reshape(1, -1)},
+      x={"x": data},
       num_epochs=1,
       shuffle=False)
-    
-    predict_results = dataset_classifier.predict(input_fn = predict_input_fn)
-    print(img)
-    for result in predict_results:
-      print(result)
-    
 
-  
+    return self.dataset_classifier.predict(input_fn=predict_input_fn)
+
+
+  def main(unused_argv):
+    # Load training and eval data
+    dataset = input_data.read_data_sets(dataset_path)
+
+    train_data = dataset.train.images
+    train_labels = np.asarray(dataset.train.labels, dtype=np.int32)
+    eval_data = dataset.test.images
+    eval_labels = np.asarray(dataset.test.labels, dtype=np.int32)
+
+    # Create the Estimator
+    dataset_classifier = tf.estimator.Estimator(
+      model_fn=cnn_model_fn, model_dir="res/model/rotfnist")
+
+    # Set up logging for predictions
+    # Log the values in the "Softmax" tensor with label "probabilities"
+    tensors_to_log = {"probabilities": "softmax_tensor"}
+    logging_hook = tf.train.LoggingTensorHook(
+      tensors=tensors_to_log, every_n_iter=50)
+
+    # Train the model
+    train_input_fn = tf.estimator.inputs.numpy_input_fn(
+      x={"x": train_data},
+      y=train_labels,
+      batch_size=100,
+      num_epochs=None,
+      shuffle=True)
+
+    dataset_classifier.train(input_fn = train_input_fn, steps=20000)
+
+    idx = np.random.randint(low=0, high=dataset.train.num_examples, size=10)
+    for x in range(10):
+      img = np.reshape(train_data[idx[x]], (28,28))
+      predict_input_fn = tf.estimator.inputs.numpy_input_fn(
+      x={"x": img.reshape(1, -1)},
+        num_epochs=1,
+        shuffle=False)
+
+      predict_results = dataset_classifier.predict(input_fn = predict_input_fn)
+      print(img*255)
+      for result in predict_results:
+        print(result)
+      print("")
+
+
+
 if __name__ == "__main__":
-  tf.app.run()
+  #Load training data
+  dataset = input_data.read_data_sets(dataset_path, validation_size=10)
+
+  nn = RNIST()
+  nn.set_params(0.001, None, 100, 20000)
+
+  nn.train(dataset, force_retrain = True)
