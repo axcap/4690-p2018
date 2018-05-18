@@ -25,10 +25,38 @@
 
 \maketitle
 \section*{Project description}
-\noindent \\ \textbf{The purpose of the software is to recognise text from any
-surface with uneven lighting.}
-\noindent \\
-\noindent \\ \textbf{First step}
+\textbf{The purpose of the software is to recognise text from any
+surface with uneven lighting. Hence this falls under the ``Optical character recognition'' (OCR) problem}
+
+\noindent \\ As OCRs are still a challenging task even for companiese like
+Google, ref. reader to Googles OCR translator application on smartphones,
+drawbacks such as; difficulty finding all the text on the photo becasue of
+lighting, noise etc., therefore we will have to limit our software significantly.
+
+\noindent \\ \textbf{Initial limitations}
+\begin{itemize}
+ \item{English alphabet + numbers [0-9]}
+ \item{Homogeneous background}
+ \item{Computer printed text}
+ \item{}
+\end{itemize}
+
+\noindent \\ \textbf{Project components}.
+\noindent \\ The group have come to the conclusion that the OCR software has
+3 main components to it.
+\begin{enumerate}
+ \item{\textit{Finding text on a photo and returning the text within a bounding box}}
+ \item{\textit{Do preprocessing on the segmented text; rotation, greylevel normalization, symbol segmentation}}
+ \item{\textit{Classification of the symbols}}
+\end{enumerate}
+\noindent \\ Additionally there is one more very important component for this
+OCR software to work, \textit{\textbf{labled data}}. Even though one might not
+need to code for this part, a good poolof labeld data is needed to be able to
+classify symbols. More on this under description for this part.
+\noindent \\ (4. \textit{Gathering labeled data to train a classification algorithm})
+\\
+
+\noindent \\ \textbf{Project INIT}.
 \noindent \\ As we want to test the prof of concept first we simplyfied the SW
 to just be:
 \noindent \\ \textit{\textbf{Recognise numbers [0-9] from a binary img,
