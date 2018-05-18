@@ -37,7 +37,6 @@ def detect_text(image):
     #Visualization
     cv2.imshow("Text detection result", vis)
     cv2.waitKey(0)
-
     cv2.imwrite('detect_text.jpg', image)
 
 
