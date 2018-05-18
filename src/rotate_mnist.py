@@ -12,8 +12,12 @@ np.set_printoptions(linewidth=9999999)
 np.set_printoptions(edgeitems=9999999)
 
 def write_data_to_set(fd_train, fd_lbl, n, images, labels):
-  fd_train.write(struct.pack(str(n*28*28)+'B', *images))
-  fd_lbl.write(struct.pack(str(n)+'B',         *labels))
+  nt = n*28*28
+  for x in range(0, n, n//10):
+    print("%d/%d" % (x//(n//10), 10))
+    print(x, n, n//10, x*28*28, (x+n//10)*28*28)
+    fd_train.write(struct.pack(str(n//10*28*28)+'B', *(images[x*28*28:(x+n//10)*28*28])))
+    fd_lbl.write(struct.pack(str(n//10)+'B',         *(labels[x:x+n//10])))
 
 
 #Path where dataset files will be saves
@@ -42,7 +46,7 @@ train_lbl = gzip.open(dataset_path + "train-labels-idx1-ubyte.gz", 'wb')
 test_img  = gzip.open(dataset_path + "t10k-images-idx3-ubyte.gz",  'wb')
 test_lbl  = gzip.open(dataset_path + "t10k-labels-idx1-ubyte.gz",  'wb')
 
-print(4*num_train, 4*num_test)
+print(4*num_train*28*28, 4*num_test*28*28)
 
 # For train images/labels
 train_img.write((2051).to_bytes(4, byteorder='big'))           # magic number
@@ -64,10 +68,10 @@ test_lbl.write((4*num_test).to_bytes(4, byteorder='big'))       # number of imag
 
 # Create temp buffers of same shape as out data
 train_images_buffer =  np.zeros(4 * num_train * 28*28, dtype = int)
-train_labels_buffer =  np.zeros(num_train, dtype = int)
+train_labels_buffer =  np.zeros(4 * num_train, dtype = int)
 
 test_images_buffer =  np.zeros(4 * num_test *  28*28, dtype = int)
-test_labels_buffer =  np.zeros(num_test, dtype = int)
+test_labels_buffer =  np.zeros(4 * num_test, dtype = int)
 
 
 # For each image in train images
@@ -75,12 +79,12 @@ train_imgs = np.ceil(mnist.train.images*255).astype(int)
 train_imgs[train_imgs > 0] = 255
 total = 0
 for i, img in enumerate(train_imgs):
-    print("%d/%d processed" % (i, num_train))
+    print("%d/%d processed" % (i*4, 4*num_train))
     img = img.reshape((cols, rows))
     for angle in angles:
       rotated = utils.rotate2angle(img, angle)
-      train_images_buffer[(i+angle//90)*28*28:((i+angle//90)+1)*28*28] = np.ravel(rotated)
-      train_labels_buffer[(i+angle//90)] = angle//90
+      train_images_buffer[((i*4)+angle//90)*28*28:(((i*4+1)+angle//90)*28*28)] = np.ravel(rotated)
+      train_labels_buffer[(i*4 + angle//90)] = angle//90
       total += 1
 
 print("Total: ", total)
@@ -97,16 +101,22 @@ for i, img in enumerate(test_imgs):
     img = img.reshape((cols, rows))
     for angle in angles:
       rotated = utils.rotate2angle(img, angle)
-      test_images_buffer[(i+angle//90)*28*28:((i+angle//90)+1)*28*28] = np.ravel(rotated)
-      test_labels_buffer[(i+angle//90)] = angle//90
+      test_images_buffer[((i*4)+angle//90)*28*28:(((i*4+1)+angle//90)*28*28)] = np.ravel(rotated)
+      test_labels_buffer[(i*4 + angle//90)] = angle//90
 
-write_data_to_set(test_img,  test_lbl,  num_test,  test_images_buffer,  test_labels_buffer)
+write_data_to_set(test_img,  test_lbl,  4*num_test,  test_images_buffer,  test_labels_buffer)
 
 # Close files to force file saving (flushing)
 test_img.close()
 test_lbl.close()
 
 print("DONE")
+# Create temp buffers of same shape as out data
+del train_images_buffer
+del train_labels_buffer
+del test_images_buffer
+del test_labels_buffer
+
 
 # Test in MNIST interface can load our dataset
 dataset = input_data.read_data_sets(dataset_path)
