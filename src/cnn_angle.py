@@ -22,7 +22,7 @@ np.set_printoptions(linewidth=9999999)
 np.set_printoptions(edgeitems=9999999)
 
 
-dataset_path = "res/datasets/ROTFNIST/"
+dataset_path = "res/datasets/ROTMNIST/"
 
 class RNIST:
   def cnn_model_fn(self, features, labels, mode):
@@ -77,7 +77,7 @@ class RNIST:
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-  def __init__(self, model_path="res/model/rotfnist"):
+  def __init__(self, model_path="res/model/rotmnist"):
     self.model_path = model_path
 
     # Create the Estimator
@@ -182,7 +182,7 @@ class RNIST:
 
 if __name__ == "__main__":
   #Load training data
-  dataset = input_data.read_data_sets(dataset_path, validation_size=10)
+  dataset = input_data.read_data_sets(dataset_path)
 
   nn = RNIST()
   nn.set_params(0.001, None, 100, 20000)

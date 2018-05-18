@@ -49,10 +49,11 @@ def write_data_to_set(fd_train, fd_test, n, images, labels):
   fd_train.write(struct.pack(str(n*28*28)+'B', *images))
   fd_test.write(struct.pack(str(n)+'B',       *labels))
 
+
 # Using pyGame library to render font chars
 pygame.freetype.init()
 #font = pygame.font.Font(fontpath, 40)
-dst  = pygame.Surface((cols, rows), 0, 8)
+dst = pygame.Surface((cols, rows), 0, 8)
 
 # Number of fonts in fontpath (expect only font files in fontpath)
 n_fonts = 1 if fontpath is None else len(next(os.walk(fontpath))[2])

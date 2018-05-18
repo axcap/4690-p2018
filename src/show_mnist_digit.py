@@ -11,7 +11,8 @@ if(len(sys.argv) < 2):
     exit(1)
 
 digit = int(sys.argv[1])
-database = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True, validation_size=10)
+database = input_data.read_data_sets("res/datasets/ROTMNIST/", one_hot=True, validation_size=10)
+
 for i in range(len(database.train.images)):
     img = np.reshape((database.train.images[i]*255).astype(int), (28, 28))
     print(img)
