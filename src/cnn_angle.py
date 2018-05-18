@@ -185,6 +185,6 @@ if __name__ == "__main__":
   dataset = input_data.read_data_sets(dataset_path)
 
   nn = RNIST()
-  nn.set_params(0.001, None, 100, 20000)
+  nn.set_params(0.001, None, 100, 50000)
 
-  nn.train(dataset, force_retrain = True)
+  nn.train(dataset, force_retrain = False)
