@@ -1,5 +1,14 @@
+from matplotlib import pyplot as plt
 import numpy as np
 import cv2
+
+def imshow(text, img):
+    plt.title(text)
+    plt.xticks([]), plt.yticks([])
+    plt.imshow(img, cmap="gray")
+    plt.draw()
+    plt.pause(0.1)
+    return input("<Hit Enter To Continue>")
 
 def rotate2angle(img, angle, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE):
     (h, w) = img.shape[:2]
