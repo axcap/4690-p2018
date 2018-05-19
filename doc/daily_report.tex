@@ -9,6 +9,8 @@
 \usepackage[hidelinks]{hyperref} %trykkbar referering
 \usepackage{gensymb}
 
+\usepackage{todonotes} % for drafting
+
 \newenvironment{loggentry}[2]% date, heading
 {\noindent\textbf{#2}\marginnote{#1}\\}{\vspace{0.5cm}}
 
@@ -24,48 +26,154 @@
 \begin{document}
 
 \maketitle
-\section*{Project description}
+\section{Project description}
 \textbf{The purpose of the software is to recognise text from any
 surface with uneven lighting. Hence this falls under the ``Optical character recognition'' (OCR) problem}
 
 \noindent \\ As OCRs are still a challenging task even for companiese like
-Google, ref. reader to Googles OCR translator application on smartphones,
-drawbacks such as; difficulty finding all the text on the photo becasue of
-lighting, noise etc., therefore we will have to limit our software significantly.
+Google, ref. reader to Googles OCR translator application on smartphones;
+``Transalte'', drawbacks such as; difficulty finding all the text on the photo
+becasue of lighting, noise etc., therefore we will have to limit our software
+significantly.
 
-\noindent \\ \textbf{Initial limitations}
+\subsection{Initial limitations}
 \begin{itemize}
  \item{English alphabet + numbers [0-9]}
  \item{Homogeneous background}
  \item{Computer printed text}
- \item{}
 \end{itemize}
 
-\noindent \\ \textbf{Project components}.
-\noindent \\ The group have come to the conclusion that the OCR software has
-3 main components to it.
+\subsection{Project components}
+The group have come to the conclusion that the OCR software has 3 main
+components to it.
 \begin{enumerate}
- \item{\textit{Finding text on a photo and returning the text within a bounding box}}
- \item{\textit{Do preprocessing on the segmented text; rotation, greylevel normalization, symbol segmentation}}
- \item{\textit{Classification of the symbols}}
+ \item{\textit{Text segmentation}}
+ \begin{itemize}
+  \item{Finding text on an image and returning the text segments}
+ \end{itemize}
+ \item{\textit{Preprocessing}}
+ \begin{itemize}
+  \item{Do preprocessing on the segmented text; rotation, symbol segmentation,
+  etc.. (preprocessing from its definition, should be done first, however
+  because of simplification we assume we manage to segment out text first.)}
+ \end{itemize}
+ \item{\textit{Classification}}
+ \begin{itemize}
+  \item{Classification of the symbols}
+ \end{itemize}
 \end{enumerate}
 \noindent \\ Additionally there is one more very important component for this
 OCR software to work, \textit{\textbf{labled data}}. Even though one might not
-need to code for this part, a good poolof labeld data is needed to be able to
-classify symbols. More on this under description for this part.
-\noindent \\ (4. \textit{Gathering labeled data to train a classification algorithm})
-\\
+need to code for this part, a good pool of labeled data is needed to be able to
+classify symbols. More on this later.
+\noindent \\ (4. \textit{Data classification - Gathering labeled data to train a classification algorithm})
 
-\noindent \\ \textbf{Project INIT}.
-\noindent \\ As we want to test the prof of concept first we simplyfied the SW
-to just be:
-\noindent \\ \textit{\textbf{Recognise numbers [0-9] from a binary img,
-with computer printed numbers on homogenous background. Contaioning one
-horizontal line of numbers}}
+\subsection{Component description}
+This section we will describe our thoughts on how we plan to solve each
+component, in the form of algorithms, APIs, and datasets. Note that this is our
+initial thoughts, not necessary the solution we will end up implementing.
+
+\noindent \\ As we want to test proof-of-concept while we are coding, we will
+be making several simplifications. These simplifications will be described
+further under each component.
+
+
+
+\subsubsection{Text segmentation}
+\todo[inline]{\textbf{Key fyll ut dette her} \\
+. \\
+. \\
+. \\
+. \\
+. \\
+. \\
+}
+\subsubsection{Preprocessing}
+\noindent \\ \textbf{Description}
 \noindent \\
-\noindent \\ \textbf{Second step}
-\noindent \\ Assume sequence(n number of lines) of numbers. not horizontal
-lines. on homogeneous background.
+
+\subsubsection{Classification}
+\noindent \\ \textbf{Description}
+\noindent \\ At this point because of avalible knowledge and the intrest in
+Convolutional Neural network (CNN), we ended up trying to solve this part
+both with a CNN, and a Multilayer Peceptron (MLP or Deep neural network (DNN)).
+
+\noindent \\ \textbf{Deep Neural Network}
+\noindent \\ Multilayer peceptron neural networks are relatively straight
+forward to code, however the challinging part is to decide on good
+hyperparameters and to not overfit our network.
+
+\begin{itemize}
+ \item{Number of Layers}
+ \item{Number of nodes in each layer}
+ \item{Activation functions}
+ \item{Loss function}
+ \item{Optimization function}
+ \item{Learning rate}
+ \item{Initialization of the weights and biases}
+ \item{Number of epochs}
+\end{itemize}
+
+
+
+
+\noindent \\ \textbf{Convolutional Neural Network}
+
+
+\noindent \\ \textbf{Limitation - proof of concept}
+
+
+\subsubsection{Labled Data}
+\noindent \\ \textbf{Description}
+\noindent \\
+Labled data is needed because our classifiers need to be trained to understand
+the difference between the charecters. This is usually done by training a
+classifier with a set of training data, labels are needed in our case,
+since it is a supervised machine learning algorithm we want to use. As the
+training data is used to train the software, we will need data to test our
+software as well, hence the need for test data. The test data is used to get a
+measure of what the error rate of our software is, based on the results we
+can then tune the hyperparameters to get a better/smaller error rate. Lastly
+we will need validation data. This is an independent dataset that the software
+is not familiar with. The accuracy of the software on the validation set will
+then be a measure of how good the software can classify the characters.
+
+\noindent \\ \textbf{Limitation - proof of concept}
+\noindent \\
+As we have limited us to the English alphabet and numbers ranging from [0-9],
+we will need labeled data for each of these 36 characters; training, test and
+validation sets. As the concept of classifying only numbers vs all 36
+charecters does not differ that much, we will first see if we can solve the OCR
+problem with just numbers. Therfore we only need a dataset containing numbers
+at first. Thereafter we will search for a dataset containing all the characters
+we need.
+
+\noindent \\ \textbf{Dataset}
+\noindent \\
+\noindent \\ \textbf{MNIST}
+\noindent \\ This is a dataset containing handwritten numbers [0-9].
+It has a training set of 60.000 examples and a test set of 10.000 examples.
+(ref. reader to http://yann.lecun.com/exdb/mnist/).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
