@@ -107,6 +107,7 @@ test_labels_buffer =  np.zeros(chars_in_buff, dtype = int)
 train_idx = 0
 test_idx  = 0
 t_train = 0
+
 # For each font in fontpath
 for i, fontname in enumerate(os.listdir(fontpath)):
     print("%d/%d - %s" % (i, n_fonts, fontname))
