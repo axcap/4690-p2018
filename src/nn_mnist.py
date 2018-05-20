@@ -20,6 +20,9 @@ import curses
 import numpy as np
 import tensorflow as tf
 
+fnist = input_data.read_data_sets("res/datasets/FNIST/", one_hot=True)
+
+
 class NN_MNIST:
     sess = None
     model_path = None
@@ -80,22 +83,32 @@ class NN_MNIST:
         if force_retrain or not Path(self.model_path+".index").is_file():
             # Training cycle
             for epoch in range(self.training_epochs):
-                if curses.wrapper(self.getch) == ord('q'):
-                    break
+              ch = curses.wrapper(self.getch)
+              if ch == ord('q'):
+                break
+              if ch == ord('c'):
+                conf = self.confusion_matrix(dataset.test)
+                print("Accuracy: %.2f %%" % (np.sum(conf.diagonal())/np.sum(conf) * 100))
+                print("Error: %.2f %%"    % ((1-np.sum(conf.diagonal())/np.sum(conf)) * 100))
 
-                avg_cost = 0.
-                total_batch = int(dataset.train.num_examples/self.batch_size)
-                # Loop over all batches
-                for i in range(total_batch):
-                    batch_x, batch_y = dataset.train.next_batch(self.batch_size)
-                    _, c = self.sess.run([self.train_op, self.loss_op], feed_dict={self.X: batch_x,
-                                                                                   self.Y: batch_y})
-                    # Compute average loss
-                    avg_cost += c / total_batch
+                conf = self.confusion_matrix(fnist.test)
+                print("Accuracy: %.2f %%" % (np.sum(conf.diagonal())/np.sum(conf) * 100))
+                print("Error: %.2f %%"    % ((1-np.sum(conf.diagonal())/np.sum(conf)) * 100))
 
-                # Display logs per epoch step
-                if epoch % self.display_step == 0:
-                    print("Epoch %d/%d, cost: %.4f" % (epoch+1, self.training_epochs, avg_cost))
+
+              avg_cost = 0.
+              total_batch = int(dataset.train.num_examples/self.batch_size)
+              # Loop over all batches
+              for i in range(total_batch):
+                batch_x, batch_y = dataset.train.next_batch(self.batch_size)
+                _, c = self.sess.run([self.train_op, self.loss_op], feed_dict={self.X: batch_x,
+                                                                               self.Y: batch_y})
+                # Compute average loss
+                avg_cost += c / total_batch
+
+              # Display logs per epoch step
+              if epoch % self.display_step == 0:
+                print("Epoch %d/%d, cost: %.4f" % (epoch+1, self.training_epochs, avg_cost))
 
             print("Optimization Finished!")
 
@@ -146,15 +159,18 @@ if __name__ == "__main__":
     np.set_printoptions(linewidth=9999999)
 
     #Load training data
-    dataset = input_data.read_data_sets("res/datasets/FNIST/", one_hot=True, validation_size=10)
+    mnist = input_data.read_data_sets("res/datasets/MNIST/", one_hot=True)
 
     nn = NN_MNIST()
-    nn.set_params(0.001, 100000, 100)
-    print("Time used: ", timeit.timeit('nn.train(dataset, force_retrain=False, save_model=False)', number=1, globals=globals()))
+    nn.set_params(0.001, 3000, 100)
+    print("Time used: ", timeit.timeit('nn.train(mnist, force_retrain=True, save_model=True)', number=1, globals=globals()))
     #nn.train(dataset, force_retrain=True)
 
-    #conf = nn.confusion_matrix(dataset.test)
-    conf = nn.confusion_matrix(dataset.train)
+    conf = nn.confusion_matrix(mnist.test)
+    print("Accuracy: %.2f %%" % (np.sum(conf.diagonal())/np.sum(conf) * 100))
+    print("Error: %.2f %%\n\n"    % ((1-np.sum(conf.diagonal())/np.sum(conf)) * 100))
+
+    conf = nn.confusion_matrix(fnist.test)
     print("Accuracy: %.2f %%" % (np.sum(conf.diagonal())/np.sum(conf) * 100))
     print("Error: %.2f %%"    % ((1-np.sum(conf.diagonal())/np.sum(conf)) * 100))
     #print("Confusion:\n", conf)
