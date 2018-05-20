@@ -107,17 +107,24 @@ further under each component.
 Convolutional Neural network (CNN), we ended up trying to solve this part
 both with a CNN, and a Multilayer Peceptron (MLP or Deep neural network (DNN)).
 Illustration of each of the architectures are avalible, CNN Figure~\ref{fig:CNN_architecture},
-and the MLP network Figure~\ref{fig:neural_net2}.
+and the MLP network Figure~\ref{fig:neural_net2}. \par
+To avoid inventing the wheel again, we will use the TensoerFlow API, the low
+level API will suffice for the MLP, and the HIGH level API we will try for the
+CNN.
 
 \noindent \\ \textbf{Deep Neural Network}
 \noindent \\ Multilayer peceptron neural networks are relatively straight
 forward to code, however the challinging part is to decide on good
 hyperparameters and to not overfit our network. \par
 Reasearch has showen that the choices of parameters can have huge effects on
-the error rate, even though the researchers might not know why! Emperical
-testing has showen that some combinations of parameters are better than others.
-We will also use the same method on sevral of the hyperparameters. More on
-this below, where a short discription of the hyperparameters follow.
+the error rate thorugh empirical testing. As emperical testing has showen that
+some combinations of parameters are better than others, we will also use the
+same method to find decent values on several of the hyperparameters. More on
+this below, where a short discription of the hyperparameters follow. \par
+One obvious disadvantage we might face by using MLP is that slight spatial
+change on where in the image the characters are located, might lead to
+characters classified diffrently. This is because there is no spatial
+connections on a MLP.
 
 \begin{figure}[H]
   \centering
@@ -207,24 +214,19 @@ this below, where a short discription of the hyperparameters follow.
 
 
 \noindent \\ \textbf{Convolutional Neural Network}
+\noindent \\ Convolutional neural networks are especially good for image
+classification because they takes into account local spatial connections. This
+way it dosent matter where in the image our object/character is it will be
+able to recognise it. CNNs are also rotation invariant, hence the
+classification would be even more robust.
+
+
 \begin{figure}[H]
   \centering
   \includegraphics[height=4cm]{res/CNN_architecture.png}
   \caption{MLP Neural netowrk. \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
   \label{fig:CNN_architecture}
 \end{figure}
-
-
-
-\todo[inline]{
-\noindent \\ \textbf{Description}
-\noindent \\
-. \\
-. \\
-. \\
-. \\
-. \\
-}
 
 \noindent \\ \textbf{Limitation - proof of concept}
 \todo[inline]{
