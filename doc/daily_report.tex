@@ -6,7 +6,8 @@
 
 \usepackage{graphicx} %behandle grafikk
 \usepackage{float}
-\usepackage[hidelinks]{hyperref} %trykkbar referering
+\usepackage[hidelinks,colorlinks]{hyperref} %trykkbar referering
+\usepackage[all]{hypcap}
 \usepackage{gensymb}
 
 \usepackage{todonotes} % for drafting
@@ -80,7 +81,7 @@ further under each component.
 
 
 \subsubsection{Text segmentation}
-\todo[inline]{\textbf{Key fyll ut dette her} \\
+\todo[inline]{\textbf{Key fyll ut dette her?} \\
 . \\
 . \\
 . \\
@@ -89,40 +90,152 @@ further under each component.
 . \\
 }
 \subsubsection{Preprocessing}
+\todo[inline]{
 \noindent \\ \textbf{Description}
 \noindent \\
+. \\
+. \\
+. \\
+. \\
+. \\
+}
+
 
 \subsubsection{Classification}
 \noindent \\ \textbf{Description}
 \noindent \\ At this point because of avalible knowledge and the intrest in
 Convolutional Neural network (CNN), we ended up trying to solve this part
 both with a CNN, and a Multilayer Peceptron (MLP or Deep neural network (DNN)).
+Illustration of each of the architectures are avalible, CNN Figure~\ref{fig:CNN_architecture},
+and the MLP network Figure~\ref{fig:neural_net2}.
 
 \noindent \\ \textbf{Deep Neural Network}
 \noindent \\ Multilayer peceptron neural networks are relatively straight
 forward to code, however the challinging part is to decide on good
-hyperparameters and to not overfit our network.
-\noindent \\ \textbf{hyperparameters}
+hyperparameters and to not overfit our network. \par
+Reasearch has showen that the choices of parameters can have huge effects on
+the error rate, even though the researchers might not know why! Emperical
+testing has showen that some combinations of parameters are better than others.
+We will also use the same method on sevral of the hyperparameters. More on
+this below, where a short discription of the hyperparameters follow.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=4cm]{res/neural_net2.jpeg}
+  \caption{MLP Neural netowrk. \href{http://cs231n.github.io/neural-networks-1/}{Source}}
+  \label{fig:neural_net2}
+\end{figure}
+
+
+
 \noindent \\
+\noindent \\ \textbf{Hyperparameters}
 \begin{itemize}
- \item{Number of Layers}
- \item{Number of nodes in each layer}
+ \item{Number of hidden layers}
+ \begin{itemize}
+  \item{Layers decide how well the software can define the decision borders.
+  Hence increase in layers can have a positive effect, there are aslo cons with
+  the amount of layers. The more layers, the greater the computational power
+  needed to train the system. We will be useing the empirical method to decide
+  how many layers we need}
+ \end{itemize}
+ \item{Number of nodes in each hidden layer}
+ \begin{itemize}
+  \item{Nodes in each hidden layer has the same effect as the number of hidden
+  layers, hence the same applies for this hyperparameter. }
+ \end{itemize}
  \item{Activation functions}
+ \begin{itemize}
+  \item{The activation function decides which combination of nodes, with their
+  signals, are allowed to propogate through the network. Here we will be using
+  the \textit{rectified linear unit} (RELU) activation function. This is an
+  activation function that allows propogation if the signal is positive,
+  othervise it will forward a zero. The reason for choosing this activation
+  function is because this function handels the \textit{vanishing gradient
+  problem} better than sigmoid and atanh activation functions. More on
+  vanishing gradient problem under ``optimization function''.}
+ \end{itemize}
  \item{Loss function}
+ \begin{itemize}
+  \item{The loss function describes how far off the predicted class of the
+  character is from the real class. In our case since we have multiple
+  classes and we are going to use \textit{softmax regression} as the output
+  layer, we also will be using the \textit{cross-entropy loss function}.}
+ \end{itemize}
  \item{Optimization function}
+ \begin{itemize}
+  \item{The backpropogation will train the weights by Gradient Decent
+  Optimization. However as training with several thousand examples, and then
+  optimizing the weights and run the training process, is too costly resource
+  wise, we will have to implement the \textit{mini-batch gradient decent
+  optimizations}. Same principle as gradient decent optimization, but this way
+  we will find the gradient decent for each batch. As long as these batches are
+  randomly choosen, and the sizes are large enough, (we will be using 100 as
+  batch size), these will represent the entire dataset well enough.}
+ \end{itemize}
  \item{Learning rate}
+ \begin{itemize}
+  \item{Learning rate is a scalar that decides how large the stepts towards
+  the gradient minimum will be, for the weights. Choosing too small of a
+  learningrate we might risk not reaching the bottom of the graph, we also
+  might get stuck in a local minimum. Choosing too large of a learning rate
+  we might risk never settle down on a minimum. \par
+  For the learning rate we will be useing the empirical method too.}
+ \end{itemize}
  \item{Initialization of the weights and biases}
+ \begin{itemize}
+  \item{Initialization of the weights also seems to be of importance,
+  researchers have found out. This is obvious, as for example setting all the
+  weights to zero, would of course lead to a network with very few active
+  nodes. \par
+  We will be using the initialization of zeros for the biases, not any
+  apperant reason. Based on our reasearch, it seems people have gotten decent
+  results when using this initialization. For the weights we will be using a
+  gaussian distribution, mean=0, standard diviation=1. Again this is aslo
+  something that we have read should be a good initialization for the weights,
+  no other reason.}
+ \end{itemize}
  \item{Number of epochs}
+ \begin{itemize}
+  \item{Number of epochs are only relevant when we have a small number of
+  dataset. When we have a small dataset we might want to run the software on
+  the same dataset several times. This might result in overfitting the software
+  to the dataset, therefore it is really important to be carfull of the number of
+  epochs, in cases with small datasets.}
+ \end{itemize}
 \end{itemize}
 
 
-
-
 \noindent \\ \textbf{Convolutional Neural Network}
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=4cm]{res/CNN_architecture.png}
+  \caption{MLP Neural netowrk. \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
+  \label{fig:CNN_architecture}
+\end{figure}
 
+
+
+\todo[inline]{
+\noindent \\ \textbf{Description}
+\noindent \\
+. \\
+. \\
+. \\
+. \\
+. \\
+}
 
 \noindent \\ \textbf{Limitation - proof of concept}
-
+\todo[inline]{
+\noindent \\ \textbf{Description}
+\noindent \\
+. \\
+. \\
+. \\
+. \\
+. \\
+}
 
 \subsubsection{Labled Data}
 \noindent \\ \textbf{Description}
@@ -165,7 +278,9 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 
 
 
-
+%\begin{itemize}
+% \item{}
+%\end{itemize}
 
 
 
@@ -227,7 +342,7 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
         \item{Number of hidden layers}
         \item{Nodes in hidden layers}
         \item{Cost function}
-        \item{Optimazation function}
+        \item{Optimization function}
         \item{Learning rate}
       \end{itemize}
       \item{Theoretic accuracy of the network with 2 hidden layers ~98\%}
