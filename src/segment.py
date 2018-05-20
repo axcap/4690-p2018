@@ -4,10 +4,10 @@ import cv2
 
 def segmentText(img):
   #img = cv2.pyrDown(img)
-  small = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  #small = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
   kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-  grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
+  grad = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
   kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
   connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)
@@ -34,6 +34,6 @@ def highlightSegments(img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = np.array(img)
   for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,255,0), 3, 8, 0)
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,255,0), 1, 8, 0)
 
   return temp
