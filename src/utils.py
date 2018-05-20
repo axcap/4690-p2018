@@ -3,12 +3,12 @@ import numpy as np
 import cv2
 
 def imageParser():
-  path = "res/images/ReceiptSwiss.jpg"
-  img  = cv2.imread(path, 1)
-  img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    path = "res/images/numbers2.png"
+    img  = cv2.imread(path, 1)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-  while True:
-    yield np.array(img)
+    while True:
+      yield np.array(img)
 
 def imshow(text, img):
     plt.title(text)
@@ -17,6 +17,11 @@ def imshow(text, img):
     plt.draw()
     plt.pause(0.1)
     return input("<Hit Enter To Continue>")
+
+
+def extractContour(img, contour):
+    x, y, w, h = contour
+    return img[y:y+h, x:x+w]
 
 def rotate2angle(img, angle, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE):
     (h, w) = img.shape[:2]
