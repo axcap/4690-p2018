@@ -2,6 +2,14 @@ from matplotlib import pyplot as plt
 import numpy as np
 import cv2
 
+def imageParser():
+  path = "res/images/ReceiptSwiss.jpg"
+  img  = cv2.imread(path, 1)
+  img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+  while True:
+    yield np.array(img)
+
 def imshow(text, img):
     plt.title(text)
     plt.xticks([]), plt.yticks([])
@@ -29,6 +37,7 @@ def rotate2angle(img, angle, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLIC
                            flags=flags, borderMode=borderMode)
     return final
 
+
 def histogramProjection(img, direction = 'vertical'):
     n = img.shape[1] if direction is 'vertical' else img.shape[0]
     sumCols = []
@@ -44,6 +53,7 @@ def histogramProjection(img, direction = 'vertical'):
         sumCols.append(summ)
     return sumCols
 
+
 #Returns image with rectangles around around each line
 def show_lines(img):
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
@@ -53,6 +63,7 @@ def show_lines(img):
     for l in lines:
         cv2.rectangle(img, (0, l[0]), (x, l[1]), color=(255,0,0), thickness = 1)
     return img
+
 
 #Returns image with rectangles around around each symbol in input line image
 def show_symbols(img):
@@ -72,6 +83,7 @@ def find_lines(img):
 def find_symbol(img):
     hist = histogramProjection(img, direction = 'vertical')
     return hist
+
 
 def segment_hist(img, hist):
     flag = 0
@@ -98,6 +110,7 @@ def segment_hist(img, hist):
 
 def segment_lines(img, hist):
     return segment_hist(img, hist)
+
 
 def segment_symbols(img, hist):
     return segment_hist(img, hist)
