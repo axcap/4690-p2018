@@ -13,7 +13,7 @@
 
 \usepackage{marginnote}
 \usepackage[backend=biber,style=numeric-comp]{biblatex}
-\addbibresource{text_seg.bib,bib.bib}
+\addbibresource{text_seg.bib}
 
 
 
@@ -95,8 +95,6 @@ Additionally, as we want to test proof-of-concept while we are coding, we will
 be making several simplifications. Relevent simplifications will be described
 further under each component.
 
-<<<<<<< HEAD
-
 
 \subsubsection{Text Segmentation}
 \noindent \\ \textbf{Description}
@@ -115,17 +113,6 @@ further under each component.
 
 \noindent \\ \textbf{Approach 3: Stroke Width Transform}
 \noindent \\ We also found Stroke Width Tranform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke lenght, evaluate if it is a text element or not. The concept was relativ simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implemtation later in. 
-=======
-\subsubsection{Text segmentation}
-\todo[inline]{\textbf{Key fyll ut dette her?} \\
-. \\
-. \\
-. \\
-. \\
-. \\
-. \\
-}
->>>>>>> 2c73fb1f2d6cc1bdebb725f0b04433ef3ff63dde
 
 \subsubsection{Preprocessing}
 \noindent \\ \textbf{Description}
