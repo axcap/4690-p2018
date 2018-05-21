@@ -14,19 +14,19 @@
 \usepackage{marginnote}
 \usepackage[backend=biber,style=numeric-comp]{biblatex}
 \addbibresource{text_seg.bib}
+% \addbibresource{bib.bib}
 
-
+\usepackage{ifikompendium/ifikompendiumforside}
 
 \title{UNIK4690 Project}
+\subtitle{Text Recognition}
 \author{
   Akhsarbek Gozoev  - akhsarbg \\
   Sadegh Hoseinpoor - sadeghh\\
   Key Lung Wong - keylw
 }
-
 \begin{document}
-
-\maketitle
+\ififorside[kind={Oppgave Rapport}]
 
 \newpage
 \tableofcontents
