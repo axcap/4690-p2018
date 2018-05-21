@@ -1,9 +1,9 @@
 [0] Config.pm:343> INFO - This is Biber 2.5
 [1] Config.pm:346> INFO - Logfile is 'daily_report.blg'
-[99] biber-darwin:290> INFO - === Mon May 21, 2018, 16:33:11
-[140] Biber.pm:351> INFO - Reading 'daily_report.bcf'
-[331] Biber.pm:776> INFO - Found 4 citekeys in bib section 0
-[368] Biber.pm:3493> INFO - Processing section 0
-[404] Biber.pm:3657> INFO - Looking for bibtex format file 'text_seg.bib,bib.bib' for section 0
-[584] Utils.pm:165> ERROR - Cannot find 'text_seg.bib,bib.bib'!
-[584] Biber.pm:112> INFO - ERRORS: 1
+[105] biber-darwin:290> INFO - === Mon May 21, 2018, 16:36:44
+[150] Biber.pm:351> INFO - Reading 'daily_report.bcf'
+[350] Biber.pm:776> INFO - Found 4 citekeys in bib section 0
+[382] Biber.pm:3493> INFO - Processing section 0
+[436] Biber.pm:3657> INFO - Looking for bibtex format file 'text_seg.bib,bib.bib' for section 0
+[624] Utils.pm:165> ERROR - Cannot find 'text_seg.bib,bib.bib'!
+[625] Biber.pm:112> INFO - ERRORS: 1
