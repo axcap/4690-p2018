@@ -1,20 +1,20 @@
-\documentclass[11pt,a4paper,english]{article}
-\usepackage[english]{babel}
-\usepackage{marginnote}
-\usepackage[utf8]{inputenc}
-\usepackage[top=1in]{geometry}
-
-\usepackage{graphicx} %behandle grafikk
-\usepackage{float}
-\usepackage[hidelinks,colorlinks]{hyperref} %trykkbar referering
-\usepackage[all]{hypcap}
+\documentclass[11pt,a4paper,UKenglish]{article}
+\usepackage[utf8]{inputenc}           %% ... or latin1
+\usepackage[T1]{fontenc,url}
+\usepackage{textcomp,csquotes,varioref,graphicx}
 \usepackage{gensymb}
+\usepackage[english]{babel}
+
+\usepackage[top=1in]{geometry}
+\usepackage{float}
+\usepackage[hidelinks,colorlinks]{hyperref} % trykkbar referering
+\usepackage[all]{hypcap} % ref til starten av referansen
+\usepackage{todonotes} % for kladd
+
+\usepackage{marginnote}
 \usepackage[backend=biber,style=numeric-comp]{biblatex}
 \addbibresource{text_seg.bib,bib.bib}
-\usepackage{todonotes} % for drafting
 
-\newenvironment{loggentry}[2]% date, heading
-{\noindent\textbf{#2}\marginnote{#1}\\}{\vspace{0.5cm}}
 
 
 \title{UNIK4690 Project}
@@ -27,15 +27,33 @@
 \begin{document}
 
 \maketitle
+
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+\todo[inline]{\textbf{Skriv noe om hvordan reporten er satt sammen, slik at
+leser er forberedt på utformingen av rapporten. Hva raporten skal handle
+om osv} \\
+. \\
+. \\
+. \\
+. \\
+. \\
+. \\
+}
+
 \section{Project description}
 \textbf{The purpose of the software is to recognise text from any
-surface with uneven lighting. Hence this falls under the ``Optical character recognition'' (OCR) problem}
+surface with uneven lighting. Hence this falls under the ``Optical
+character recognition'' (OCR) problem}
 
 \noindent \\ As OCRs are still a challenging task even for companiese like
 Google, ref. reader to Googles OCR translator application on smartphones;
 ``Transalte'', drawbacks such as; difficulty finding all the text on the photo
 becasue of lighting, noise etc., therefore we will have to limit our software
 significantly.
+
 
 \subsection{Initial limitations}
 \begin{itemize}
@@ -73,11 +91,11 @@ classify symbols. More on this later.
 This section we will describe our thoughts on how we plan to solve each
 component, in the form of algorithms, APIs, and datasets. Note that this is our
 initial thoughts, not necessary the solution we will end up implementing.
-
-\noindent \\ As we want to test proof-of-concept while we are coding, we will
-be making several simplifications. These simplifications will be described
+Additionally, as we want to test proof-of-concept while we are coding, we will
+be making several simplifications. Relevent simplifications will be described
 further under each component.
 
+<<<<<<< HEAD
 
 
 \subsubsection{Text Segmentation}
@@ -97,17 +115,53 @@ further under each component.
 
 \noindent \\ \textbf{Approach 3: Stroke Width Transform}
 \noindent \\ We also found Stroke Width Tranform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke lenght, evaluate if it is a text element or not. The concept was relativ simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implemtation later in. 
-
-\subsubsection{Preprocessing}
-\todo[inline]{
-\noindent \\ \textbf{Description}
-\noindent \\
+=======
+\subsubsection{Text segmentation}
+\todo[inline]{\textbf{Key fyll ut dette her?} \\
+. \\
 . \\
 . \\
 . \\
 . \\
 . \\
 }
+>>>>>>> 2c73fb1f2d6cc1bdebb725f0b04433ef3ff63dde
+
+\subsubsection{Preprocessing}
+\noindent \\ \textbf{Description}
+\noindent \\ Definition of preprocessing; the act of readying the data for
+further use, in our case for classification. \par
+The spesification of how the format of the image should be is not in our hands,
+as we will use datasets from third parties. We have to make the format and
+type of our input the same as the datasets. Other than the spesifications we
+also need to take into account the spatial charasteristics of the data, as we
+want the chance of the data correctly classified as high as possible. Such as
+background-forground intensity, lighting, rotation, location of the
+character, etc.. \par
+
+\noindent \\ \textbf{Limitation - proof-of-concept}
+\noindent \\ We will here limit our input data to only include greylevel
+images with rotation. As we progress further into the project we will include
+more aspects of a realistic image.
+
+\noindent \\ \textbf{Challenges}
+\begin{itemize}
+ \item{Rotated text}
+ \begin{itemize}
+  \item{Hough transform is a valid solution to this problem. Finding the angle
+  of the lines and then rotate the text segments accordingly.}
+ \end{itemize}
+ \item{Line segmentation}
+ \begin{itemize}
+  \item{Projection histograms allows us to find where the lines start and end,
+  both verticlly and horisontally.}
+ \end{itemize}
+ \item{Character segmentation}
+ \begin{itemize}
+  \item{We can use projection histogram here as well, however one line at a
+  time. This way we can find out where each symbol starts and end.}
+ \end{itemize}
+\end{itemize}
 
 
 \subsubsection{Classification}
@@ -118,7 +172,7 @@ both with a CNN, and a Multilayer Peceptron (MLP or Deep neural network (DNN)).
 Illustration of each of the architectures are avalible, CNN Figure~\ref{fig:CNN_architecture},
 and the MLP network Figure~\ref{fig:neural_net2}. \par
 To avoid inventing the wheel again, we will use the TensoerFlow API, the low
-level API will suffice for the MLP, and the HIGH level API we will try for the
+level API will suffice for the MLP, and the high level API we will try for the
 CNN.
 
 \noindent \\ \textbf{Deep Neural Network}
@@ -138,7 +192,7 @@ connections on a MLP.
 \begin{figure}[H]
   \centering
   \includegraphics[height=4cm]{res/neural_net2.jpeg}
-  \caption{MLP Neural netowrk. \href{http://cs231n.github.io/neural-networks-1/}{Source}}
+  \caption{MLP Neural network \href{http://cs231n.github.io/neural-networks-1/}{Source}}
   \label{fig:neural_net2}
 \end{figure}
 
@@ -224,20 +278,59 @@ connections on a MLP.
 
 \noindent \\ \textbf{Convolutional Neural Network}
 \noindent \\ Convolutional neural networks are especially good for image
-classification because they takes into account local spatial connections. This
-way it dosent matter where in the image our object/character is it will be
-able to recognise it. CNNs are also rotation invariant, hence the
-classification would be even more robust.
-
+classification, because they take local spatial connections into account when
+they classify. This way it dosent matter where in the image our
+object/character is it will be able to recognise it, same yields for rotation,
+as the CNN classifies based on local spatial connections it doesnt matter if
+the object is rotated. Hence the classification would be even more robust
+comapred to the MLP. \par
+The basic idea of a CNN is somewhat understood, but the algorithms and how to
+implement it is still not 100\% grasped. Hence because of lack of knowledge,
+trying to solve the classification problem with a CNN will mostly be done
+by resaerching and trying to solve it as it unfolds.
 
 \begin{figure}[H]
   \centering
   \includegraphics[height=4cm]{res/CNN_architecture.png}
-  \caption{MLP Neural netowrk. \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
+  \caption{Convolutional Neural network \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
   \label{fig:CNN_architecture}
 \end{figure}
 
-\noindent \\ \textbf{Limitation - proof of concept}
+\noindent \\ \textbf{CNN - Basics}
+\begin{itemize}
+ \item{Convolutional layer}
+ \begin{itemize}
+  \item{This layer consists of several filters/kernels that are convolved over
+  the image and based on how many filters one uses, the same amount of feature
+  images are made. The purpose of the filters are to grasp some spatial
+  characteristics of the image, and make it avalible for further prosessing.
+  The filters here correspond to the weights in the MLP, these are first
+  initialized at random (or with a smart initialization method), then these
+  will be updated as the network is trained. Some features that the filters
+  might find could be; verticle or horisontal lines, they could also find more
+  complex features like faces or animals at later layers. \par
+  In a CNN we can have arbitrary many convolutional layer and arbitrary many
+  filters at each layer. However just like a regular MLP, increasing the
+  number of layers and or filters; can allow the network to fit the training
+  data arbitrarily well, unfortunately at the cost of processing time.}
+ \end{itemize}
+ \item{Pooling}
+ \begin{itemize}
+  \item{The pooling layer allowes us to downsize the data. This makes it
+  possible to start with data which are relativly big, and as the data propogates
+  through the network we downsize it. As for the convol layer the pooling
+  layer can be used arbitrarily many times in a network.}
+ \end{itemize}
+ \item{Fully connected layers (FC)}
+ \begin{itemize}
+  \item{This layer works basicly the same way as the hidden layers in an MLP.
+  The pixels of the image is sent as data for each node and they propogate
+  through these layers (usually 2 layers of FC are used) just as they would in
+  an MLP.}
+ \end{itemize}
+\end{itemize}
+
+\noindent \\ \textbf{Limitation - proof-of-concept}
 \todo[inline]{
 \noindent \\ \textbf{Description}
 \noindent \\
@@ -259,11 +352,11 @@ training data is used to train the software, we will need data to test our
 software as well, hence the need for test data. The test data is used to get a
 measure of what the error rate of our software is, based on the results we
 can then tune the hyperparameters to get a better/smaller error rate. Lastly
-we will need validation data. This is an independent dataset that the software
+we will need validation dataset. This is an independent dataset that the software
 is not familiar with. The accuracy of the software on the validation set will
 then be a measure of how good the software can classify the characters.
 
-\noindent \\ \textbf{Limitation - proof of concept}
+\noindent \\ \textbf{Limitation - proof-of-concept}
 \noindent \\
 As we have limited us to the English alphabet and numbers ranging from [0-9],
 we will need labeled data for each of these 36 characters; training, test and
@@ -282,9 +375,14 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 
 
 
+\section{Project review}
+\subsection{Text segmentation}
+\subsection{Preprocessing}
+\subsection{Classification}
 
+\section{Project conclusion}
 
-
+\section{Recognition}
 
 
 
@@ -304,7 +402,8 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 
 
 
-
+\newenvironment{loggentry}[2]% date, heading
+{\noindent\textbf{#2}\marginnote{#1}\\}{\vspace{0.5cm}}
 \newpage
 \section*{Report}
 \begin{loggentry}{19.04.18}{Week 1}
@@ -326,7 +425,7 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 \begin{itemize}
   \item{Charcter Segmentation - Projection Histograms - OpenCV}
   \begin{itemize}
-    \item{By projection the histogram of the binary image on the Y-axis,
+    \item{By projecting the histogram of the binary image on the Y-axis,
     we can find where the sentences/lines of text appears. Following, a
     projection histogram on the X-axis can discover where the charecters
     appear.}
