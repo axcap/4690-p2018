@@ -1,0 +1,9 @@
+embeddings {
+  tensor_name: "LATTERS:0"
+  metadata_path: "res/model/embedding/metadata"
+  sprite {
+    image_path: "res/model/embedding/sprites.png"
+    single_image_dim: 28
+    single_image_dim: 28
+  }
+}
