@@ -12,20 +12,21 @@
 \usepackage{todonotes} % for kladd
 
 \usepackage{marginnote}
+\usepackage[backend=biber,style=numeric-comp]{biblatex}
+\addbibresource{text_seg.bib}
+% \addbibresource{bib.bib}
 
-
+\usepackage{ifikompendium/ifikompendiumforside}
 
 \title{UNIK4690 Project}
+\subtitle{Text Recognition}
 \author{
   Akhsarbek Gozoev  - akhsarbg \\
   Sadegh Hoseinpoor - sadeghh\\
-  Key Long Wong - keylw
+  Key Lung Wong - keylw
 }
-
-
 \begin{document}
-
-\maketitle
+\ififorside[kind={Oppgave Rapport}]
 
 \newpage
 \tableofcontents
@@ -94,15 +95,24 @@ Additionally, as we want to test proof-of-concept while we are coding, we will
 be making several simplifications. Relevent simplifications will be described
 further under each component.
 
-\subsubsection{Text segmentation}
-\todo[inline]{\textbf{Key fyll ut dette her?} \\
-. \\
-. \\
-. \\
-. \\
-. \\
-. \\
-}
+
+\subsubsection{Text Segmentation}
+\noindent \\ \textbf{Description}
+\noindent \\ We where uncertain on how to do this part when we initial started the project. We ended up looking for alot of different ways to do this part. We ended up trying 3 different approaches with mix result. 
+\begin{enumerate}
+  \item Simple image analysis technics, using Otsu tresholding and Morphologi.
+  \item OpenCv imprementation of Scene Text Detection.
+  \item Stride Width Transform(SWT) to detect text in natural images.
+\end{enumerate}
+
+\noindent \\ \textbf{Approach 1: Simple Image Analysis Technics}
+\noindent \\ We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach where we only look at an image with text. The approach is then simply do an Otsu Tresholding and then morphological Closing to connect component. After thet we used OpenCv FindContours method to find the countour of the different text regions. FindContours in Opencv uses the algorithm proposed by Suzuki, S. and Abe, K. 1985\cite{suzuki_topological_????}. 
+
+\noindent \\ \textbf{Approach 2: OpenCv Scene Text Detection}
+\noindent \\ OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}.
+
+\noindent \\ \textbf{Approach 3: Stroke Width Transform}
+\noindent \\ We also found Stroke Width Tranform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke lenght, evaluate if it is a text element or not. The concept was relativ simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implemtation later in. 
 
 \subsubsection{Preprocessing}
 \noindent \\ \textbf{Description}

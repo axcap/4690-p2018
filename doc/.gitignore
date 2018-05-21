@@ -1,6 +1,13 @@
-*.log
 *.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
 *.out
-*.nav
-*.snm
+*.pdf
+*.run.xml
+*.synctex.gz
+*.tex
 *.toc
