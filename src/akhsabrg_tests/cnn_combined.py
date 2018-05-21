@@ -216,7 +216,7 @@ if __name__ == "__main__":
 
     nn = COMBINED_CNN()
     nn.load_data(dataset = emnist)
-    nn.train(1)
+    nn.train(10000)
 
     #nn.evaluate()
 
