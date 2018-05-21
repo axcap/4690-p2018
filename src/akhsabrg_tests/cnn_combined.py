@@ -48,6 +48,11 @@ class COMBINED_CNN:
         self.model_dir = model_dir if model_dir != None else"res/model/cnn_combined"
         self.mapping = np.loadtxt(dataset_path+"emnist-bymerge-mapping.txt", dtype=np.uint8)
 
+        # Create the Estimator
+        self.classifier = tf.estimator.Estimator(
+            model_fn=self.cnn_model_fn,
+            model_dir=self.model_dir)
+
 
     def cnn_model_fn(self, features, labels, mode):
         """Model function for CNN."""
@@ -165,24 +170,11 @@ class COMBINED_CNN:
         return chr(char)
 
 
-    def prepare(self, dataset):
+    def load_data(self, dataset):
         self.train_data   = dataset.train.images  # Returns np.array
         self.train_labels = np.asarray(dataset.train.labels, dtype=np.int32)
         self.eval_data    = dataset.test.images  # Returns np.array
         self.eval_labels  = np.asarray(dataset.test.labels, dtype=np.int32)
-
-        # Create the Estimator
-        self.classifier = tf.estimator.Estimator(
-            model_fn=self.cnn_model_fn,
-            model_dir=self.model_dir)
-
-        # Not used at this time
-        # Set up logging for predictions
-        # Log the values in the "Softmax" tensor with label "probabilities"
-        tensors_to_log = {"probabilities": "softmax_tensor"}
-        logging_hook = tf.train.LoggingTensorHook(
-            tensors=tensors_to_log, every_n_iter=50)
-
 
     def train(self, steps=2000, batch_size=100, num_epochs=None, shuffle=True):
         # Enable debug output while training
@@ -223,7 +215,7 @@ if __name__ == "__main__":
     eval_labels  = np.asarray(emnist.test.labels, dtype=np.int32)
 
     nn = COMBINED_CNN()
-    nn.prepare(dataset = emnist)
+    nn.load_data(dataset = emnist)
     nn.train(1)
 
     #nn.evaluate()

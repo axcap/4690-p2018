@@ -12,15 +12,14 @@ def extractText(img):
         symbols    = utils.segment_symbols(seg, symbolHist)
         for s in symbols:
             single_symbol = seg[l[0]:l[1], s[0]:s[1]]
+            utils.imshow("Single symbol", single_symbol)
             single_symbol = cv2.resize(single_symbol, (28,28))
-            single_symbol[single_symbol > 30] = 255
-            single_symbol[single_symbol <= 30] = 0
-            #utils.imshow("Single symbol", single_symbol)
-
+            #single_symbol[single_symbol > 30] = 255
+            #single_symbol[single_symbol <= 30] = 0
             digit = nn.forward(single_symbol)
             print(digit, end=" ")
 
-      print("")
+        print("")
 
 
 if __name__ == "__main__":
@@ -42,7 +41,7 @@ if __name__ == "__main__":
     for contour in contours[::-1]:
       seg = utils.extractContour(binary, contour)
       #utils.imshow("Segment", seg)
-      extractContourText(seg)
+      extractText(seg)
 
 
     print("\n")

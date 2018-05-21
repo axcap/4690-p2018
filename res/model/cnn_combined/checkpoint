@@ -1,6 +1,6 @@
-model_checkpoint_path: "model.ckpt-30021"
-all_model_checkpoint_paths: "model.ckpt-30017"
+model_checkpoint_path: "model.ckpt-30022"
 all_model_checkpoint_paths: "model.ckpt-30018"
 all_model_checkpoint_paths: "model.ckpt-30019"
 all_model_checkpoint_paths: "model.ckpt-30020"
 all_model_checkpoint_paths: "model.ckpt-30021"
+all_model_checkpoint_paths: "model.ckpt-30022"
