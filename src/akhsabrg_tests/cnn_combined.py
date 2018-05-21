@@ -216,9 +216,9 @@ if __name__ == "__main__":
 
     nn = COMBINED_CNN()
     nn.load_data(dataset = emnist)
-    nn.train(10000)
+    nn.train(1)
 
-    #nn.evaluate()
+    nn.evaluate()
 
     for idx in range(eval_data.size):
         img = eval_data[idx]
