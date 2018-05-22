@@ -61,12 +61,12 @@
 \newcommand{\IfiF@print@background}{{%
   \setlength{\unitlength}{1bp}%
   \ifthenelse{\equal{ifi}{\IfiF@dept}}
-    {\put(-21,-21){\includegraphics{\IfiF@dept-\IfiF@background-forside-\IfiF@lang}}}
+    {\put(-21,-21){\includegraphics{ifikompendium/\IfiF@dept-\IfiF@background-forside-\IfiF@lang}}}
     {\put(0,0){%
         \parbox[b][\paperheight]{\paperwidth}{%
           \vfill
           \centering
-          \includegraphics{uio-\IfiF@background-forside}%
+          \includegraphics{ifikompendium/uio-\IfiF@background-forside}%
           \vfill}}}}}
 
 
@@ -107,11 +107,11 @@
     }
     %
     \fontfamily{\IfiF@font}
-    \fontsize{32}{35pt}\selectfont 
+    \fontsize{32}{35pt}\selectfont
     \@title
 
     \vskip 0pt plus 1fill
-    \fontsize{17}{20pt}\selectfont 
+    \fontsize{17}{20pt}\selectfont
     \IfiF@subtitle
 
     \vskip 0pt plus 2fill\relax

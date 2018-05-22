@@ -42,11 +42,11 @@ def main():
     IMAGE_RESULT_PATH = '../../../res/images/text_segment_result/'
     IMAGE_PATH = '../../../res/images/'
 
-    image_filename = 'ReceiptSwiss.jpg'
-    image = cv2.imread(IMAGE_PATH+image_filename,0)
-    text_area = detect_text(image)
+    # image_filename = 'ReceiptSwiss.jpg'
+    # image = cv2.imread(IMAGE_PATH+image_filename,0)
+    # text_area = detect_text(image)
 
-    image_filename = 'numbers.png'
+    image_filename = 'lorem.png'
     image = cv2.imread(IMAGE_PATH+image_filename,0)
     text_area = detect_text(image)
 
