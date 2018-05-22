@@ -2,8 +2,12 @@ from matplotlib import pyplot as plt
 import numpy as np
 import cv2
 
+mapping_path = "res/datasets/EMNIST_ByMerge/"
+mapping = np.loadtxt(mapping_path+"emnist-bymerge-mapping.txt", dtype=np.uint8)
+
+
 def imageParser():
-    path = "res/images/numbers2.png"
+    path = "res/images/doc.jpg"
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -17,6 +21,38 @@ def imshow(text, img):
     plt.draw()
     plt.pause(0.1)
     return input("<Hit Enter To Continue>")
+
+def class2char(class_n):
+    index = np.argwhere(mapping[:,0] == class_n)[0][0]
+    char  = mapping[index][1]
+    return chr(char)
+
+def char2class(char):
+    char_value = ord(char)
+    index = np.argwhere(mapping[:,1] == char_value)[0][0]
+    class_n = mapping[index][1]
+    return class_n
+
+def img2data(img):
+    max_idx = np.argmax(img.shape)
+    max_edge = img.shape[max_idx]
+    padding = max_edge // 7
+    back = np.zeros((max_edge + 2*padding, max_edge + 2*padding), dtype=np.uint8)
+
+    if max_idx == 0:
+        s = (back.shape[1]-img.shape[1])//2
+        back[padding:padding+img.shape[0] , s:s+img.shape[1]] = img
+    else:
+        s = (back.shape[0]-img.shape[0])//2
+        back[s:s+img.shape[0], padding:padding+img.shape[1]] = img
+
+    kernel = np.ones((3, 3),np.uint8)
+    img = cv2.erode(back,kernel,iterations = 1)
+    img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
+    img[img>50] = 255
+    img = img / 255
+    img = np.transpose(img)
+    return img
 
 
 def extractContour(img, contour):
