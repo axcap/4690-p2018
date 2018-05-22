@@ -18,8 +18,7 @@ path  = sys.argv[1]
 digit = int(sys.argv[2])
 dataset = input_data.read_data_sets(path)
 
-
-collection = np.where(dataset.train.labels == digit)
+collection = np.where(dataset.train.labels == digit)[0]
 
 num = 8
 idx = 0
@@ -27,7 +26,7 @@ while True:
   fig = plt.figure()
   for y in range(num):
     for x in range(num):
-      img = dataset.train.images[collection[0][idx]]
+      img = dataset.train.images[collection[idx]]
       img = (np.reshape(img, (28,28))*255).astype(int)
       ax = fig.add_subplot(num,num, y*num+x +1)
       print(img, "\n")
