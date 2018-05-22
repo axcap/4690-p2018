@@ -7,7 +7,7 @@ mapping = np.loadtxt(mapping_path+"emnist-bymerge-mapping.txt", dtype=np.uint8)
 
 
 def imageParser():
-    path = "res/images/doc.jpg"
+    path = "res/images/lorem.png"
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -23,14 +23,17 @@ def imshow(text, img):
     return input("<Hit Enter To Continue>")
 
 def class2char(class_n):
-    index = np.argwhere(mapping[:,0] == class_n)[0][0]
+    #print(mapping[:,0])
+    where = np.argwhere(mapping[:,0] == class_n)
+    index = where[0][0]
     char  = mapping[index][1]
     return chr(char)
 
 def char2class(char):
     char_value = ord(char)
-    index = np.argwhere(mapping[:,1] == char_value)[0][0]
-    class_n = mapping[index][1]
+    where = np.argwhere(mapping[:,1] == char_value)
+    #print(char, char_value, where)
+    class_n = mapping[where[0][0]][0]
     return class_n
 
 def img2data(img):
@@ -45,13 +48,15 @@ def img2data(img):
     else:
         s = (back.shape[0]-img.shape[0])//2
         back[s:s+img.shape[0], padding:padding+img.shape[1]] = img
+    img = back
 
-    kernel = np.ones((3, 3),np.uint8)
-    img = cv2.erode(back,kernel,iterations = 1)
+    #kernel = np.ones((3, 3),np.uint8)
+    #img = cv2.erode(img,kernel,iterations = 1)
     img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
-    img[img>50] = 255
-    img = img / 255
-    img = np.transpose(img)
+    img[img>127] = 255
+    img[img<50]  = 0
+    #img = img / 255
+    #img = np.transpose(img)
     return img
 
 
@@ -89,7 +94,6 @@ def histogramProjection(img, direction = 'vertical'):
         elif direction is 'horisontal':
             col = img[i,:]
 
-        #black background anticipated
         summ = np.sum(col >= 100)
         sumCols.append(summ)
     return sumCols

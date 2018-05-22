@@ -22,8 +22,8 @@ def write_data_to_set(fd_train, fd_lbl, n, images, labels):
 
 #Path where dataset files will be saves
 #same path used by MNIST's input_data.read_data_sets(..)
-mnist_path   = "res/datasets/MNIST/"
-dataset_path = "res/datasets/ROTMNIST/"
+in_path   = "res/datasets/MNIST/"
+out_path = "res/datasets/ROTMNIST/"
 
 # Rotate each char with this angles and save to dataset
 angles = [0, 90, 180, 270]
@@ -35,16 +35,16 @@ cols = 28
 if not os.path.exists(dataset_path):
     os.makedirs(dataset_path)
 
-mnist  = input_data.read_data_sets(mnist_path, validation_size=0)
-num_train = mnist.train.num_examples
-num_test  = mnist.test.num_examples
+in_dataset  = input_data.read_data_sets(in_path, validation_size=0)
+num_train   = in_dataset.train.num_examples
+num_test    = in_dataset.test.num_examples
 print(num_train, num_test)
 
 # Create output files needed for database load by MNIST interface
-train_img = gzip.open(dataset_path + "train-images-idx3-ubyte.gz", 'wb')
-train_lbl = gzip.open(dataset_path + "train-labels-idx1-ubyte.gz", 'wb')
-test_img  = gzip.open(dataset_path + "t10k-images-idx3-ubyte.gz",  'wb')
-test_lbl  = gzip.open(dataset_path + "t10k-labels-idx1-ubyte.gz",  'wb')
+train_img = gzip.open(out_path + "train-images-idx3-ubyte.gz", 'wb')
+train_lbl = gzip.open(out_path + "train-labels-idx1-ubyte.gz", 'wb')
+test_img  = gzip.open(out_path + "t10k-images-idx3-ubyte.gz",  'wb')
+test_lbl  = gzip.open(out_path + "t10k-labels-idx1-ubyte.gz",  'wb')
 
 print(4*num_train*28*28, 4*num_test*28*28)
 
@@ -75,7 +75,7 @@ test_labels_buffer =  np.zeros(4 * num_test, dtype = int)
 
 
 # For each image in train images
-train_imgs = np.ceil(mnist.train.images*255).astype(int)
+train_imgs = np.ceil(in_dataset.train.images*255).astype(int)
 train_imgs[train_imgs > 0] = 255
 total = 0
 for i, img in enumerate(train_imgs):
@@ -94,7 +94,7 @@ train_img.close()
 train_lbl.close()
 
 # For each image in test images
-test_imgs = np.ceil(mnist.test.images*255).astype(int)
+test_imgs = np.ceil(in_dataset.test.images*255).astype(int)
 test_imgs[test_imgs > 0] = 255
 for i, img in enumerate(test_imgs):
     print("%d/%d processed" % (i, num_test))

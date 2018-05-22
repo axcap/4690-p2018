@@ -41,12 +41,12 @@ def imshow(text, img):
     return input("<Hit Enter To Continue>")
 
 
-dataset_path = "res/datasets/EMNIST_ByMerge/"
+dataset_path = "res/datasets/FNIST/"
 
 class COMBINED_CNN:
     def __init__(self, model_dir=None):
         self.model_dir = model_dir if model_dir != None else"res/model/cnn_combined"
-        self.mapping = np.loadtxt(dataset_path+"emnist-bymerge-mapping.txt", dtype=np.uint8)
+        self.mapping = np.loadtxt(dataset_path+"bymerge-mapping.txt", dtype=np.uint8)
 
         # Create the Estimator
         self.classifier = tf.estimator.Estimator(
@@ -97,16 +97,28 @@ class COMBINED_CNN:
         # Output Tensor Shape: [batch_size, 7, 7, 64]
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
 
+        # Convolutional Layer #3
+        # Computes 64 features using a 5x5 filter.
+        # Padding is added to preserve width and height.
+        # Input Tensor Shape: [batch_size, 7, 7, 64]
+        # Output Tensor Shape: [batch_size, 7, 7, 64]
+        conv3 = tf.layers.conv2d(
+            inputs=pool2,
+            filters=64,
+            kernel_size=[5, 5],
+            padding="same",
+            activation=tf.nn.relu)
+
         # Flatten tensor into a batch of vectors
         # Input Tensor Shape: [batch_size, 7, 7, 64]
         # Output Tensor Shape: [batch_size, 7 * 7 * 64]
-        pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
+        conv3_flat = tf.reshape(conv3, [-1, 7 * 7 * 64])
 
         # Dense Layer
         # Densely connected layer with 1024 neurons
         # Input Tensor Shape: [batch_size, 7 * 7 * 64]
         # Output Tensor Shape: [batch_size, 1024]
-        dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
+        dense = tf.layers.dense(inputs=conv3_flat, units=1024, activation=tf.nn.relu)
 
         # Add dropout operation; 0.6 probability that element will be kept
         dropout = tf.layers.dropout(inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
@@ -216,18 +228,20 @@ if __name__ == "__main__":
 
     nn = COMBINED_CNN()
     nn.load_data(dataset = emnist)
-    #nn.train(1)
+    nn.train(10000, batch_size=50)
 
     nn.evaluate()
+    exit()
 
     for idx in range(eval_data.size):
         img = eval_data[idx]
         label = eval_labels[idx]
         print(label)
-        demo = np.reshape(img, (1, -1))
+        img = np.reshape(img, (28, 28))
+        demo = np.transpose(img)
         print("forward")
-        guessed = nn.forward(demo)
+        guessed = nn.forward(img)
         print(guessed)
         print("%s : %s" % (nn.class2char(label) ,
                            nn.class2char(guessed)))
-        imshow("Test: ", np.transpose(np.reshape(demo, (28,28))))
+        imshow("Test: ", img)
