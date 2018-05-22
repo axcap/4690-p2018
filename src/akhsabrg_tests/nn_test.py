@@ -34,7 +34,7 @@ if __name__ == "__main__":
     dataset = input_data.read_data_sets("res/datasets/FNIST/", one_hot=True, validation_size=10)
     images = input_data.read_data_sets("res/datasets/ROTFNIST/", validation_size=10)
     nn.train(dataset, force_retrain=False)
-    
+
     rn = RNIST()
 
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     for i, l in enumerate(lines):
         single_line = binary[l[0]:l[1], 0:x]
         symbolHist = utils.find_symbol(single_line)
-        symbols    = utils.segment_symbols(binary, symbolHist)            
+        symbols    = utils.segment_symbols(binary, symbolHist)
         for s in symbols:
             single_symbol = binary[l[0]:l[1], s[0]:s[1]]
             single_symbol = cv2.resize(single_symbol, (28,28))
@@ -51,12 +51,12 @@ if __name__ == "__main__":
             single_symbol[single_symbol <= 30] = 0
             for angle in [0, 90, 180, 270]:
                 symbol = utils.rotate2angle(single_symbol, angle)
-                
+
                 angle = next(rn.predict(symbol.astype(np.float32)))['classes'] * 90
                 print("Angle: %d" % (angle))
-                
+
                 utils.imshow("Orig", symbol)
-                
+
                 corrected_img = utils.rotate2angle(symbol, -angle)
                 r = nn.forward(np.reshape(corrected_img, (1, 28*28)))
                 index = np.argmax(r)

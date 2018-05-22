@@ -1,12 +1,17 @@
 from akhsabrg_tests.nn_mnist import NN_MNIST
+from akhsabrg_tests.cnn_combined import COMBINED_CNN
 import numpy as np
 
 class Classifier:
 
     def __init__(self):
-        self.nn = NN_MNIST(model_path="res/model/nn_fnist/fnist_demo")
-        self.nn.train(None)
+        self.network = COMBINED_CNN()
+        #self.network.train(1)
 
     def forward(self, img):
-        classes = self.nn.forward(np.reshape(img, (1, 28*28)))
-        return np.argmax(classes)
+        img = img.astype(np.float32)
+        fixed_orientation = np.transpose(img)
+        fixed_shape = np.reshape(fixed_orientation, (1, 28*28))
+        guessed = self.network.forward(fixed_shape)
+        final_class = self.network.class2char(guessed)
+        return final_class
