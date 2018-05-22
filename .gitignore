@@ -6,3 +6,4 @@
 *.toc
 *.pyc
 *.DS_store
+build/
