@@ -37,3 +37,18 @@ def highlightSegments(img, segments):
     cv2.rectangle(temp, (x, y),(x+w, y+h), (0,255,0), 1, 8, 0)
 
   return temp
+
+
+def main():
+    IMAGE_PATH = '../res/images/'
+    image_filename = 'numbers.png'
+    image = cv2.imread(IMAGE_PATH+image_filename,0)
+
+    rect = segmentText(image)
+    show_img = highlightSegments(image,rect)
+    cv2.imshow("Image segment", show_img) 
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+  main()
