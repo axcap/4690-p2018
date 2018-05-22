@@ -61,16 +61,12 @@
 \newcommand{\IfiF@print@background}{{%
   \setlength{\unitlength}{1bp}%
   \ifthenelse{\equal{ifi}{\IfiF@dept}}
-<<<<<<< HEAD
     {\put(-21,-21){\includegraphics{ifikompendium/\IfiF@dept-\IfiF@background-forside-\IfiF@lang}}}
-=======
-    {\put(-21,-21){\includegraphics{\IfiF@dept-\IfiF@background-forside-\IfiF@lang}}}
->>>>>>> feef6f4d0ad49fff66c56eab6822ce6ef4483d5f
     {\put(0,0){%
         \parbox[b][\paperheight]{\paperwidth}{%
           \vfill
           \centering
-          \includegraphics{uio-\IfiF@background-forside}%
+          \includegraphics{ifikompendium/uio-\IfiF@background-forside}%
           \vfill}}}}}
 
 
@@ -111,19 +107,11 @@
     }
     %
     \fontfamily{\IfiF@font}
-<<<<<<< HEAD
     \fontsize{32}{35pt}\selectfont
     \@title
 
     \vskip 0pt plus 1fill
     \fontsize{17}{20pt}\selectfont
-=======
-    \fontsize{32}{35pt}\selectfont 
-    \@title
-
-    \vskip 0pt plus 1fill
-    \fontsize{17}{20pt}\selectfont 
->>>>>>> feef6f4d0ad49fff66c56eab6822ce6ef4483d5f
     \IfiF@subtitle
 
     \vskip 0pt plus 2fill\relax

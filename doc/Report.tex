@@ -26,24 +26,28 @@
   Key Lung Wong - keylw
 }
 \begin{document}
-\ififorside[kind={Oppgave Rapport}]
+\ififorside[kind={Report}]
 
 \newpage
 \tableofcontents
 \newpage
 \section{Introduction}
-\todo[inline]{\textbf{Skriv noe om hvordan reporten er satt sammen, slik at
-leser er forberedt på utformingen av rapporten. Hva raporten skal handle
-om osv} \\
-. \\
-. \\
-. \\
-. \\
-. \\
-. \\
-}
+\label{sec:Introduction}
+\noindent \\ This report is divided into 5 sections\todo{refrence and recognition
+should maybe be divided?}. In Section~\ref{sec:Introduction}, we introduce the
+Report and how the report is orgonized. Section~\ref{sec:Project description} is
+where we describe the project and where we present our initial thoughts and
+approach on how solve our problem. In Section~\ref{sec:Project review} we
+review our approach and present how we solved the problem, methods we used and
+changes which had to be performed. In Section~\ref{sec:Project conclusion} we
+present thoughts on the project and what could be done differently,
+difficulties that we faced and, a step by step tutorial on how to run our
+software. Section~\ref{sec:Recognition} includes third party material we have used.
 
+
+\newpage
 \section{Project description}
+\label{sec:Project description}
 \textbf{The purpose of the software is to recognise text from any
 surface with uneven lighting. Hence this falls under the ``Optical
 character recognition'' (OCR) problem}
@@ -59,6 +63,7 @@ significantly.
 \begin{itemize}
  \item{English alphabet + numbers [0-9]}
  \item{Homogeneous background}
+ \item{Skew free text}
  \item{Computer printed text}
 \end{itemize}
 
@@ -98,21 +103,37 @@ further under each component.
 
 \subsubsection{Text Segmentation}
 \noindent \\ \textbf{Description}
-\noindent \\ We where uncertain on how to do this part when we initial started the project. We ended up looking for alot of different ways to do this part. We ended up trying 3 different approaches with mix result.
+\noindent \\ We were uncertain on how to do this part when we initially started
+the project. We ended up looking for alot of different ways to do this part.
+We ended up trying 3 different approaches with mixed results.
 \begin{enumerate}
-  \item Simple image analysis technics, using Otsu tresholding and Morphologi.
-  \item OpenCv imprementation of Scene Text Detection.
+  \item Simple image analysis technics, using Otsu tresholdinging and Morphologi.
+  \item OpenCv implementation of Scene Text Detection.
   \item Stride Width Transform(SWT) to detect text in natural images.
 \end{enumerate}
 
 \noindent \\ \textbf{Approach 1: Simple Image Analysis Technics}
-\noindent \\ We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach where we only look at an image with text. The approach is then simply do an Otsu Tresholding and then morphological Closing to connect component. After thet we used OpenCv FindContours method to find the countour of the different text regions. FindContours in Opencv uses the algorithm proposed by Suzuki, S. and Abe, K. 1985\cite{suzuki_topological_????}.
+\noindent \\ We were inspired by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}.
+We simplified the original approach where we only look at an image with text.
+The approach is then, simply do an Otsu Tresholding and then morphological
+Closing to connect components. After that we used OpenCv FindContours method to
+find the countour of the different text regions. FindContours in Opencv uses
+the algorithm proposed by Suzuki, S. and Abe, K. 1985\cite{suzuki_topological_????}.
 
 \noindent \\ \textbf{Approach 2: OpenCv Scene Text Detection}
-\noindent \\ OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}.
+\noindent \\ OpenCV has its own Text Scene Detection. The approach of this
+algorithm is to detect text in scene using Classifier and Components Tree,
+propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}.
 
 \noindent \\ \textbf{Approach 3: Stroke Width Transform}
-\noindent \\ We also found Stroke Width Tranform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke lenght, evaluate if it is a text element or not. The concept was relativ simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implemtation later in.
+\noindent \\ We also found Stroke Width Tranform to do Text
+Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text
+detection, it looks for text in natural images. The approach of the Algorithm
+is to calculate the different stroke length of the different elements in the
+image. Based on the stroke lenght, evaluate if it is a text element or not.
+The concept was relatively simple to grasp. The implementation, in the other
+hand,\todo{instead of in the other hand use: though?} was quite difficult to
+implement. We will look at the full implemtation in Section~\ref{sec:Project review}.
 
 \subsubsection{Preprocessing}
 \noindent \\ \textbf{Description}
@@ -363,13 +384,16 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 
 
 \section{Project review}
+\label{sec:Project review}
 \subsection{Text segmentation}
 \subsection{Preprocessing}
 \subsection{Classification}
 
 \section{Project conclusion}
+\label{sec:Project conclusion}
 
 \section{Recognition}
+\label{sec:Recognition}
 
 
 
