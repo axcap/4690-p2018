@@ -39,20 +39,15 @@ def detect_text(image):
     cv2.waitKey(0)
     cv2.imwrite('detect_text.jpg', image)
 
-
 def main():
-    import my_swt as swt
 
-    IMAGE_PATH = '../../res/images/'
-    image_filename = 'text_skew.png'
+    IMAGE_PATH = '../../../res/images/'
+    image_filename = 'lorem.png'
 
     image = cv2.imread(IMAGE_PATH+image_filename)
 
 
     detect_text(image)
-
-
-
 
 
 if __name__ == '__main__':
