@@ -6,8 +6,7 @@
 *.fls
 *.log
 *.out
-*.pdf
 *.run.xml
 *.synctex.gz
-*.tex
 *.toc
+build/

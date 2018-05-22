@@ -5,5 +5,4 @@
 *.snm
 *.toc
 *.pyc
-*.DS_store
-/res/datasets/EMNIST_ByMerge
+*.DS_Store
