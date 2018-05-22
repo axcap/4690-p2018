@@ -11,6 +11,9 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 from tensorflow.examples.tutorials.mnist import input_data
 from pathlib import Path
 
+import sys
+sys.path.append('src')
+
 import matplotlib.pyplot as plt
 import pygame.freetype
 import utils as utils
@@ -19,7 +22,6 @@ import struct
 import pygame
 import time
 import gzip
-import sys
 import cv2
 import os
 
@@ -35,11 +37,11 @@ def write_data_to_set(fd_train, fd_test, n, images, labels):
 dataset_path = "res/datasets/FNIST/"
 
 #fontpath = "res/fonts/"
-fontpath = "/uio/hume/student-u11/akhsarbg/Downloads/homo/all/"
+fontpath = "/run/media/akhsarbg/47E8-126A/homo/all/"
 #fontpath = None # use system default
 
 # Which digits/lettes to export from each font
-alphabeth = "0123456789"
+alphabeth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 # Number of entries in dataset
 alphabeth_lenth = len(alphabeth)
@@ -149,45 +151,13 @@ for i, fontname in enumerate(os.listdir(fontpath)):
           continue
 
         img = np.transpose(img)*255
-        print(img)
-        #utils.imshow("Img", img)
 
-        y_scale = 20/img.shape[0]
-        x_scale = 20/img.shape[1]
-        img = cv2.resize(img, (0,0), fx=x_scale, fy=y_scale)
-        print(img)
-        #utils.imshow("Resize", img)
+        img = utils.img2data(img)
+        label = utils.char2class(alphabeth[index])
 
-        new = np.zeros((28, 28), dtype = np.uint8)
-        center = np.array(img.shape)//2
-        print(center)
-        n_center = np.array(new.shape)//2
-        coord = n_center - center
-        print(coord)
-        new[coord[0]:coord[0]+img.shape[0], coord[1]:coord[1]+img.shape[1]] = img
-        print(new)
-
-        img = new
-        '''
-        # Like MNIST
-        if img.shape[1] > 28:
-          print(img.shape)
-          scale = 28/img.shape[1]
-          img = cv2.resize(img, (0,0), fx=scale, fy=scale)
-
-        shape = np.array(img.shape)
-        print(shape)
-        pad =  (28-shape[0])//2 + (28-shape[0])%2
-        pad1 = (28-shape[1])//2 + (28-shape[1])%2
-        print(pad, pad1)
-        img = np.pad(img, ((4, 4), (pad, pad1)), 'constant', constant_values=0)
-        #utils.imshow("Padded", img)
-        print(img)
-        print(img.shape)
-        '''
         if ((i*alphabeth_lenth + index) % div) == 0:
           test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
-          test_labels_buffer[test_idx] = alphabeth[index]
+          test_labels_buffer[test_idx] = label
           test_idx += 1
           if test_idx == chars_in_buff:
             write_data_to_set(test_img, test_lbl, test_idx,
@@ -197,7 +167,7 @@ for i, fontname in enumerate(os.listdir(fontpath)):
             test_idx = 0
         else:
           train_images_buffer[(train_idx*28*28):(train_idx+1)*28*28] = img.reshape(-1)
-          train_labels_buffer[train_idx] = alphabeth[index]
+          train_labels_buffer[train_idx] = label
           train_idx += 1
 
           if train_idx == chars_in_buff:

@@ -1,3 +1,6 @@
+import cv2
+
+
 import tensorflow as tf
 old_v = tf.logging.get_verbosity()
 tf.logging.set_verbosity(tf.logging.ERROR)
@@ -20,16 +23,17 @@ dataset = input_data.read_data_sets(path)
 
 collection = np.where(dataset.train.labels == digit)[0]
 
-num = 8
+num = 2
 idx = 0
 while True:
   fig = plt.figure()
   for y in range(num):
     for x in range(num):
       img = dataset.train.images[collection[idx]]
-      img = (np.reshape(img, (28,28))*255).astype(int)
+      img = np.reshape(img, (28,28))
       ax = fig.add_subplot(num,num, y*num+x +1)
       print(img, "\n")
+      print(np.sum(img))
       #ax.imshow(img, cmap='gray')
       ax.imshow(img)
       idx += 1
