@@ -38,7 +38,6 @@ def highlightSegments(img, segments):
 
   return temp
 
-
 def main():
     IMAGE_PATH = '../res/images/'
     image_filename = 'numbers.png'
@@ -46,6 +45,7 @@ def main():
 
     rect = segmentText(image)
     show_img = highlightSegments(image,rect)
+
     cv2.imshow("Image segment", show_img) 
     cv2.waitKey()
     cv2.destroyAllWindows()
