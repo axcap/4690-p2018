@@ -9,7 +9,7 @@ def segmentText(img):
   kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
   grad = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 50))
   connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)
   # using RETR_EXTERNAL instead of RETR_CCOMP
   im2, contours, hierarchy = cv2.findContours(connected.copy(),
