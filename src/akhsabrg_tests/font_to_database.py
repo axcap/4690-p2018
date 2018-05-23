@@ -90,8 +90,10 @@ tot_images = n_images
 n_images   = 0
 div        = 6 # every 6th image goes to test collection
 n_test     = tot_images // div
-n_train    = tot_images - n_test
+n_train    = tot_images - n_test - 1
 
+print("Total: ", n_train)
+print("Total: ", n_test)
 # Create output files needed for database load by MNIST interface
 train_img = gzip.open(dataset_path + "train-images-idx3-ubyte.gz", 'wb')
 train_lbl = gzip.open(dataset_path + "train-labels-idx1-ubyte.gz", 'wb')
@@ -137,7 +139,7 @@ kernel = np.array([[0, 1, 0],
 
 # For each font in fontpath
 for i, fontname in enumerate(os.listdir(fontpath)):
-    print("%d/%d - %s" % (i, n_fonts, fontname))
+    print("%d/%d - %s" % (i+1, n_fonts, fontname))
     font = pygame.freetype.Font(fontpath+fontname, 60)
     font.antialiased = False
 
@@ -150,10 +152,13 @@ for i, fontname in enumerate(os.listdir(fontpath)):
         if img.size == 0:
           continue
 
-        img = np.transpose(img)*255
+        img = img*255
 
         img = utils.img2data(img)
         label = utils.char2class(alphabeth[index])
+        if label > 47:
+            print(label)
+            utils.imshow("Over", img)
 
         if ((i*alphabeth_lenth + index) % div) == 0:
           test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
@@ -199,7 +204,7 @@ test_img.close()
 test_lbl.close()
 
 # Test in MNIST interface can load our dataset
-dataset = input_data.read_data_sets("res/datasets/FNIST/")
+dataset = input_data.read_data_sets(dataset_path, validation_size=0)
 
 # Print some public variables
 print(dataset.train.num_examples)
@@ -213,7 +218,7 @@ while True:
         for x in range(4):
             rnd = np.random.randint(low=0, high=dataset.train.num_examples)
             img = np.reshape((dataset.train.images[rnd]).astype(int), (28,28))
-            lbl = dataset.train.labels[rnd]
+            lbl = utils.class2char(dataset.train.labels[rnd])
             ax = fig.add_subplot(4,4, y*4+x  +1)
             ax.set_ylabel(str(lbl))
             ax.imshow(img, cmap='gray')

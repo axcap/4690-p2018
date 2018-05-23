@@ -357,7 +357,7 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 
 \newpage
 \section{Project review}
-\label{sec:Project_review}
+\label{sec:Project review}
 
 \subsection{Text segmentation}
 As mention in section \ref{Component_Descripton:Text_segmentation} we tried 3 approach on Text Segmentation. We ended with our first approach since it was both simplest and gave most preferred result. We started simple with approach one, the result gave us confident to try out different approaches. We came across STW(Stroke Width Transform. It looks interesting and at the same time want to look at the possibility to detect text in natural images. We was finish some parts of the algorithm, but was not able to finish. The of the reason is because we instead focus on other parts of the project, also we realize that OpenCv have its own Text Detection.
@@ -401,11 +401,60 @@ We ended up using the simplest approach, it is both easy to implement and faster
 
 \subsection{Preprocessing}
 \subsubsection{Find rotation}
+Images are not necessary rotated so that the text is vertical, and rotated
+correctly up side down. What we need to do is to find the rotation of the text
+and rotate it accordingly to be able to find lines and symbols with our
+``line and symbol finder approach''. Bellow a review of our approaches follows.
+
+\noindent \\ \textbf{Appraoch 1: Hough Transform}
+\noindent \\ \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a well known algorithm to find lines, its
+approach is to see if it can alligne some threshold of pixels on one straight
+line. \par
+We tried this approach, however we would end up with several lines on a text
+segment, both along the vertical and horizontal direction of the text. However
+the lines were not restricted to just these directions, we sometimes got lines
+where there where no apperant reason for it to be. Because of these
+uncertainties we tried another approach, minAreaRect method from OpenCV, see
+below.
+
+\noindent \\ \textbf{Appraoch 2: OpenCV minAreaRect()}
+\noindent \\ This approach is completly diffrent from the Hough Transform.
+Whereas Hough Transform tries to find lines, this approach uses
+\href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} to find the
+convex hull of the text segments, and then
+\href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
+find the minimum Area rectangle. \par
+One important note here is that this method only works if the images sent as
+input is binary. Because we want the convex hull algorithm to find the convex
+hull of the text segment. \par
+This method is really good at finding the angles, however it does not solve the
+problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
+this problem. It will only allow us to rotate it along one of the text
+segments edges. To rotate the text correctly from the result of cv.minAreaRect
+we used an original approach, see bellow ``CNN - find correct rotation''.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=4cm]{res/4angle_rot.png}
+  \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
+  \label{fig:4angle_rot}
+\end{figure}
+
+
+\noindent \\ \textbf{Appraoch 3: CNN - find correct rotation}
+\noindent \\
+
+
+
+
+
+
 \subsubsection{Find line}
 \subsubsection{Find Symbol}
 \subsubsection{Dataset matching}
 
 \subsection{Classification}
+
 \subsubsection{MLP}
 \subsubsection{CNN}
 \subsubsection{Dataset}

@@ -1,4 +1,6 @@
-import cv2
+import sys
+sys.path.append('src')
+import utils as utils
 
 
 import tensorflow as tf
@@ -18,13 +20,18 @@ if(len(sys.argv) < 2):
     exit(1)
 
 path  = sys.argv[1]
-digit = int(sys.argv[2])
-dataset = input_data.read_data_sets(path)
+digit = utils.char2class(sys.argv[2])
+dataset = input_data.read_data_sets(path, validation_size=0)
+
+img = np.reshape(dataset.train.images[0], (28,28))
+print(img)
+print(dataset.train.labels[0])
 
 collection = np.where(dataset.train.labels == digit)[0]
-
-num = 2
+num = 4
 idx = 0
+
+print("Showing class: ", digit)
 while True:
   fig = plt.figure()
   for y in range(num):
@@ -32,8 +39,6 @@ while True:
       img = dataset.train.images[collection[idx]]
       img = np.reshape(img, (28,28))
       ax = fig.add_subplot(num,num, y*num+x +1)
-      print(img, "\n")
-      print(np.sum(img))
       #ax.imshow(img, cmap='gray')
       ax.imshow(img)
       idx += 1
