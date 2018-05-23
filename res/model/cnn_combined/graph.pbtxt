@@ -1,46 +1,5 @@
 node {
-  name: "global_step/Initializer/zeros/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@global_step"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "global_step/Initializer/zeros/Const"
+  name: "global_step/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
@@ -74,41 +33,6 @@ node {
         }
         int64_val: 0
       }
-    }
-  }
-}
-node {
-  name: "global_step/Initializer/zeros"
-  op: "Fill"
-  input: "global_step/Initializer/zeros/shape_as_tensor"
-  input: "global_step/Initializer/zeros/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT64
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@global_step"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "index_type"
-    value {
-      type: DT_INT32
     }
   }
 }
@@ -992,7 +916,7 @@ node {
         dtype: DT_INT32
         tensor_shape {
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -1009,12 +933,12 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 784
@@ -1022,7 +946,7 @@ node {
         }
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -1104,7 +1028,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -1573,98 +1497,8 @@ node {
   }
 }
 node {
-  name: "conv2d/bias/Initializer/zeros/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 32
-      }
-    }
-  }
-}
-node {
-  name: "conv2d/bias/Initializer/zeros/Const"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
   name: "conv2d/bias/Initializer/zeros"
-  op: "Fill"
-  input: "conv2d/bias/Initializer/zeros/shape_as_tensor"
-  input: "conv2d/bias/Initializer/zeros/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
+  op: "Const"
   attr {
     key: "_class"
     value {
@@ -1686,9 +1520,23 @@ node {
     }
   }
   attr {
-    key: "index_type"
+    key: "dtype"
     value {
-      type: DT_INT32
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 32
+          }
+        }
+        float_val: 0.0
+      }
     }
   }
 }
@@ -1872,7 +1720,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -1945,7 +1793,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -1983,7 +1831,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -2015,7 +1863,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -2518,98 +2366,8 @@ node {
   }
 }
 node {
-  name: "conv2d_1/bias/Initializer/zeros/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d_1/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 64
-      }
-    }
-  }
-}
-node {
-  name: "conv2d_1/bias/Initializer/zeros/Const"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d_1/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
   name: "conv2d_1/bias/Initializer/zeros"
-  op: "Fill"
-  input: "conv2d_1/bias/Initializer/zeros/shape_as_tensor"
-  input: "conv2d_1/bias/Initializer/zeros/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
+  op: "Const"
   attr {
     key: "_class"
     value {
@@ -2631,9 +2389,23 @@ node {
     }
   }
   attr {
-    key: "index_type"
+    key: "dtype"
     value {
-      type: DT_INT32
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 64
+          }
+        }
+        float_val: 0.0
+      }
     }
   }
 }
@@ -2817,7 +2589,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -2890,7 +2662,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -2928,7 +2700,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -2960,7 +2732,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -3463,98 +3235,8 @@ node {
   }
 }
 node {
-  name: "conv2d_2/bias/Initializer/zeros/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d_2/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 64
-      }
-    }
-  }
-}
-node {
-  name: "conv2d_2/bias/Initializer/zeros/Const"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@conv2d_2/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
   name: "conv2d_2/bias/Initializer/zeros"
-  op: "Fill"
-  input: "conv2d_2/bias/Initializer/zeros/shape_as_tensor"
-  input: "conv2d_2/bias/Initializer/zeros/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
+  op: "Const"
   attr {
     key: "_class"
     value {
@@ -3576,9 +3258,23 @@ node {
     }
   }
   attr {
-    key: "index_type"
+    key: "dtype"
     value {
-      type: DT_INT32
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 64
+          }
+        }
+        float_val: 0.0
+      }
     }
   }
 }
@@ -3762,7 +3458,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -3835,7 +3531,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -3873,7 +3569,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -3948,7 +3644,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 3136
@@ -4632,7 +4328,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4671,7 +4367,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4703,7 +4399,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4774,7 +4470,7 @@ node {
             size: 2
           }
         }
-        tensor_content: "2\000\000\000\000\004\000\000"
+        tensor_content: "d\000\000\000\000\004\000\000"
       }
     }
   }
@@ -4855,7 +4551,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4921,7 +4617,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4948,7 +4644,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -4975,7 +4671,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -5001,7 +4697,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -5028,7 +4724,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -5055,7 +4751,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -5476,98 +5172,8 @@ node {
   }
 }
 node {
-  name: "output/bias/Initializer/zeros/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@output/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 48
-      }
-    }
-  }
-}
-node {
-  name: "output/bias/Initializer/zeros/Const"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@output/bias"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
   name: "output/bias/Initializer/zeros"
-  op: "Fill"
-  input: "output/bias/Initializer/zeros/shape_as_tensor"
-  input: "output/bias/Initializer/zeros/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
+  op: "Const"
   attr {
     key: "_class"
     value {
@@ -5589,9 +5195,23 @@ node {
     }
   }
   attr {
-    key: "index_type"
+    key: "dtype"
     value {
-      type: DT_INT32
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 48
+          }
+        }
+        float_val: 0.0
+      }
     }
   }
 }
@@ -5739,7 +5359,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -5778,7 +5398,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -5847,7 +5467,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -5876,7 +5496,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -5947,7 +5567,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -5975,12 +5595,12 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -6084,7 +5704,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -6141,7 +5761,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -6271,41 +5891,7 @@ node {
   }
 }
 node {
-  name: "sparse_softmax_cross_entropy_loss/num_present/zeros_like/shape_as_tensor"
-  op: "Const"
-  input: "^sparse_softmax_cross_entropy_loss/assert_broadcastable/static_scalar_check_success"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "sparse_softmax_cross_entropy_loss/num_present/zeros_like/Const"
+  name: "sparse_softmax_cross_entropy_loss/num_present/zeros_like"
   op: "Const"
   input: "^sparse_softmax_cross_entropy_loss/assert_broadcastable/static_scalar_check_success"
   attr {
@@ -6332,33 +5918,6 @@ node {
         }
         float_val: 0.0
       }
-    }
-  }
-}
-node {
-  name: "sparse_softmax_cross_entropy_loss/num_present/zeros_like"
-  op: "Fill"
-  input: "sparse_softmax_cross_entropy_loss/num_present/zeros_like/shape_as_tensor"
-  input: "sparse_softmax_cross_entropy_loss/num_present/zeros_like/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "index_type"
-    value {
-      type: DT_INT32
     }
   }
 }
@@ -6573,7 +6132,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -6647,7 +6206,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -6701,7 +6260,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -6731,7 +6290,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -7115,41 +6674,7 @@ node {
   }
 }
 node {
-  name: "sparse_softmax_cross_entropy_loss/zeros_like/shape_as_tensor"
-  op: "Const"
-  input: "^sparse_softmax_cross_entropy_loss/assert_broadcastable/static_scalar_check_success"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "sparse_softmax_cross_entropy_loss/zeros_like/Const"
+  name: "sparse_softmax_cross_entropy_loss/zeros_like"
   op: "Const"
   input: "^sparse_softmax_cross_entropy_loss/assert_broadcastable/static_scalar_check_success"
   attr {
@@ -7176,33 +6701,6 @@ node {
         }
         float_val: 0.0
       }
-    }
-  }
-}
-node {
-  name: "sparse_softmax_cross_entropy_loss/zeros_like"
-  op: "Fill"
-  input: "sparse_softmax_cross_entropy_loss/zeros_like/shape_as_tensor"
-  input: "sparse_softmax_cross_entropy_loss/zeros_like/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "index_type"
-    value {
-      type: DT_INT32
     }
   }
 }
@@ -7370,40 +6868,7 @@ node {
   }
 }
 node {
-  name: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like/shape_as_tensor"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like/Const"
+  name: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -7429,33 +6894,6 @@ node {
         }
         float_val: 0.0
       }
-    }
-  }
-}
-node {
-  name: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like"
-  op: "Fill"
-  input: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like/shape_as_tensor"
-  input: "gradients/sparse_softmax_cross_entropy_loss/value_grad/zeros_like/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "index_type"
-    value {
-      type: DT_INT32
     }
   }
 }
@@ -8169,7 +7607,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -8197,7 +7635,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -8235,7 +7673,7 @@ node {
             size: 1
           }
         }
-        int_val: 50
+        int_val: 100
       }
     }
   }
@@ -8319,7 +7757,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -8383,7 +7821,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -8407,7 +7845,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -8506,7 +7944,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
         }
       }
@@ -8558,7 +7996,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -8584,7 +8022,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -8653,7 +8091,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1
@@ -8680,7 +8118,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -8722,8 +8160,8 @@ node {
 node {
   name: "gradients/output/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/sparse_softmax_cross_entropy_loss/xentropy/xentropy_grad/mul"
   input: "^gradients/output/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/sparse_softmax_cross_entropy_loss/xentropy/xentropy_grad/mul"
 }
 node {
   name: "gradients/output/BiasAdd_grad/tuple/control_dependency"
@@ -8750,7 +8188,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 48
@@ -8809,7 +8247,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -8901,7 +8339,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -8963,7 +8401,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -8990,7 +8428,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9031,7 +8469,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9066,7 +8504,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9107,7 +8545,7 @@ node {
             size: 2
           }
         }
-        tensor_content: "2\000\000\000\000\004\000\000"
+        tensor_content: "d\000\000\000\000\004\000\000"
       }
     }
   }
@@ -9191,7 +8629,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9258,7 +8696,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9284,7 +8722,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9311,7 +8749,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9338,7 +8776,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9365,7 +8803,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9467,7 +8905,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9523,7 +8961,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9565,8 +9003,8 @@ node {
 node {
   name: "gradients/dense/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/dense/Relu_grad/ReluGrad"
   input: "^gradients/dense/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/dense/Relu_grad/ReluGrad"
 }
 node {
   name: "gradients/dense/BiasAdd_grad/tuple/control_dependency"
@@ -9593,7 +9031,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 1024
@@ -9652,7 +9090,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 3136
@@ -9744,7 +9182,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 3136
@@ -9820,7 +9258,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "2\000\000\000\007\000\000\000\007\000\000\000@\000\000\000"
+        tensor_content: "d\000\000\000\007\000\000\000\007\000\000\000@\000\000\000"
       }
     }
   }
@@ -9848,7 +9286,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -9881,7 +9319,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -9929,8 +9367,8 @@ node {
 node {
   name: "gradients/conv2d_2/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_2/Relu_grad/ReluGrad"
   input: "^gradients/conv2d_2/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv2d_2/Relu_grad/ReluGrad"
 }
 node {
   name: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency"
@@ -9957,7 +9395,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -10077,7 +9515,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "2\000\000\000\007\000\000\000\007\000\000\000@\000\000\000"
+        tensor_content: "d\000\000\000\007\000\000\000\007\000\000\000@\000\000\000"
       }
     }
   }
@@ -10136,7 +9574,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -10269,8 +9707,8 @@ node {
 node {
   name: "gradients/conv2d_2/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
   input: "^gradients/conv2d_2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "gradients/conv2d_2/Conv2D_grad/tuple/control_dependency"
@@ -10297,7 +9735,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 7
@@ -10372,7 +9810,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -10439,7 +9877,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -10487,8 +9925,8 @@ node {
 node {
   name: "gradients/conv2d_1/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_1/Relu_grad/ReluGrad"
   input: "^gradients/conv2d_1/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv2d_1/Relu_grad/ReluGrad"
 }
 node {
   name: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency"
@@ -10515,7 +9953,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -10635,7 +10073,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "2\000\000\000\016\000\000\000\016\000\000\000 \000\000\000"
+        tensor_content: "d\000\000\000\016\000\000\000\016\000\000\000 \000\000\000"
       }
     }
   }
@@ -10694,7 +10132,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -10827,8 +10265,8 @@ node {
 node {
   name: "gradients/conv2d_1/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
   input: "^gradients/conv2d_1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "gradients/conv2d_1/Conv2D_grad/tuple/control_dependency"
@@ -10855,7 +10293,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 14
@@ -10930,7 +10368,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -10997,7 +10435,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -11045,8 +10483,8 @@ node {
 node {
   name: "gradients/conv2d/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d/Relu_grad/ReluGrad"
   input: "^gradients/conv2d/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv2d/Relu_grad/ReluGrad"
 }
 node {
   name: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency"
@@ -11073,7 +10511,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -11193,7 +10631,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "2\000\000\000\034\000\000\000\034\000\000\000\001\000\000\000"
+        tensor_content: "d\000\000\000\034\000\000\000\034\000\000\000\001\000\000\000"
       }
     }
   }
@@ -11252,7 +10690,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -11385,8 +10823,8 @@ node {
 node {
   name: "gradients/conv2d/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
   input: "^gradients/conv2d/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "gradients/conv2d/Conv2D_grad/tuple/control_dependency"
@@ -11413,7 +10851,7 @@ node {
       list {
         shape {
           dim {
-            size: 50
+            size: 100
           }
           dim {
             size: 28
@@ -11926,16 +11364,16 @@ node {
 node {
   name: "GradientDescent/update"
   op: "NoOp"
-  input: "^GradientDescent/update_conv2d/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_conv2d/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_1/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2d/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_conv2d_1/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_2/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2d_1/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_conv2d_2/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_dense/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2d_2/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_dense/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_output/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_dense/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_output/bias/ApplyGradientDescent"
+  input: "^GradientDescent/update_output/kernel/ApplyGradientDescent"
 }
 node {
   name: "GradientDescent/value"
@@ -12014,17 +11452,17 @@ node {
 node {
   name: "init"
   op: "NoOp"
-  input: "^global_step/Assign"
-  input: "^conv2d/kernel/Assign"
   input: "^conv2d/bias/Assign"
-  input: "^conv2d_1/kernel/Assign"
+  input: "^conv2d/kernel/Assign"
   input: "^conv2d_1/bias/Assign"
-  input: "^conv2d_2/kernel/Assign"
+  input: "^conv2d_1/kernel/Assign"
   input: "^conv2d_2/bias/Assign"
-  input: "^dense/kernel/Assign"
+  input: "^conv2d_2/kernel/Assign"
   input: "^dense/bias/Assign"
-  input: "^output/kernel/Assign"
+  input: "^dense/kernel/Assign"
+  input: "^global_step/Assign"
   input: "^output/bias/Assign"
+  input: "^output/kernel/Assign"
 }
 node {
   name: "init_1"
@@ -13422,11 +12860,49 @@ node {
   }
 }
 node {
-  name: "report_uninitialized_variables/boolean_mask/Gather"
-  op: "Gather"
+  name: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
+  op: "Const"
+  device: "/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "report_uninitialized_variables/boolean_mask/GatherV2"
+  op: "GatherV2"
   input: "report_uninitialized_variables/boolean_mask/Reshape"
   input: "report_uninitialized_variables/boolean_mask/Squeeze"
+  input: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
   device: "/device:CPU:0"
+  attr {
+    key: "Taxis"
+    value {
+      type: DT_INT32
+    }
+  }
   attr {
     key: "Tindices"
     value {
@@ -13449,12 +12925,6 @@ node {
           }
         }
       }
-    }
-  }
-  attr {
-    key: "validate_indices"
-    value {
-      b: true
     }
   }
 }
@@ -13525,7 +12995,7 @@ node {
 node {
   name: "concat"
   op: "ConcatV2"
-  input: "report_uninitialized_variables/boolean_mask/Gather"
+  input: "report_uninitialized_variables/boolean_mask/GatherV2"
   input: "report_uninitialized_resources/Const"
   input: "concat/axis"
   attr {
@@ -14945,11 +14415,49 @@ node {
   }
 }
 node {
-  name: "report_uninitialized_variables_1/boolean_mask/Gather"
-  op: "Gather"
+  name: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
+  op: "Const"
+  device: "/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "report_uninitialized_variables_1/boolean_mask/GatherV2"
+  op: "GatherV2"
   input: "report_uninitialized_variables_1/boolean_mask/Reshape"
   input: "report_uninitialized_variables_1/boolean_mask/Squeeze"
+  input: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
   device: "/device:CPU:0"
+  attr {
+    key: "Taxis"
+    value {
+      type: DT_INT32
+    }
+  }
   attr {
     key: "Tindices"
     value {
@@ -14974,12 +14482,6 @@ node {
       }
     }
   }
-  attr {
-    key: "validate_indices"
-    value {
-      b: true
-    }
-  }
 }
 node {
   name: "init_2"
@@ -14997,8 +14499,8 @@ node {
   name: "group_deps_1"
   op: "NoOp"
   input: "^init_2"
-  input: "^init_all_tables"
   input: "^init_3"
+  input: "^init_all_tables"
 }
 node {
   name: "Merge/MergeSummary"
@@ -15076,7 +14578,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_4df005e777a64da59cc07ce175aa50c8/part"
+        string_val: "_temp_3b6f9cda8930480aa93671e6a9fbd04b/part"
       }
     }
   }
@@ -15401,8 +14903,8 @@ node {
   name: "save/Identity"
   op: "Identity"
   input: "save/Const"
-  input: "^save/control_dependency"
   input: "^save/MergeV2Checkpoints"
+  input: "^save/control_dependency"
   device: "/device:CPU:0"
   attr {
     key: "T"
@@ -16099,6 +15601,7 @@ node {
   op: "NoOp"
   input: "^save/Assign"
   input: "^save/Assign_1"
+  input: "^save/Assign_10"
   input: "^save/Assign_2"
   input: "^save/Assign_3"
   input: "^save/Assign_4"
@@ -16107,7 +15610,6 @@ node {
   input: "^save/Assign_7"
   input: "^save/Assign_8"
   input: "^save/Assign_9"
-  input: "^save/Assign_10"
 }
 node {
   name: "save/restore_all"

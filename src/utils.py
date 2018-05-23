@@ -7,7 +7,7 @@ mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
 
 
 def imageParser():
-    path = "res/images/ReceiptSwiss.jpg"
+    path = "res/images/sans.png"
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 

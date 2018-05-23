@@ -1,9 +1,11 @@
 import classifier as classifier
 import segment as segment
+import timeit, functools
 import utils as utils
 import numpy as np
 import time
 import cv2
+import sys
 
 np.set_printoptions(linewidth=150)
 np.set_printoptions(edgeitems=150)
@@ -16,56 +18,53 @@ def extractText(image):
     lines = utils.segment_lines(seg, linesHist)
     for i, l in enumerate(lines):
         single_line = image[l[0]:l[1], 0:x]
-        utils.imshow("Line", single_line)
         #symbolHist = utils.find_symbol(single_line)
         #symbols    = utils.segment_symbols(seg, symbolHist)
 
-        symbols = segment.segmentLetters(cv2.bitwise_not(single_line))
+        symbols = segment.segmentLetters(single_line)
         symbols = np.array(symbols)
         symbols = symbols[symbols[:,0].argsort()]
 
         single_line = image[l[0]:l[1], 0:x]
-        utils.imshow("Highlight", segment.highlightSegments(cv2.bitwise_not(single_line), symbols))
+        #segment.highlightSegments("Highlight", single_line, symbols)
+
         # Find average space between chars
         summ = 0
-        '''
         for i in range(len(symbols)-1):
             current = symbols[i]
             nexxt = symbols[i+1]
-            summ += nexxt[0] - current[1]
+            summ += nexxt[0] - (current[0]+current[2])
         summ /= len(symbols)-1
         summ += 1
-        '''
-
+        print(summ)
+        
         start = time.time()
         line_out = ""
         for idx, s in enumerate(symbols):
-            print(s)
             img = utils.extractContour(single_line, s)
-            utils.imshow("IMG", img)
 
             img_linesHist = utils.find_lines(img)
             img_lines = utils.segment_lines(img, img_linesHist)
             img = img[img_lines[0][0]:img_lines[-1][1],:]
             img = utils.img2data(img)
-
-            utils.imshow("IMG", img)
-            continue
-
-            digit = nn.forward(img)
-
+            
+            digit = nn.forward(np.transpose(img)) # takes 0.3 per run
 
             line_out += digit.lower()
             # If space between chars > agerage insert 'space char'
-            if idx+1 < len(symbols) and symbols[idx+1][0]-symbols[idx][1] > summ:
-                line_out += ""
+            if idx+1 < len(symbols) and symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2]) > summ:
+                line_out += " "
 
-        print(line_out)
+            print(".", end="")
+            sys.stdout.flush()
 
+        
         end = time.time()
-
         text_out += line_out +  "\n"
-        print("Time: ", (end - start))
+        print("Time: ", (end - start)/len(symbols))
+        print(line_out)
+        #utils.imshow("Line", single_line)
+
     print(text_out)
 
 
@@ -82,7 +81,7 @@ if __name__ == "__main__":
     #binary = gray
     #utils.imshow("Binary", binary)
     contours = segment.segmentText(binary)
-    utils.imshow("Contours", segment.highlightSegments(img, contours))
+    segment.highlightSegments("Contour", img, contours)
 
     # Contours are presented from burron to top
     # Reverse with [::-1]

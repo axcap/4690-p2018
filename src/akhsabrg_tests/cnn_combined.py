@@ -41,7 +41,7 @@ def imshow(text, img):
     return input("<Hit Enter To Continue>")
 
 
-dataset_path = "res/datasets/SANS/"
+dataset_path = "res/datasets/EMNIST_ByMerge/"
 
 class COMBINED_CNN:
     def __init__(self, model_dir=None):
@@ -169,6 +169,7 @@ class COMBINED_CNN:
             x={"x": data},
             num_epochs=1,
             shuffle=False)
+
         predict_results = self.classifier.predict(input_fn=predict_input_fn)
         predicted_class = next(predict_results)['classes']
 
