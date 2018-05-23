@@ -32,10 +32,7 @@ def segmentText(img):
 
 def segmentsLetters(img):
   [M,N] = img.shape
-  print(M,N)
-  # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,100))
-  # erode_img = cv2.morphologyEx(img, cv2.MORPH_ERODE, kernel)
-
+  # invert since we are working black on white
   _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
 
   # tresh_img[0] = 0
@@ -46,9 +43,6 @@ def segmentsLetters(img):
   h, w = img.shape[:2]
   mask = np.zeros((h+2, w+2), np.uint8)
   cv2.floodFill(im_floodfill, mask, (0,0), 255)
-
-  # Floodfill from point (0, 0)
-  cv2.floodFill(im_floodfill, mask, (0,0), 255);\
   
   # Invert floodfilled image
   im_floodfill_inv = cv2.bitwise_not(im_floodfill)
@@ -56,13 +50,9 @@ def segmentsLetters(img):
   # Combine the two images to get the foreground.
   im_out = tresh_img | im_floodfill_inv
 
-  im2, contours, hierarchy = cv2.findContours(im_out.copy(),
+  _, contours, __ = cv2.findContours(im_out.copy(),
                                               cv2.RETR_EXTERNAL,
                                               cv2.CHAIN_APPROX_NONE)
-
-  cv2.imshow("Image segment", img) 
-  cv2.waitKey()
-  cv2.destroyAllWindows()
 
   return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
 
