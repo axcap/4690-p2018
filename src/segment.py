@@ -66,30 +66,32 @@ def highlightSegments(img, segments):
   return temp
 
 def main():
-    IMAGE_PATH = '../res/images/'
-    image_filename = 'ReceiptSwiss.jpg'
-    # image_filename = 'lorem.png'
-    # image_filename = 'doc.jpg'
+  SAVE_IMAGE_PATH = '../doc/res/'
+  IMAGE_PATH = '../res/images/'
+  image_filename = 'ReceiptSwiss.jpg'
+  # image_filename = 'lorem.png'
+  # image_filename = 'doc.jpg'
 
-    image = cv2.imread(IMAGE_PATH+image_filename,0)
+  image = cv2.imread(IMAGE_PATH+image_filename,0)
 
-    text_regions = segmentText(image)
-    text_regions = highlightSegments(image,text_regions)
+  text_regions = segmentText(image)
+  text_regions = highlightSegments(image,text_regions)
 
-    cv2.imshow("text_regions", text_regions)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", text_regions) 
 
-    image_filename = 'lorem.png'
-    image = cv2.imread(IMAGE_PATH+image_filename,0)
+  cv2.imshow("text_regions", text_regions)
+  cv2.waitKey()
+  cv2.destroyAllWindows()
 
-    rect = segmentsLetters(image)
-    show_img = highlightSegments(image,rect)
+  image_filename = 'lorem.png'
+  image = cv2.imread(IMAGE_PATH+image_filename,0)
 
-    cv2.imshow("Image segment", show_img) 
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+  rect = segmentsLetters(image)
+  show_img = highlightSegments(image,rect)
 
+  cv2.imshow("Image segment", show_img) 
+  cv2.waitKey()
+  cv2.destroyAllWindows()
 
 if __name__ == '__main__':
   main()
