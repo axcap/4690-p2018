@@ -30,7 +30,7 @@ def segmentText(img):
                                               cv2.CHAIN_APPROX_NONE)
   return findBoundingRect(img, contours)
 
-def segmentsLetters(img):
+def segmentLetters(img):
   [M,N] = img.shape
   # invert since we are working black on white
   _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
@@ -43,10 +43,10 @@ def segmentsLetters(img):
   h, w = img.shape[:2]
   mask = np.zeros((h+2, w+2), np.uint8)
   cv2.floodFill(im_floodfill, mask, (0,0), 255)
-  
+
   # Invert floodfilled image
   im_floodfill_inv = cv2.bitwise_not(im_floodfill)
-  
+
   # Combine the two images to get the foreground.
   im_out = tresh_img | im_floodfill_inv
 
@@ -61,7 +61,7 @@ def highlightSegments(img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = np.array(img)
   for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,255,0), 1, 8, 0)
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,0,0), 1, 8, 0)
 
   return temp
 
@@ -77,7 +77,7 @@ def main():
   text_regions = segmentText(image)
   text_regions = highlightSegments(image,text_regions)
 
-  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", text_regions) 
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", text_regions)
 
   cv2.imshow("text_regions", text_regions)
   cv2.waitKey()
@@ -89,7 +89,7 @@ def main():
   rect = segmentsLetters(image)
   show_img = highlightSegments(image,rect)
 
-  cv2.imshow("Image segment", show_img) 
+  cv2.imshow("Image segment", show_img)
   cv2.waitKey()
   cv2.destroyAllWindows()
 
