@@ -17,8 +17,8 @@ def find_angle(img):
     edges = cv2.Canny(img,50,150,apertureSize = 3)
 
     # Hough Trasnform
-    minLength = 50
-    lines = cv2.HoughLinesP(edges,1,np.pi/180,15,minLength)
+    minLength = 200
+    lines = cv2.HoughLinesP(edges,15,np.pi/180,1,minLength)
 
     # Find all angles of lines that appear in the img
     N = lines.shape[0]
@@ -62,7 +62,7 @@ def find_angle(img):
 
 
 if __name__ == "__main__":
-    file_path = 'res/images/numbers_60degree.png'
+    file_path = 'numbers_60degree.png'
     img = load_img(file_path)
     angle = np.rad2deg(find_angle(img))
     print(angle)
