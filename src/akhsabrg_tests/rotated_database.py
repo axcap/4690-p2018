@@ -1,9 +1,12 @@
 import tensorflow as tf
 
+import sys
+sys.path.append('src')
+
 from tensorflow.examples.tutorials.mnist import input_data
 from pathlib import Path
-import utils as utils
 
+import utils as utils
 import matplotlib.pyplot as plt
 import pygame.freetype
 import numpy as np
@@ -20,7 +23,7 @@ np.set_printoptions(edgeitems=9999999)
 
 #Path where dataset files will be saves
 #same path used by MNIST's input_data.read_data_sets(..)
-dataset_path = "res/datasets/ROTFNIST/"
+dataset_path = sys.argv[1] #"res/datasets/ROTFNIST/"
 
 fontpath = "res/fonts/"
 #fontpath = "/uio/hume/student-u11/akhsarbg/Downloads/homo/all/"
@@ -43,7 +46,6 @@ cols = 28
 bgcolor = None
 # White background
 fgcolor  = (255, 255,255)
-
 
 def write_data_to_set(fd_train, fd_test, n, images, labels):
   fd_train.write(struct.pack(str(n*28*28)+'B', *images))
@@ -119,13 +121,14 @@ for i, fontname in enumerate(os.listdir(fontpath)):
         text = font.render(alphabeth[index], fgcolor, bgcolor)[0]
         for angle in angles:
             rotated = pygame.transform.rotate(text, angle)
-            pygame.transform.scale(rotated, (cols, rows), dst)
-            img = pygame.surfarray.pixels2d(dst)
-            img[img == 1] = 255
+            img = pygame.surfarray.pixels2d(rotated)
+            if img.size == 0: continue
+            img *= 255
             img = np.transpose(img)
-            #utils.imshow("Img", img)
+            img = utils.img2data(img)
+            print(img)
 
-            if ((i + index + angle//90) % div) == 0:
+            if n_test > 0 and ((i + index + angle//90) % div) == 0:
               test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
               test_labels_buffer[test_idx] = angle//90
               test_idx += 1

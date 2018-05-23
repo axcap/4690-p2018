@@ -34,17 +34,22 @@ def write_data_to_set(fd_train, fd_test, n, images, labels):
 
 #Path where dataset files will be saves
 #same path used by MNIST's input_data.read_data_sets(..)
-dataset_path = "res/datasets/FNIST/"
+dataset_path = "res/datasets/SANS/"
 
-#fontpath = "res/fonts/"
-fontpath = "/run/media/akhsarbg/47E8-126A/homo/all/"
+if not os.path.exists(dataset_path):
+    os.makedirs(dataset_path)
+
+fontpath = "res/fonts/"
+#fontpath = "/run/media/akhsarbg/47E8-126A/homo/all/"
 #fontpath = None # use system default
 
 # Which digits/lettes to export from each font
+#alphabeth = "0123456789"
 alphabeth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 # Number of entries in dataset
 alphabeth_lenth = len(alphabeth)
+print("Alphabeth len: ", alphabeth_lenth)
 
 # Scaling font chars to match MNIST image resolution
 rows = 28
@@ -76,24 +81,25 @@ for fontname in os.listdir(fontpath):
         text = font.render(alphabeth[index], fgcolor, bgcolor)[0]
         img = pygame.surfarray.pixels2d(text)
         if img.size == 0:
-          continue
+            continue
         else:
           n_images += 1
 
 if n_images != tot_images:
-  print("Found incomplete font(s), continue? y/n: ", end="")
-  yn = input()
-  if(yn == "n" or yn == "no"):
-    exit()
+    print("Parsed %d / %d iamges" % (n_images, tot_images))
+    print("Found incomplete font(s), continue? y/n: ", end="")
+    yn = input()
+    if(yn == "n" or yn == "no"):
+        exit()
 
 tot_images = n_images
 n_images   = 0
 div        = 6 # every 6th image goes to test collection
 n_test     = tot_images // div
-n_train    = tot_images - n_test - 1
+n_train    = tot_images - n_test
 
 print("Total: ", n_train)
-print("Total: ", n_test)
+print("Train: ", n_train)
 # Create output files needed for database load by MNIST interface
 train_img = gzip.open(dataset_path + "train-images-idx3-ubyte.gz", 'wb')
 train_lbl = gzip.open(dataset_path + "train-labels-idx1-ubyte.gz", 'wb')
@@ -137,6 +143,7 @@ kernel = np.array([[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]], dtype=np.uint8)
 
+llls = np.zeros(47)
 # For each font in fontpath
 for i, fontname in enumerate(os.listdir(fontpath)):
     print("%d/%d - %s" % (i+1, n_fonts, fontname))
@@ -150,32 +157,34 @@ for i, fontname in enumerate(os.listdir(fontpath)):
         # pygames scale segfault on empty surface
         #pygame.transform.scale(char, (cols, rows), dst)
         if img.size == 0:
-          continue
+            continue
 
         img = img*255
-
         img = utils.img2data(img)
+
         label = utils.char2class(alphabeth[index])
+        llls[label] += 1
         if label > 47:
             print(label)
             utils.imshow("Over", img)
 
-        if ((i*alphabeth_lenth + index) % div) == 0:
-          test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
-          test_labels_buffer[test_idx] = label
-          test_idx += 1
-          if test_idx == chars_in_buff:
-            write_data_to_set(test_img, test_lbl, test_idx,
-                              test_images_buffer, test_labels_buffer)
-            test_images_buffer[:]=0
-            test_labels_buffer[:]=0
-            test_idx = 0
-        else:
-          train_images_buffer[(train_idx*28*28):(train_idx+1)*28*28] = img.reshape(-1)
-          train_labels_buffer[train_idx] = label
-          train_idx += 1
 
-          if train_idx == chars_in_buff:
+        if n_test > 0 and ((i*alphabeth_lenth + index) % div) == 0:
+            test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
+            test_labels_buffer[test_idx] = label
+            test_idx += 1
+            if test_idx == chars_in_buff:
+                write_data_to_set(test_img, test_lbl, test_idx,
+                                  test_images_buffer, test_labels_buffer)
+                test_images_buffer[:]=0
+                test_labels_buffer[:]=0
+                test_idx = 0
+        else:
+            train_images_buffer[(train_idx*28*28):(train_idx+1)*28*28] = img.reshape(-1)
+            train_labels_buffer[train_idx] = label
+            train_idx += 1
+
+        if train_idx == chars_in_buff:
             write_data_to_set(train_img, train_lbl, train_idx,
                               train_images_buffer, train_labels_buffer)
             train_images_buffer[:]=0
@@ -209,8 +218,12 @@ dataset = input_data.read_data_sets(dataset_path, validation_size=0)
 # Print some public variables
 print(dataset.train.num_examples)
 print(dataset.test.num_examples)
-print(np.reshape(dataset.train.images[-1], (28,28)))
-print(dataset.train.labels[-1]*255)
+print("%d - %d" % (min(dataset.test.labels), max(dataset.test.labels)))
+
+values = list(range(47))
+print(values)
+print(np.in1d(values, dataset.train.labels))
+print(llls)
 
 while True:
     fig = plt.figure()

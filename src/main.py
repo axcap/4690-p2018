@@ -27,6 +27,7 @@ def extractText(img):
             nexxt = symbols[i+1]
             summ += nexxt[0] - current[1]
         summ /= len(symbols)-1
+        summ += 1
 
         start = time.time()
         line_out = ""
@@ -38,6 +39,8 @@ def extractText(img):
             img = img[img_lines[0][0]:img_lines[-1][1],:]
             img = utils.img2data(img)
 
+            utils.imshow("IMG", img)
+            break
             digit = nn.forward(img)
 
 

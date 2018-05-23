@@ -1,5 +1,8 @@
 from tensorflow.examples.tutorials.mnist import input_data
 
+import sys
+sys.path.append('src')
+
 import matplotlib.pyplot as plt
 import utils as utils
 import numpy as np
@@ -22,8 +25,11 @@ def write_data_to_set(fd_train, fd_lbl, n, images, labels):
 
 #Path where dataset files will be saves
 #same path used by MNIST's input_data.read_data_sets(..)
-in_path   = "res/datasets/MNIST/"
-out_path = "res/datasets/ROTMNIST/"
+#in_path   = "res/datasets/MNIST/"
+#out_path  = "res/datasets/ROTMNIST/"
+
+in_path   = sys.argv[1]
+out_path  = sys.argv[2]
 
 # Rotate each char with this angles and save to dataset
 angles = [0, 90, 180, 270]
@@ -32,8 +38,8 @@ angles = [0, 90, 180, 270]
 rows = 28
 cols = 28
 
-if not os.path.exists(dataset_path):
-    os.makedirs(dataset_path)
+if not os.path.exists(out_path):
+    os.makedirs(out_path)
 
 in_dataset  = input_data.read_data_sets(in_path, validation_size=0)
 num_train   = in_dataset.train.num_examples
@@ -83,6 +89,7 @@ for i, img in enumerate(train_imgs):
     img = img.reshape((cols, rows))
     for angle in angles:
       rotated = utils.rotate2angle(img, angle)
+      rotated = utils.img2data(rotated)
       train_images_buffer[((i*4)+angle//90)*28*28:(((i*4+1)+angle//90)*28*28)] = np.ravel(rotated)
       train_labels_buffer[(i*4 + angle//90)] = angle//90
       total += 1
@@ -118,8 +125,8 @@ del test_images_buffer
 del test_labels_buffer
 
 
-# Test in MNIST interface can load our dataset
-dataset = input_data.read_data_sets(dataset_path)
+# Test if MNIST interface can load our dataset
+dataset = input_data.read_data_sets(out_path)
 # Print some public variables
 print("Testing")
 print(dataset.train.num_examples)

@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 mapping_path = "res/datasets/EMNIST_ByMerge/"
-mapping = np.loadtxt(mapping_path+"emnist-bymerge-mapping.txt", dtype=np.uint8)
+mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
 
 
 def imageParser():
@@ -30,9 +30,9 @@ def class2char(class_n):
     return chr(char)
 
 def char2class(char):
-    char_value = ord(char)
-    where = np.argwhere(mapping[:,1] == char_value)
-    #print(char, char_value, where)
+    where = np.argwhere(mapping[:,1] == ord(char))
+    if where.size == 0:
+        where = np.argwhere(mapping[:,1] == ord(char.upper()))
     class_n = mapping[where[0][0]][0]
     return class_n
 
