@@ -106,18 +106,19 @@ further under each component.
 \noindent \\ We where uncertain on how to do this part when we initial started the project. We ended up looking for a lot of different ways to do this part. We ended up trying 3 different approaches with mix result.
 \begin{enumerate}
   \item Simple image analysis technics, using Otsu thresholding and Morphology.
-  \item OpenCv implementation of Scene Text Detection.
   \item Stroke Width Transform(SWT) to detect text in natural images.
+  \item OpenCv implementation of Scene Text Detection.
 \end{enumerate}
 
 \noindent \\ \textbf{Approach 1: Simple Image Analysis Technics}
 \noindent \\ We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach where we only look at an image with text. The approach is then simply do an Otsu Thresholding and then morphological Closing to connect component. After that we used OpenCv FindContours method to find the contour of the different text regions. FindContours in OpenCv uses the algorithm proposed by Suzuki, S. and Abe, K. 1985\cite{suzuki_topological_????}.
 
-\noindent \\ \textbf{Approach 2: OpenCv Scene Text Detection}
+\noindent \\ \textbf{Approach 2: Stroke Width Transform}
+\noindent \\ We also found Stroke Width Transform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke length, evaluate if it is a text element or not. The concept was relative simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implementation later in.
+
+\noindent \\ \textbf{Approach 3: OpenCv Scene Text Detection}
 \noindent \\ OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}.
 
-\noindent \\ \textbf{Approach 3: Stroke Width Transform}
-\noindent \\ We also found Stroke Width Transform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke length, evaluate if it is a text element or not. The concept was relative simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implementation later in.
 
 \subsubsection{Preprocessing}
 \noindent \\ \textbf{Description}
@@ -393,11 +394,30 @@ The second approach we tried Stroke Width Transform to do Text Segmentation, it 
 \end{enumerate}
 
 \subsubsection{Approach 3: OpenCv Scene Text Detection}
-Since we decided to abandon Approach 2 and found out that OpenCv has a Scene Text Detection module, we though about testing it out. The Result was not ideal to us so we went back to approach 1 to optimize it more instead. 
+Since we decided to abandon Approach 2 and found out that OpenCv has a Scene Text Detection module, we though about testing it out. The problem was we found it out relative late and have a somewhat working Approach 1 already. Given that it did not give good initial result we decided to go back to approach 1, and optimize it more instead. 
 
 \subsubsection{Conclusion}
-We ended up using the simplest approach, it is both easy to implement and faster that the other approaches. For our purpose, simple text segmentations,  it gave us the best result as well. 
+We ended up using the simplest approach, it is both easy to implement and faster that the other approaches. For our purpose, simple text segmentations, it gave us the best result as well. Figure \ref{fig:Text_detection_approaches} show different result of the different approaches. 
 
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Text Segmentation with Approach 1 - Morphology and FindContour}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Text Segmentation with Approach 2}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{text}
+  \end{subfigure}
+  \caption{Text Segmentation with Approach 3}
+  \label{fig:Text_detection_approaches}
+\end{figure}
 
 \subsection{Preprocessing}
 \subsubsection{Find rotation}
@@ -450,7 +470,18 @@ we used an original approach, see bellow ``CNN - find correct rotation''.
 
 
 \subsubsection{Find line}
-\subsubsection{Find Symbol}
+\subsubsection{Find Symbol/Letter Segmentation}
+Letter segmentation was similar to Text Segmentation. we added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
+\begin{enumerate}
+  \item Do threshold.
+  \item Inverse the image since we work on black text on white background.
+  \item Fill any holes, cv2.floodFills
+  \item FindContours
+\end{enumerate}
+\subsubsection{Approach: find contour after Filled holes}
+
+
+
 \subsubsection{Dataset matching}
 
 \subsection{Classification}
