@@ -9,34 +9,48 @@ np.set_printoptions(linewidth=150)
 np.set_printoptions(edgeitems=150)
 
 
-def extractText(img):
-    y, x = img.shape
+def extractText(image):
+    y, x = image.shape
     text_out = ""
     linesHist = utils.find_lines(seg)
     lines = utils.segment_lines(seg, linesHist)
     for i, l in enumerate(lines):
-        single_line = seg[l[0]:l[1], 0:x]
-        symbolHist = utils.find_symbol(single_line)
-        symbols    = utils.segment_symbols(seg, symbolHist)
+        single_line = image[l[0]:l[1], 0:x]
         utils.imshow("Line", single_line)
+        #symbolHist = utils.find_symbol(single_line)
+        #symbols    = utils.segment_symbols(seg, symbolHist)
 
+        symbols = segment.segmentLetters(cv2.bitwise_not(single_line))
+        symbols = np.array(symbols)
+        symbols = symbols[symbols[:,0].argsort()]
+
+        single_line = image[l[0]:l[1], 0:x]
+        utils.imshow("Highlight", segment.highlightSegments(cv2.bitwise_not(single_line), symbols))
         # Find average space between chars
         summ = 0
+        '''
         for i in range(len(symbols)-1):
             current = symbols[i]
             nexxt = symbols[i+1]
             summ += nexxt[0] - current[1]
         summ /= len(symbols)-1
+        summ += 1
+        '''
 
         start = time.time()
         line_out = ""
         for idx, s in enumerate(symbols):
-            img = seg[l[0]:l[1], s[0]:s[1]]
+            print(s)
+            img = utils.extractContour(single_line, s)
+            utils.imshow("IMG", img)
 
             img_linesHist = utils.find_lines(img)
             img_lines = utils.segment_lines(img, img_linesHist)
             img = img[img_lines[0][0]:img_lines[-1][1],:]
             img = utils.img2data(img)
+
+            utils.imshow("IMG", img)
+            continue
 
             digit = nn.forward(img)
 
@@ -44,7 +58,7 @@ def extractText(img):
             line_out += digit.lower()
             # If space between chars > agerage insert 'space char'
             if idx+1 < len(symbols) and symbols[idx+1][0]-symbols[idx][1] > summ:
-                line_out += " "
+                line_out += ""
 
         print(line_out)
 

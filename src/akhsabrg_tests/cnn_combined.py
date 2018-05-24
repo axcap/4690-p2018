@@ -41,7 +41,7 @@ def imshow(text, img):
     return input("<Hit Enter To Continue>")
 
 
-dataset_path = "res/datasets/FNIST/"
+dataset_path = "res/datasets/SANS/"
 
 class COMBINED_CNN:
     def __init__(self, model_dir=None):
@@ -222,7 +222,7 @@ class COMBINED_CNN:
 if __name__ == "__main__":
 
     # Load training and eval data
-    emnist = input_data.read_data_sets(dataset_path)
+    emnist = input_data.read_data_sets(dataset_path, validation_size=0)
     eval_data    = emnist.test.images  # Returns np.array
     eval_labels  = np.asarray(emnist.test.labels, dtype=np.int32)
 
