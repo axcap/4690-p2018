@@ -56,6 +56,27 @@ def segmentsLetters(img):
 
   return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
 
+def segmentPaper(img):
+  """ 
+  we assume the paper is white and s the larges component in the image
+  """
+  _, bw = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+  bw = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
+
+  output = cv2.connectedComponentsWithStats(bw, 4, cv2.CV_32S)
+  stats = output[2]
+  areas = stats[1:,cv2.CC_STAT_AREA]
+  heights = stats[1:,cv2.CC_STAT_HEIGHT]
+  widhts = stats[1:,cv2.CC_STAT_WIDTH]
+
+  i = np.argmax(areas)
+  x = stats[i+1, cv2.CC_STAT_LEFT]
+  y = stats[i+1, cv2.CC_STAT_TOP]
+  w = stats[i+1, cv2.CC_STAT_WIDTH]
+  h = stats[i+1, cv2.CC_STAT_HEIGHT]
+
+  return img[y:y+h, x:x+w] 
 
 def highlightSegments(img, segments):
   # Copy input array as cv2 drawing function work inplace
@@ -74,8 +95,9 @@ def main():
 
   image = cv2.imread(IMAGE_PATH+image_filename,0)
 
-  text_regions = segmentText(image)
-  text_regions = highlightSegments(image,text_regions)
+  paper_region = segmentPaper(image)
+  text_regions = segmentText(paper_region)
+  text_regions = highlightSegments(paper_region,text_regions)
 
   cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", text_regions) 
 
