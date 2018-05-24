@@ -31,44 +31,31 @@
 \newpage
 \tableofcontents
 \newpage
+
 \section{Introduction}
-\label{sec:Introduction}
-\noindent \\ This report is divided into 5 sections\todo{refrence and recognition
-should maybe be divided?}. In Section~\ref{sec:Introduction}, we introduce the
-Report and how the report is organized. Section~\ref{sec:Project description} is
-where we describe the project and where we present our initial thoughts and
-approach on how solve our problem. In Section~\ref{sec:Project review} we
-review our approach and present how we solved the problem, methods we used and
-changes which had to be performed. In Section~\ref{sec:Project conclusion} we
-present thoughts on the project and what could be done differently,
-difficulties that we faced and, a step by step tutorial on how to run our
-software. Section~\ref{sec:Recognition} includes third party material we have used.
+\subsection{Project Description}
+\textbf{The purpose of the software is to recognize text from image, and
+be able to do string manipulation on it. Hence this falls under the
+``Optical character recognition'' (OCR) problem}
 
-
-\newpage
-
-\section{Project description}
-\label{sec:Project description}
-\textbf{The purpose of the software is to recognize text from any
-surface with uneven lighting. Hence this falls under the ``Optical
-character recognition'' (OCR) problem}
-
+\subsection{Project Limitations}
 \noindent \\ As OCRs are still a challenging task even for companies like
 Google, ref. reader to Googles OCR translator application on smartphones;
 ``Translate'', drawbacks such as; difficulty finding all the text on the photo
-because of lighting, noise etc., therefore we will have to limit our software
-significantly.
+because of lighting, noise etc., therefore we take it for granted that we will
+have to limit our software significantly.
 
-\subsection{Initial limitations}
+\noindent \\ \textbf{Initial limitations}
 \begin{itemize}
- \item{English alphabet + numbers [0-9]}
- \item{Homogeneous background}
+ \item{English alphabet [upper and lower case]+ numbers [0-9]}
+ \item{Homogeneous background [white]}
  \item{Skew free text}
  \item{Computer printed text}
+ \item{Even lighting}
 \end{itemize}
 
-\subsection{Project components}
-The group have come to the conclusion that the OCR software has 3 main
+\subsection{Project Components}
+We have come to the conclusion that the OCR software should have 3 main
 components to it.
 \begin{enumerate}
  \item{\textit{Text segmentation}}
@@ -78,8 +65,8 @@ components to it.
  \item{\textit{Preprocessing}}
  \begin{itemize}
   \item{Do preprocessing on the segmented text; rotation, symbol segmentation,
-  etc.. (preprocessing from its definition, should be done first, however
-  because of simplification we assume we manage to segment out text first.)}
+  etc.. (preprocessing from definition, should be done first, however because
+  of simplification we assume we manage to segment out text first.)}
  \end{itemize}
  \item{\textit{Classification}}
  \begin{itemize}
@@ -92,13 +79,80 @@ need to code for this part, a good pool of labeled data is needed to be able to
 classify symbols. More on this later.
 \noindent \\ (4. \textit{Data classification - Gathering labeled data to train a classification algorithm})
 
-\subsection{Component description}
+
+\subsection{Report Layout}
+\noindent \\ This report is divided into 5 sections\todo{refrence and recognition
+should maybe be divided?}. In Section~\ref{sec:Introduction}, we introduce the
+Report and how the report is organized. Section~\ref{sec:Project description} is
+where we describe the project and where we present our initial thoughts and
+approach on how solve our problem. In Section~\ref{sec:Project review} we
+review our approach and present how we solved the problem, methods we used and
+changes which had to be performed. In Section~\ref{sec:Project conclusion} we
+present thoughts on the project and what could be done differently,
+difficulties that we faced and, a step by step tutorial on how to run our
+software. Section~\ref{sec:Recognition} includes third party material we have used.
+
+
+\todo[inline]{
+
+write this in the layaout?
+
+\textbf{Component description}
 This section we will describe our thoughts on how we plan to solve each
 component, in the form of algorithms, APIs, and datasets. Note that this is our
 initial thoughts, not necessary the solution we will end up implementing.
 Additionally, as we want to test proof-of-concept while we are coding, we will
 be making several simplifications. Relevant simplifications will be described
 further under each component.
+}
+
+
+\section{Method}
+\subsection{Component: 1}
+\subsubsection{Tried}
+\subsubsection{Used in end result}
+
+\subsection{Component: 2}
+\subsubsection{Tried}
+\subsubsection{Used in end result}
+
+\subsection{Component: 3}
+\subsubsection{Tried}
+\subsubsection{Used in end result}
+
+
+\section{Result - Discussion}
+\subsection{Result of project used code}
+\subsection{Result of discarded code?}
+
+\section{Conclusion}
+\subsection{Ambition vs reality?}
+\subsection{Future work?}
+
+\section{Recognition}
+\subsection{Datasets}
+\subsection{Code used}
+\subsection{articles}
+
+
+
+
+\section{Introduction}
+\label{sec:Introduction}
+\subsection{Report layout}
+
+
+
+\newpage
+
+\section{Project description}
+\label{sec:Project description}
+
+
+
+
+
+
 
 
 \subsubsection{Text Segmentation}\label{Component_Descripton:Text_segmentation}
@@ -364,40 +418,40 @@ It has a training set of 60.000 examples and a test set of 10.000 examples.
 As mention in section \ref{Component_Descripton:Text_segmentation} we tried 3 approach on Text Segmentation. We ended with our first approach since it was both simplest and gave most preferred result. We started simple with approach one, the result gave us confident to try out different approaches. We came across STW(Stroke Width Transform. It looks interesting and at the same time want to look at the possibility to detect text in natural images. We was finish some parts of the algorithm, but was not able to finish. The of the reason is because we instead focus on other parts of the project, also we realize that OpenCv have its own Text Detection.
 
 \subsubsection{Approach 1: Simple Image Analysis Technics}
-This approach is inspired by different sources, one of them is by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We did a few modifications since we found it 
-The approach here is simple: 
+This approach is inspired by different sources, one of them is by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We did a few modifications since we found it
+The approach here is simple:
 \begin{enumerate}
   \item \textbf{Find Edges/Outliners of the image.}
   Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images.(so long the text and background is close to black and white)
   \item \textbf{Otsu Thresholding.}
-  We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it. 
+  We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it.
   \item \textbf{Morphological Closing.}
-  Since we want line segments we used Morphological Closing with large horizontal filter to merge as many horizontal letter together as possible. 
-  \item \textbf{Extract Regions} 
-  OpenCv FindContours was used to find the different text regions. We then exclude any regions that is smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes. 
+  Since we want line segments we used Morphological Closing with large horizontal filter to merge as many horizontal letter together as possible.
+  \item \textbf{Extract Regions}
+  OpenCv FindContours was used to find the different text regions. We then exclude any regions that is smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
 \end{enumerate}
 
 \subsubsection{Approach 2: Stroke Width Transform}
 The second approach we tried Stroke Width Transform to do Text Segmentation, it was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
 \begin{enumerate}
   \item \textbf{Edge Detection and edge orientation(Done)}
-  We need to have Edge image and orientation of the gradient image. 
+  We need to have Edge image and orientation of the gradient image.
   Canny and Sobel was used in the original paper and other sources. This is simple since OpenCv have both Canny and Sobel implemented.
   \item \textbf{Stroke Width Transform(Done)}
-  Here we had to do more. We have to find a line from a starting point and the angle. We was able to implement this part, but was some uncertainties. It only work on black text with white background. That is because the orientation(Sobel filtering) are dependent on it. The paper talk about doing a second pass with inverse image, but we decided to ignore it, in order to come farther in the algorithm. 
+  Here we had to do more. We have to find a line from a starting point and the angle. We was able to implement this part, but was some uncertainties. It only work on black text with white background. That is because the orientation(Sobel filtering) are dependent on it. The paper talk about doing a second pass with inverse image, but we decided to ignore it, in order to come farther in the algorithm.
   \item \textbf{Find Connected Component(Done)}
-  In this point we are to connect component with the same Stride length together. We used One component at a time algorithm to find all the different components. We was able to finish it. 
+  In this point we are to connect component with the same Stride length together. We used One component at a time algorithm to find all the different components. We was able to finish it.
   \item \textbf{Exude noise and find letters(not Done)}
-  Since Stroke Width Transform tend to make a lot of noise. The obvious one is making single lines. This part are suppose to exclude this noise and at the same time exclude anything that is not a letter. The theory is, since letter and text all usually have the same stroke width, we can use this information do estimate what is letter and what is not. We was not able to finish this part. 
+  Since Stroke Width Transform tend to make a lot of noise. The obvious one is making single lines. This part are suppose to exclude this noise and at the same time exclude anything that is not a letter. The theory is, since letter and text all usually have the same stroke width, we can use this information do estimate what is letter and what is not. We was not able to finish this part.
   \item \textbf{Find lines(not Done)}
-  Was not able to get to this part, but ideal it will combine letters to a single line or words. 
+  Was not able to get to this part, but ideal it will combine letters to a single line or words.
 \end{enumerate}
 
 \subsubsection{Approach 3: OpenCv Scene Text Detection}
-Since we decided to abandon Approach 2 and found out that OpenCv has a Scene Text Detection module, we though about testing it out. The problem was we found it out relative late and have a somewhat working Approach 1 already. Given that it did not give good initial result we decided to go back to approach 1, and optimize it more instead. 
+Since we decided to abandon Approach 2 and found out that OpenCv has a Scene Text Detection module, we though about testing it out. The problem was we found it out relative late and have a somewhat working Approach 1 already. Given that it did not give good initial result we decided to go back to approach 1, and optimize it more instead.
 
 \subsubsection{Conclusion}
-We ended up using the simplest approach, it is both easy to implement and faster that the other approaches. For our purpose, simple text segmentations, it gave us the best result as well. Figure \ref{fig:Text_detection_approaches} show different result of the different approaches. 
+We ended up using the simplest approach, it is both easy to implement and faster that the other approaches. For our purpose, simple text segmentations, it gave us the best result as well. Figure \ref{fig:Text_detection_approaches} show different result of the different approaches.
 
 \begin{figure}
   \centering
