@@ -107,11 +107,11 @@ have used, suchas; code, articles and datasets.
 \label{sec:Method}
 \subsection{Description}
 The following section as described in Section~\ref{subsec:Report Layout} will
-present our methods. Below we present each component individually and the
+present our methods. Bellow we present each component individually and the
 corresponding methods used to solve them. We have additionally seperated
 methods tried and discarded, under subsection ``Tried'', while methods which
 we are useing in our final solution, is mentioned under subsection ``Used in
-end result''. 
+end result''.
 
 \subsection{Component: Text segmentation}
 \label{Method:Text_segmentation}
@@ -144,48 +144,36 @@ We where uncertain on how to do this part when we initial started the project. W
 \subsection{Component: Preprocessing}
 \label{Method:Preprocessing}
 \textbf{Description} \\
-Definition of preprocessing; the act of readying the data for
-further use, in our case for classification. \par
-The specification of how the format of the image should be is not in our hands,
-as we will use datasets from third parties. We have to make the format and
-type of our input the same as the datasets. Other than the specifications we
-also need to take into account the spatial characteristics of the data, as we
-want the chance of the data correctly classified as high as possible. Such as
-background-foreground intensity, lighting, rotation, location of the
-character, etc..
+Definition of preprocessing; the act of preparing the data for further use,
+in our case for classification. \par
+
 
 \begin{flushleft}
-  \textbf{Limitation - proof-of-concept} \\
-  We will here limit our input data to only include grey-level
-  images with rotation. As we progress further into the project we will include
-  more aspects of a realistic image.
-\end{flushleft}
-
-\begin{flushleft}
-  \textbf{Challenges}
+  \textbf{Tasks for preprocessing}
   \begin{itemize}
-   \item{Rotated text}
-   \begin{itemize}
-    \item{Hough transform is a valid solution to this problem. Finding the angle
-    of the lines and then rotate the text segments accordingly.}
-   \end{itemize}
-   \item{Line segmentation}
-   \begin{itemize}
-    \item{Projection histograms allows us to find where the lines start and end,
-    both vertically and horizontally.}
-   \end{itemize}
-   \item{Character segmentation}
-   \begin{itemize}
-    \item{We can use projection histogram here as well, however one line at a
-    time. This way we can find out where each symbol starts and end.}
-   \end{itemize}
+    \item{Data formating/casting}
+    \begin{itemize}
+      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets.}
+    \end{itemize}
+    \item{Rotated text}
+    \begin{itemize}
+      \item{Our approach for character segmentation needs text rotated horisontally.}
+    \end{itemize}
+      \item{Line segmentation}
+    \begin{itemize}
+      \item{Our approach for character segmentation needs lines as input, as a sequence of lines on top of eachother breaks the algorithm.}
+    \end{itemize}
+      \item{Character segmentation}
+    \begin{itemize}
+      \item{We need to segment each character because the classifier cannot distingush several characters from one image.}
+    \end{itemize}
   \end{itemize}
 \end{flushleft}
 
-\subsection{Preprocessing}
+
 \subsubsection{Find rotation}
 Images are not necessary rotated so that the text is vertical, and rotated
-correctly up side down. What we need to do is to find the rotation of the text
+correctly upside down. What we need to do is to find the rotation of the text
 and rotate it accordingly to be able to find lines and symbols with our
 ``line and symbol finder approach''. Bellow a review of our approaches follows.
 
@@ -199,7 +187,7 @@ and rotate it accordingly to be able to find lines and symbols with our
   the lines were not restricted to just these directions, we sometimes got lines
   where there where no apperant reason for it to be. Because of these
   uncertainties we tried another approach, minAreaRect method from OpenCV, see
-  below.
+  bellow.
 \end{flushleft}
 
 \begin{flushleft}
@@ -273,7 +261,7 @@ CNN.
   the error rate through empirical testing. As empirical testing has shown that
   some combinations of parameters are better than others, we will also use the
   same method to find decent values on several of the hyper-parameters. More on
-  this below, where a short description of the hyper-parameters follow. \par
+  this bellow, where a short description of the hyper-parameters follow. \par
   One obvious disadvantage we might face by using MLP is that slight spatial
   change on where in the image the characters are located, might lead to
   characters classified differently. This is because there is no spatial
@@ -471,6 +459,18 @@ CNN.
 
 \newpage
 \section{Result - Discussion}
+
+
+\todo[inline]{
+Include this somewhere here on preprocessing part
+\textbf{Limitation - proof-of-concept} \\
+We will here limit our input data to only include grey-level
+images with rotation. As we progress further into the project we will include
+more aspects of a realistic image.
+}
+
+
+
 \label{sec:Result - Discussion}
 \subsection{Result of project used code}
 \subsection{Result of discarded code?}
