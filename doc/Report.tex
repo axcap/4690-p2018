@@ -14,8 +14,8 @@
 
 \usepackage{marginnote}
 \usepackage[backend=biber,style=numeric-comp]{biblatex}
-\addbibresource{text_seg.bib}
-% \addbibresource{bib.bib}\
+\addbibresource{key.bib}
+% \addbibresource{bib.bib}
 \usepackage{ifikompendium/ifikompendiumforside}
 \setcounter{tocdepth}{1} % only show chapter and section
 
@@ -102,7 +102,6 @@ ambition vs end result and reality, future imporvments on the software.
 Section~\ref{sec:Recognition} includes refrance to third party material we
 have used, suchas; code, articles and datasets.
 
-
 \newpage
 \chapter{Method}
 \label{sec:Method}
@@ -145,7 +144,7 @@ We where uncertain on how to do this part when we initial started the project. W
 
 \begin{flushleft}
   \subsubsection{Approach 2: Stroke Width Transform}
-  The second approach we tried Stroke Width Transform to do Text Segmentation, it was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
+  The second approach we tried Stroke Width Transform to do Text Segmentation, it was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. Additional sources was used in our attempt to implement it\cite{werner_text_????, _c++_????, bunn_strokewidthtransform:_2018}. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
   \begin{enumerate}
     \item \textbf{Edge Detection and edge orientation(Done)}
     We need to have Edge image and orientation of the gradient image.
@@ -175,19 +174,19 @@ Since we had problem on getting with both approach 2 and 3 we decided on approac
   \centering
   \begin{subfigure}[t]{4cm}
     \includegraphics[width=3cm]{res/segment_text1.png}
-    \caption{Example 1, Good result on text}
+    \caption{Example 1, Good result on just text}
   \end{subfigure}
   \hspace{5mm}%
   \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
+    \includegraphics[width=3cm]{res/segment_text2.png}
     \caption{Example 2, Good result on paper}
   \end{subfigure}
   \hspace{5mm}%
   \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
+    \includegraphics[width=3cm]{res/segment_text3.png}
     \caption{text}
   \end{subfigure}
-  \caption{Example 3,not so good result}
+  \caption{Example 3, Part of the text was not included}
   \label{fig:Text_detection_approaches}
 \end{figure}
 
