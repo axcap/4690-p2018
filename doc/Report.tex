@@ -17,6 +17,7 @@
 \addbibresource{text_seg.bib}
 % \addbibresource{bib.bib}\
 \usepackage{ifikompendium/ifikompendiumforside}
+\setcounter{tocdepth}{1} % only show chapter and section
 
 \title{UNIK4690 Project}
 \subtitle{Text Recognition}
@@ -115,31 +116,81 @@ end result''.
 
 \section{Component: Text segmentation}
 \label{Method:Text_segmentation}
-\textbf{Description} \\
+
+\subsection{Description}
+In this part of the program, we want to be able segment out parts of text in the image. We want to then later segment out lines and letter for further classification. In this part wee assume that the image will mainly black text on white paper.  
+
+\subsection{Tried}
 We where uncertain on how to do this part when we initial started the project. We ended up looking for a lot of different ways to do this part. We ended up trying 3 different approaches with mix result.
 \begin{enumerate}
-  \item Simple image analysis technics, using Otsu thresholding and Morphology.
-  \item Stroke Width Transform(SWT) to detect text in natural images.
-  \item OpenCv implementation of Scene Text Detection.
+  \item Simple image analysis technics, using Otsu thresholding and Morphology.(Used)
+  \item Stroke Width Transform(SWT) to detect text in natural images.(Discarded)
+  \item OpenCv implementation of Scene Text Detection.(Discarded)
 \end{enumerate}
 
 \begin{flushleft}
-  \textbf{Approach 1: Simple Image Analysis Technics} \\
-  We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach where we only look at an image with text. The approach is then simply do an Otsu Thresholding and then morphological Closing to connect component. After that we used OpenCv FindContours method to find the contour of the different text regions. FindContours in OpenCv uses the algorithm proposed by Suzuki, S. and Abe, K. 1985\cite{suzuki_topological_????}.
+  \subsubsection{Approach 1: Simple Image Analysis Technics}
+  We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
+  \begin{enumerate}
+    \item \textbf{Find Edges/Outliners of the image.}
+    Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images.(so long the text and background is close to black and white)
+    \item \textbf{Otsu Thresholding.}
+    We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it.
+    \item \textbf{Morphological Closing.}
+    Since we want line segments we used Morphological Closing with large horizontal filter to merge as many horizontal letter together as possible.
+    \item \textbf{Extract Regions}
+    OpenCv FindContours was used to find the different text regions. We then exclude any regions that is smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
+  \end{enumerate}
 \end{flushleft}
 
 \begin{flushleft}
-  \textbf{Approach 2: Stroke Width Transform} \\
-  We also found Stroke Width Transform to do Text Segmentation\cite{epshtein_stroke_2010}. Similar to OpenCv Scene text detection, it looks for text in natural images. The approach of the Algorithm is to calculate the different stroke length of the different elements in the image. Based on the stroke length, evaluate if it is a text element or not. The concept was relative simple to grasp. The implementation, in the other hand, was quite difficult to implement. We will look at the full implementation later in.
+  \subsubsection{Approach 2: Stroke Width Transform}
+  The second approach we tried Stroke Width Transform to do Text Segmentation, it was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
+  \begin{enumerate}
+    \item \textbf{Edge Detection and edge orientation(Done)}
+    We need to have Edge image and orientation of the gradient image.
+    Canny and Sobel was used in the original paper and other sources. This is simple since OpenCv have both Canny and Sobel implemented.
+    \item \textbf{Stroke Width Transform(Done)}
+    Here we had to do more. We have to find a line from a starting point and the angle. We was able to implement this part, but was some uncertainties. It only work on black text with white background. That is because the orientation(Sobel filtering) are dependent on it. The paper talk about doing a second pass with inverse image, but we decided to ignore it, in order to come farther in the algorithm.
+    \item \textbf{Find Connected Component(Done)}
+    In this point we are to connect component with the same Stride length together. We used One component at a time algorithm to find all the different components. We was able to finish it.
+    \item \textbf{Exclude noise and find letters(not Done)}
+    Since Stroke Width Transform tend to make a lot of noise. The obvious one is making single lines. This part are suppose to exclude this noise and at the same time exclude anything that is not a letter.The theory is, since letter and text all usually have the same stroke width, we can use this information do estimate what is letter and what is not. We was not able to finish this part.
+    \item \textbf{Find lines/words(not Done)}
+    Was not able to get to this part, but ideal it will combine letters to a single line or words.
+  \end{enumerate}
+  In cases where the image have a lot of non text object, it will work fine with it. We ended up discarding this approach since it was to time consuming and decided on working on simple approach first. 
 \end{flushleft}
 
 \begin{flushleft}
-  \textbf{Approach 3: OpenCv Scene Text Detection} \\
-  OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}.
+  \subsubsection{Approach 3: OpenCv Scene Text Detection}
+  OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}. Since we already discarded Stroke Width Transform to focus on simple approach, we decided not use it. We had some problem to get propel result as well. 
 \end{flushleft}
 
-\subsubsection{Tried}
-\subsubsection{Used in end result}
+\subsection{Used in end result}
+Since we had problem on getting with both approach 2 and 3 we decided on approach 1. It gave us ideal result on most images, but have some problem in images with non text objects. 
+
+\todo{fill the figure with good examples}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Example 1, Good result on text}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Example 2, Good result on paper}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{text}
+  \end{subfigure}
+  \caption{Example 3,not so good result}
+  \label{fig:Text_detection_approaches}
+\end{figure}
+
 
 \section{Component: Preprocessing}
 \label{Method:Preprocessing}
@@ -490,19 +541,6 @@ CNN.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 \newpage
 \todo[inline]{ Everything here has to find new location above.
 \\.
@@ -549,52 +587,6 @@ CNN.
 \\.
 \\.
 }
-
-
-
-\newpage
-\chapter{Project review}
-\label{sec:Project review}
-
-\section{Text segmentation}
-In this part of the program, we want to be able segment out parts of text in the image. We want to then late segment out lines and letter for further classification.
-
-\subsubsection{Tried}
-As mention in section \ref{Component_Descripton:Text_segmentation} we tried 3 approach on Text Segmentation. We ended with our first approach since it was both simplest and gave most preferred result. We started simple with approach one, the result gave us confident to try out different approaches. We came across STW(Stroke Width Transform. It looks interesting and at the same time want to look at the possibility to detect text in natural images. We was finish some parts of the algorithm, but was not able to finish. The of the reason is because we instead focus on other parts of the project, also we realize that OpenCv have its own Text Detection.
-
-\subsubsection{Used}
-We used 
-
-\subsubsection{End Result}
-
-
-\subsubsection{Approach 3: OpenCv Scene Text Detection}
-Since we decided to abandon Approach 2 and found out that OpenCv has a Scene Text Detection module, we though about testing it out. The problem was we found it out relative late and have a somewhat working Approach 1 already. Given that it did not give good initial result we decided to go back to approach 1, and optimize it more instead.
-
-\subsubsection{Conclusion}
-We ended up using the simplest approach, it is both easy to implement and faster that the other approaches. For our purpose, simple text segmentations, it gave us the best result as well. Figure \ref{fig:Text_detection_approaches} show different result of the different approaches.
-
-\begin{figure}
-  \centering
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
-    \caption{Text Segmentation with Approach 1 - Morphology and FindContour}
-  \end{subfigure}
-  \hspace{5mm}%
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
-    \caption{Text Segmentation with Approach 2}
-  \end{subfigure}
-  \hspace{5mm}%
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
-    \caption{text}
-  \end{subfigure}
-  \caption{Text Segmentation with Approach 3}
-  \label{fig:Text_detection_approaches}
-\end{figure}
-
-
 
 
 %%\subsubsection{Dataset matching}
