@@ -2,7 +2,7 @@
 import numpy as np
 import cv2
 
-def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.45):
+def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
   boundRect = []
   mask = np.zeros(img.shape, dtype=np.uint8)
 
@@ -56,42 +56,76 @@ def segmentLetters(img):
 
   return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
 
+def segmentPaper(img):
+  """ 
+  we assume the paper is white and s the larges component in the image
+  """
+  _, bw = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+  bw = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
+
+  output = cv2.connectedComponentsWithStats(bw, 4, cv2.CV_32S)
+  stats = output[2]
+  areas = stats[1:,cv2.CC_STAT_AREA]
+  heights = stats[1:,cv2.CC_STAT_HEIGHT]
+  widhts = stats[1:,cv2.CC_STAT_WIDTH]
+
+  i = np.argmax(areas)
+  x = stats[i+1, cv2.CC_STAT_LEFT]
+  y = stats[i+1, cv2.CC_STAT_TOP]
+  w = stats[i+1, cv2.CC_STAT_WIDTH]
+  h = stats[i+1, cv2.CC_STAT_HEIGHT]
+
+  return img[y:y+h, x:x+w] 
 
 def highlightSegments(img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = np.array(img)
   for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,0,0), 1, 8, 0)
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
 
   return temp
 
 def main():
+  import utils 
   SAVE_IMAGE_PATH = '../doc/res/'
   IMAGE_PATH = '../res/images/'
-  image_filename = 'ReceiptSwiss.jpg'
-  # image_filename = 'lorem.png'
-  # image_filename = 'doc.jpg'
+  image_filename1 = 'text_skew.png'
+  image_filename2 = 'ReceiptSwiss.jpg'
+  image_filename3 = 'Android_image.jpg'
 
-  image = cv2.imread(IMAGE_PATH+image_filename,0)
+  image1 = cv2.imread(IMAGE_PATH+image_filename1,0)
+  image2 = cv2.imread(IMAGE_PATH+image_filename2,0)
+  image3 = cv2.imread(IMAGE_PATH+image_filename3,0)
 
-  text_regions = segmentText(image)
-  text_regions = highlightSegments(image,text_regions)
+  paper_region1 = segmentPaper(image1)
+  paper_region2 = segmentPaper(image2)
+  paper_region3 = segmentPaper(image3)
 
-  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", text_regions)
+  text_regions1 = segmentText(paper_region1)
+  text_regions2 = segmentText(paper_region2)
+  text_regions3 = segmentText(paper_region3)
 
-  cv2.imshow("text_regions", text_regions)
+  demo_image1 = highlightSegments(paper_region1,text_regions1)
+  demo_image2 = highlightSegments(paper_region2,text_regions2)
+  demo_image3 = highlightSegments(paper_region3,text_regions3)
+
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", demo_image1)
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text2.png", demo_image2)
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_text3.png", demo_image3)
+
+  cv2.imshow("demo_image1", demo_image1)
   cv2.waitKey()
   cv2.destroyAllWindows()
 
-  image_filename = 'lorem.png'
-  image = cv2.imread(IMAGE_PATH+image_filename,0)
-
-  rect = segmentsLetters(image)
-  show_img = highlightSegments(image,rect)
-
-  cv2.imshow("Image segment", show_img)
+  cv2.imshow("demo_image2", demo_image2)
   cv2.waitKey()
   cv2.destroyAllWindows()
+
+  cv2.imshow("demo_image3", demo_image3)
+  cv2.waitKey()
+  cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
   main()

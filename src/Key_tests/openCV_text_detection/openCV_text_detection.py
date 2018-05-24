@@ -16,7 +16,7 @@ def detect_text(image):
 
     for channel in channels:
         erc1 = cv2.text.loadClassifierNM1('trained_classifierNM1.xml')
-        er1 = cv2.text.createERFilterNM1(erc1,16,0.00015,0.13,0.2,True,0.1)
+        er1 = cv2.text.createERFilterNM1(erc1,16,0.00015,0.1,0.2,True,0.1)
 
         erc2 = cv2.text.loadClassifierNM2('trained_classifierNM2.xml')
         er2 = cv2.text.createERFilterNM2(erc2,0.5)
@@ -37,11 +37,12 @@ def detect_text(image):
     #Visualization
     cv2.imshow("Text detection result", vis)
     cv2.waitKey(0)
+    return vis
 
 def main():
 
     IMAGE_PATH = '../../../res/images/'
-    image_filename = 'landscape_text.jpg'
+    image_filename = 'Android_image.jpg'
 
     image = cv2.imread(IMAGE_PATH+image_filename)
 
