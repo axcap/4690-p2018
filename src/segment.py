@@ -35,15 +35,18 @@ def segmentLetters(image):
 
   kernel = np.ones((5,1), np.uint8)
   img = cv2.dilate(image, kernel)
-
+  #utils.imshow("dilate", img)
+  
   #img = image
   # invert since we are working black on white
   _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-  # tresh_img[0] = 0
-  # tresh_img[M-1] = 0
+  tresh_img[0] = 0
+  tresh_img[M-1] = 0
   #tresh_img = img
   
   im_floodfill = tresh_img.copy()
+  #print(im_floodfill)
+  #utils.imshow("food", im_floodfill)
 
   h, w = img.shape[:2]
   mask = np.zeros((h+2, w+2), np.uint8)

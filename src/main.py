@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 import classifier as classifier
 import segment as segment
 import timeit, functools
@@ -10,6 +11,24 @@ import sys
 np.set_printoptions(linewidth=150)
 np.set_printoptions(edgeitems=150)
 
+def computeSpacing(symbols):
+    space_length = 0
+    char_length = 0
+    for current in symbols:
+        char_length += current[2]
+    char_length  = char_length //  len(symbols)
+    space_length = int(char_length*0.7)
+    return space_length
+
+'''
+    for i in range(len(symbols)-1):
+        current = symbols[i]
+        nexxt = symbols[i+1]
+        summ += nexxt[0] - (current[0]+current[2])
+    summ /= len(symbols)-1
+    summ += 1
+'''
+
 
 def extractText(image):
     y, x = image.shape
@@ -18,6 +37,7 @@ def extractText(image):
     lines = utils.segment_lines(seg, linesHist)
     for i, l in enumerate(lines):
         single_line = image[l[0]:l[1], 0:x]
+        #utils.imshow("Line", single_line)
         #symbolHist = utils.find_symbol(single_line)
         #symbols    = utils.segment_symbols(seg, symbolHist)
 
@@ -29,13 +49,7 @@ def extractText(image):
         #segment.highlightSegments("Highlight", single_line, symbols)
 
         # Find average space between chars
-        summ = 0
-        for i in range(len(symbols)-1):
-            current = symbols[i]
-            nexxt = symbols[i+1]
-            summ += nexxt[0] - (current[0]+current[2])
-        summ /= len(symbols)-1
-        summ += 1
+        summ = computeSpacing(symbols)
         print(summ)
         
         start = time.time()
@@ -53,7 +67,7 @@ def extractText(image):
             line_out += digit.lower()
             # If space between chars > agerage insert 'space char'
             if idx+1 < len(symbols) and symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2]) > summ:
-                line_out += " "
+                line_out += " "*((symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])) // summ)
 
             print(".", end="")
             sys.stdout.flush()
@@ -80,8 +94,8 @@ if __name__ == "__main__":
     binary = cv2.bitwise_not(gray)
     #binary = gray
     #utils.imshow("Binary", binary)
-    contours = segment.segmentText(binary)
-    segment.highlightSegments("Contour", img, contours)
+    contours = segment.segmentText(binary, (5, x))
+    segment.highlightSegments("Contour", binary, contours)
 
     # Contours are presented from burron to top
     # Reverse with [::-1]

@@ -7,7 +7,7 @@ mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
 
 
 def imageParser():
-    path = "res/images/sans.png"
+    path = "res/images/lorem_hq.png"
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -100,14 +100,14 @@ def histogramProjection(img, direction = 'vertical'):
 
 
 #Returns image with rectangles around around each line
-def show_lines(img):
-    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+def show_lines(image):
+    img = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
     linesHist = find_lines(img)
     lines = segment_lines(img, linesHist)
     y,x = img.shape[:2]
     for l in lines:
         cv2.rectangle(img, (0, l[0]), (x, l[1]), color=(255,0,0), thickness = 1)
-    return img
+    imshow("Line", img)
 
 
 #Returns image with rectangles around around each symbol in input line image
