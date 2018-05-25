@@ -1,4 +1,4 @@
-# import utils as utils
+import utils as utils
 import numpy as np
 import cv2
 
@@ -18,11 +18,11 @@ def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
 
   return boundRect
 
-def segmentText(img):
+def segmentText(img, point = (21, 21)):
   kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
   grad = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (21,21))
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, point)
   connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)
   # using RETR_EXTERNAL instead of RETR_CCOMP
   im2, contours, hierarchy = cv2.findContours(connected.copy(),
@@ -57,7 +57,7 @@ def segmentLetters(img):
   return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
 
 def segmentPaper(img):
-  """ 
+  """
   we assume the paper is white and s the larges component in the image
   """
   _, bw = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -76,18 +76,17 @@ def segmentPaper(img):
   w = stats[i+1, cv2.CC_STAT_WIDTH]
   h = stats[i+1, cv2.CC_STAT_HEIGHT]
 
-  return img[y:y+h, x:x+w] 
+  return img[y:y+h, x:x+w]
 
-def highlightSegments(img, segments):
-  # Copy input array as cv2 drawing function work inplace
-  temp = np.array(img)
-  for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
-
-  return temp
+def highlightSegments(text, img, segments):
+    # Copy input array as cv2 drawing function work inplace
+    temp = np.array(img)
+    for (x,y,w,h) in segments:
+        cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
+    utils.imshow(text, temp)
 
 def main():
-  import utils 
+  import utils
   SAVE_IMAGE_PATH = '../doc/res/'
   IMAGE_PATH = '../res/images/'
   image_filename1 = 'text_skew.png'
