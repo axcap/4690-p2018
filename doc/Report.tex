@@ -91,16 +91,15 @@ part is essential for the OCR software to be able to perform its purpose.
 \section{Report Layout}
 \label{subsec:Report Layout}
 This report is divided into 5 sections. In
-Section~\ref{sec:Introduction}, we introduce the project and how the report
-is organized. Section~\ref{sec:Method} is where we present methods we have
+Chapter~\ref{sec:Introduction}, we introduce the project and how the report
+is organized. Chapter~\ref{sec:Method} is where we present methods we have
 used, both discarded methods tried and methods which we kept in out final
-solution. In Section~\ref{sec:Result - Discussion} we review our approach and
-its results, we present the confidence in our solution and what \todo[inline]{vulnerability
-exist.}\todo{refrace markeg text?}
-In Section~\ref{sec:Conclusion} we present thoughts on the project, our
-ambition vs end result and reality, future imporvments on the software.
-Section~\ref{sec:Recognition} includes refrance to third party material we
-have used, suchas; code, articles and datasets.
+solution. In Chapter~\ref{sec:Result - Discussion} we review our approach and
+its results, we present the confidence in our solution and what vulnerability
+exist. In Chapter~\ref{sec:Conclusion} we present our thoughts on the project;
+our ambition vs the actuall result, and potential future improvments on the
+software. Chapter~\ref{sec:Recognition} includes refrance to third party
+material we have used, suchas; code, articles and datasets.
 
 \newpage
 \chapter{Method}
@@ -108,10 +107,13 @@ have used, suchas; code, articles and datasets.
 \section{Description}
 The following section as described in Section~\ref{subsec:Report Layout} will
 present our methods. Bellow we present each component individually and the
-corresponding methods used to solve them. We have additionally seperated
-methods tried and discarded, under subsection ``Tried'', while methods which
-we are useing in our final solution, is mentioned under subsection ``Used in
-end result''.
+corresponding methods for them. A short description on what challenges have to
+be solved for each component will be addressed first. \\ \\
+
+\todo[inline]{\textbf{Forslag om å fjerne ``tried'' og ``used''. Istedenfor
+bare presentere metodene. Videre i Kapittell ``Results'', beskrive hva som
+fungerte og hva som ikke fungerte, med referase til bilder/grafer osv.}
+}
 
 \section{Component: Text segmentation}
 \label{Method:Text_segmentation}
@@ -191,15 +193,27 @@ Since we had problem on getting with both approach 2 and 3 we decided on approac
 \end{figure}
 
 
+
+
+
+
+
+
+
+
 \section{Component: Preprocessing}
 \label{Method:Preprocessing}
 \textbf{Description} \\
 Definition of preprocessing; the act of preparing the data for further use,
 in our case for classification. \par
+After the text segmentation we assume we have an image consisting of only text
+in black, and background in white. What remains for us to do is to segment out
+each character and format it to the right datatype for the classifier. Hence
+the challenges we will have to solve here are:
 
 
 \begin{flushleft}
-  \textbf{Tasks for preprocessing}
+  \textbf{Challenges}
   \begin{itemize}
     \item{Data formating/casting}
     \begin{itemize}
@@ -221,31 +235,34 @@ in our case for classification. \par
 \end{flushleft}
 
 
-\subsubsection{Find rotation}
-Images are not necessary rotated so that the text is vertical, and rotated
-correctly upside down. What we need to do is to find the rotation of the text
-and rotate it accordingly to be able to find lines and symbols with our
-``line and symbol finder approach''. Bellow a review of our approaches follows.
-
+\subsection{Find rotation}
 \begin{flushleft}
   \textbf{Appraoch 1: Hough Transform} \\
-  \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a well known algorithm to find lines, its
-  approach is to see if it can alligne some threshold of pixels on one straight
-  line. \par
-  We tried this approach, however we would end up with several lines on a text
-  segment, both along the vertical and horizontal direction of the text. However
-  the lines were not restricted to just these directions, we sometimes got lines
-  where there where no apperant reason for it to be. Because of these
-  uncertainties we tried another approach, minAreaRect method from OpenCV, see
-  bellow.
+  \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a
+  well known algorithm to find lines, its approach is to see if it can
+  alligne some threshold of pixels on one straight line. To help with this
+  process we will do a simple edge detection algorithm on the image before
+  running it through the Hough Transform. \par
+  Bellow the steps needed to perform for this approach are shorly described
+
+  \begin{enumerate}
+    \item \textbf{Edge detection}
+    Too make the Hough transform perform better we want to remove unnecessary
+    noise. Canny edge detection algorithm is a robust and fast dolution for
+    this.
+    \item \textbf{Line detection}
+    Now perform the actuall Hough Transform.
+    \item \textbf{Rotate image}
+    Lastly we need to rotate the image according to the lines from the Hough
+    Transform.
+  \end{enumerate}
 \end{flushleft}
 
+
 \begin{flushleft}
-  \textbf{Appraoch 2: OpenCV minAreaRect()} \\
-  This approach is completly diffrent from the Hough Transform.
-  Whereas Hough Transform tries to find lines, this approach uses
-  \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} to find the
-  convex hull of the text segments, and then
+  \textbf{Appraoch 2: OpenCV minAreaRect() + custom CNN} \\
+  This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
+  to find the convex hull of the text segments, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum Area rectangle. \par
   One important note here is that this method only works if the images sent as
@@ -256,14 +273,20 @@ and rotate it accordingly to be able to find lines and symbols with our
   this problem. It will only allow us to rotate it along one of the text
   segments edges. To rotate the text correctly from the result of cv.minAreaRect
   we used an original approach, see bellow ``CNN - find correct rotation''.
-\end{flushleft}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=4cm]{res/4angle_rot.png}
-  \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
-  \label{fig:4angle_rot}
-\end{figure}
+  \begin{enumerate}
+    \item \textbf{Edge detection}
+    Too make the Hough transform perform better we want to remove unnecessary
+    noise. Canny edge detection algorithm is a robust and fast dolution for
+    this.
+    \item \textbf{Line detection}
+    Now perform the actuall Hough Transform.
+    \item \textbf{Rotate image}
+    Lastly we need to rotate the image according to the lines from the Hough
+    Transform.
+  \end{enumerate}
+
+\end{flushleft}
 
 \begin{flushleft}
   \textbf{Appraoch 3: CNN - find correct rotation} \\
@@ -273,8 +296,8 @@ and rotate it accordingly to be able to find lines and symbols with our
 
 
 
-\subsubsection{Find line}
-\subsubsection{Find Symbol/Letter Segmentation}
+\subsection{Find line}
+\subsection{Find Symbol/Letter Segmentation}
 Letter segmentation was similar to Text Segmentation. we added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
 \begin{enumerate}
   \item Do threshold.
@@ -282,12 +305,13 @@ Letter segmentation was similar to Text Segmentation. we added a few steps and r
   \item Fill any holes, cv2.floodFills
   \item FindContours
 \end{enumerate}
-\subsubsection{Approach: find contour after Filled holes}
+\subsection{Approach: find contour after Filled holes}
 
 
 
-\subsubsection{Tried}
-\subsubsection{Used in end result}
+
+
+
 
 \section{Component: Classification}
 \label{Method:Classification}
@@ -462,8 +486,6 @@ CNN.
   \end{itemize}
 \end{flushleft}
 
-\subsubsection{Tried}
-\subsubsection{Used in end result}
 
 \section{Component: Datasets}
 \label{Method:Datasets}
@@ -503,15 +525,66 @@ CNN.
   (ref. reader to http://yann.lecun.com/exdb/mnist/).
 \end{flushleft}
 
-\subsubsection{Tried}
-\subsubsection{Used in end result}
+
+
+
+
+\newpage
+\chapter{Discarded Method}
+\label{sec:Method}
+\section{Description}
+
+\section{Text Segmentation}
+\section{Preprocessing}
+\section{Classification}
+\section{Datasets}
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
 \chapter{Result - Discussion}
 \label{sec:Result - Discussion}
-\section{Result of project used code}
-\section{Result of discarded code?}
+\section{Result: Text Segmentation}
+\section{Result: Preprocessing}
+
+\subsection{Rotation}
+\todo[inline]{
+  We tried this approach, however we would end up with several lines on a text
+  segment, both along the vertical and horizontal direction of the text. However
+  the lines were not restricted to just these directions, we sometimes got lines
+  where there where no apperant reason for it to be. Because of these
+  uncertainties we tried another approach, minAreaRect method from OpenCV, see
+  bellow.
+}
+\subsection{Line segmentation}
+
+
+
+\todo[inline]{include results from line segmentation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=4cm]{res/4angle_rot.png}
+  \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
+  \label{fig:4angle_rot}
+\end{figure}
+
+
+
+\subsection{Character segmentation}
+
+\section{Result: Classification}
+\section{Result: Datasets}
+
 
 \newpage
 \chapter{Conclusion}
@@ -526,54 +599,6 @@ CNN.
 \section{Code used}
 \section{articles}
 
-
-
-\newpage
-\todo[inline]{ Everything here has to find new location above.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-\\.
-}
 
 
 %%\subsubsection{Dataset matching}
