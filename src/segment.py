@@ -2,7 +2,7 @@ import utils as utils
 import numpy as np
 import cv2
 
-def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.45):
+def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.35):
   boundRect = []
   mask = np.zeros(img.shape, dtype=np.uint8)
 
@@ -18,7 +18,7 @@ def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.45):
 
   return boundRect
 
-def segmentText(img, point = (21,21)):
+def segmentText(img, point = (21, 21)):
   kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
   grad = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -33,17 +33,17 @@ def segmentText(img, point = (21,21)):
 def segmentLetters(image):
   [M,N] = image.shape
 
-  kernel = np.ones((5,1), np.uint8)
+  kernel = np.ones((M//2,1), np.uint8)
   img = cv2.dilate(image, kernel)
   #utils.imshow("dilate", img)
-  
+
   #img = image
   # invert since we are working black on white
   _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
   tresh_img[0] = 0
   tresh_img[M-1] = 0
   #tresh_img = img
-  
+
   im_floodfill = tresh_img.copy()
   #print(im_floodfill)
   #utils.imshow("food", im_floodfill)
@@ -52,13 +52,13 @@ def segmentLetters(image):
   mask = np.zeros((h+2, w+2), np.uint8)
   cv2.floodFill(im_floodfill, mask, (0,0), 255)
 
-  
+
   # Invert floodfilled image
   im_floodfill_inv = cv2.bitwise_not(im_floodfill)
-  
+
   # Combine the two images to get the foreground.
-  im_out = tresh_img | im_floodfill_inv  
-  
+  im_out = tresh_img | im_floodfill_inv
+
   _, contours, __ = cv2.findContours(im_out.copy(),
                                      cv2.RETR_EXTERNAL,
                                      cv2.CHAIN_APPROX_NONE)
@@ -70,7 +70,7 @@ def highlightSegments(text, img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = img.copy()
   for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 1, 8, 0)
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 3, 8, 0)
   utils.imshow(text, temp)
 
 def main():

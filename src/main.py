@@ -20,15 +20,6 @@ def computeSpacing(symbols):
     space_length = int(char_length*0.7)
     return space_length
 
-'''
-    for i in range(len(symbols)-1):
-        current = symbols[i]
-        nexxt = symbols[i+1]
-        summ += nexxt[0] - (current[0]+current[2])
-    summ /= len(symbols)-1
-    summ += 1
-'''
-
 
 def extractText(image):
     y, x = image.shape
@@ -49,34 +40,45 @@ def extractText(image):
         #segment.highlightSegments("Highlight", single_line, symbols)
 
         # Find average space between chars
-        summ = computeSpacing(symbols)
-        print(summ)
-        
+        space = computeSpacing(symbols)
+
         start = time.time()
         line_out = ""
         for idx, s in enumerate(symbols):
+            # skip all commas and dots
+            if s[1] > 20 or s[3] < 50:
+                line_out += " "
+                continue
+
             img = utils.extractContour(single_line, s)
 
             img_linesHist = utils.find_lines(img)
             img_lines = utils.segment_lines(img, img_linesHist)
             img = img[img_lines[0][0]:img_lines[-1][1],:]
             img = utils.img2data(img)
-            
-            digit = nn.forward(np.transpose(img)) # takes 0.3 per run
 
-            line_out += digit.lower()
+            digit = nn.forward(np.transpose(img)) # takes 0.3 per run
+            digit = digit.lower()
+            if digit == 'i' or digit == 'l':
+                # See if we can find i's dot/hat by counting individual objects on img
+                _, cont, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                if np.shape(cont)[0] == 1: digit = 'l'
+                else:                      digit = 'i'
+
+            line_out += digit
             # If space between chars > agerage insert 'space char'
-            if idx+1 < len(symbols) and symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2]) > summ:
-                line_out += " "*((symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])) // summ)
+            if idx+1 < len(symbols) and symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2]) > space:
+                line_out += " "*((symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])) // space)
 
             print(".", end="")
             sys.stdout.flush()
 
-        
+
         end = time.time()
         text_out += line_out +  "\n"
-        print("Time: ", (end - start)/len(symbols))
-        print(line_out)
+        print("\n", line_out)
+        print("\nTime: ", (end - start)/len(symbols))
+
         #utils.imshow("Line", single_line)
 
     print(text_out)
@@ -94,15 +96,21 @@ if __name__ == "__main__":
     binary = cv2.bitwise_not(gray)
     #binary = gray
     #utils.imshow("Binary", binary)
-    contours = segment.segmentText(binary, (5, x))
+    contours = segment.segmentText(binary, (50, 50))
     segment.highlightSegments("Contour", binary, contours)
 
     # Contours are presented from burron to top
     # Reverse with [::-1]
     for contour in contours[::-1]:
-      seg = utils.extractContour(binary, contour)
-      #utils.imshow("Segment", seg)
-      extractText(seg)
+        seg = utils.extractContour(binary, contour)
+
+        coords = np.column_stack(np.where(seg > 0))
+        angle  = np.around(cv2.minAreaRect(coords)[-1]).astype(int)
+        angle  = utils.correct_angle(angle)
+        seg    = utils.rotate2angle(seg, angle)
+        utils.imshow("Segment", seg)
+
+        extractText(seg)
 
 
     print("\n")
