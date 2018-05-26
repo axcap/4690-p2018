@@ -10,7 +10,7 @@
 \chapter{Method}
 \label{sec:Method}
 \section{Description}
-%The following section as described in Section~\ref{I-subsec:Report Layout} will
+The following section as described in Section~\ref{subsec:Report Layout} will
 present our methods. Bellow we present each component individually and the
 corresponding methods for them. A short description on what challenges have to
 be solved for each component will be addressed first. \\ \\
@@ -139,8 +139,8 @@ After the text segmentation we assume we have an image consisting of white text 
   This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
   to find the convex hull of the text segments, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
-  find the minimum Area rectangle. \par
-  One important note here is that methods above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull algorithm to find the convex hull of the text segment. \par
+  find the minimum area rectangle. \par
+  One important note here is that the method above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull \todo[inline]{(Fjerne dette?) algorithm to find the convex hull} of the text segment. \par
   This method is really good at finding the angles, however it does not solve the problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
   this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document).
 
@@ -150,8 +150,7 @@ After the text segmentation we assume we have an image consisting of white text 
     \item \textbf{cv.minAreaRect()}
     Feed our newly generated image to cv.minAreaRect with some additional parameters.
     \item \textbf{Custom CNN solution - find correct rotation}
-    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree,
-    270\textdegree], we have several options of finding final rotation angle of current text segment.
+    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options of finding final rotation angle of current text segment. \todo[inline]{As the above method returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we will use a CNN to determine the which angle it is and then rotate it. We have several options when we use a CNN to find the correct angle.}
     \begin{enumerate}
 	\item{Most straightforward would be to find rotation of first character and rotate the whole segment accordingly (fast and naive)}
 	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation (somewhat slower (depends on N) but gives us bit more confidence than approach above)}
@@ -195,9 +194,7 @@ test text alksjdfh alsjkdbfkas
   after the filters are trained, run the image which is now ``filterd'', through
   a fully connected network. The fully connected network will then try and
   classify based on the feature images from the filtering/convolution layers. \par
-
-
-
+  \todo[inline]{Bellow we will present, a short description of key points of a CNN, the architecture and variable choices we have made for the CNN.}
 \end{flushleft}
 
 \begin{figure}[H]
