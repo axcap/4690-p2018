@@ -93,6 +93,13 @@ After the text segmentation we assume we have an image consisting of white text 
 \subsection{Find line}\label{subsec:Find_line}
 After all the preprocessing done up til this point we have rotated segment of text. At this point it is enough to just use projection histogram. We basically sum number of active pixels in each row and end up with one dimensional array with same size as image height, one value for each row in input image.
 E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this will mean there are some data (most likely text) between 5th and 10th row, and 15th  up to another line break. EXAMPLES SHOULD FOLLOW
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{proj_histogram.png}
+  \caption{Vertical project histogram, same applies to horisonal.}
+  \label{fig:Project_histogram}
+\end{figure}
+
 
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
 Letter segmentation was similar to Text Segmentation. We added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
