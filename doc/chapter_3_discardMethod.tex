@@ -18,7 +18,7 @@ the before mentioned chapter.
 We tried to expand the original approach to be able to detect text with noise, natural images. We tried Stroke Width Transform first, then OpenCv scene text detection. We abandon both approach because of time constrain and difficulties of implementation. We decided therefore to focus on other part of the project first. 
 
 \begin{flushleft}
-  \subsubsection{Other Approach 1: Stroke Width Transform}
+  \subsubsection{Other Method 1: Stroke Width Transform}
   We tried Stroke Width Transform to do Text Segmentation when original approach gave a decent result. It was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. Additional sources was used in our attempt to implement it\cite{werner_text_????, _c++_????, bunn_strokewidthtransform:_2018}. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
   \begin{enumerate}
     \item \textbf{Edge Detection and edge orientation(Done)}
@@ -37,9 +37,26 @@ We tried to expand the original approach to be able to detect text with noise, n
 \end{flushleft}
 
 \begin{flushleft}
-  \subsubsection{Other Approach 2: OpenCv Scene Text Detection}
+  \subsubsection{Other Method 2: OpenCv Scene Text Detection}
   OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}. Since we already discarded Stroke Width Transform to focus on simple approach, we decided not use it. We had some problem to get propel result as well.
 \end{flushleft}
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/swt.png}
+    \caption{Unfinished SWT}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/OpenCV_Std.png}
+    \caption{OpenCv Scene text detection}
+  \end{subfigure}
+  \hspace{5mm}%
+  \caption{Result of Discarded Segment Text Method}
+  \label{fig:Text_detection_result}
+\end{figure}
+
 
 \subsection{Used in end result}
 Since we had problem on getting with both approach 2 and 3 we decided on approach 1. It gave us ideal result on most images, but have some problem in images with non text objects.
