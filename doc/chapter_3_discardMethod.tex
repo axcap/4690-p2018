@@ -54,10 +54,6 @@ We tried to expand the original approach to be able to detect text with noise, n
   \label{fig:Text_detection_result}
 \end{figure}
 
-
-\subsection{Used in end result}
-Since we had problem on getting with both approach 2 and 3 we decided on approach 1. It gave us ideal result on most images, but have some problem in images with non text objects.
-
 \section{Preprocessing}
 \subsection{Find rotation}
 
@@ -69,11 +65,15 @@ Since we had problem on getting with both approach 2 and 3 we decided on approac
     \item \textbf{Edge detection}
     Too make the Hough transform perform better we want to remove unnecessary noise. Canny edge detection algorithm is a robust and fast solution for this.
     \item \textbf{Line detection}
-    Now perform the actuall Hough Transform.
+    Now perform the actually Hough Transform.
     \item \textbf{Rotate image}
     Lastly we need to rotate the image according to the lines from the Hough Transform.
   \end{enumerate}
 \end{flushleft}
+
+\subsection{Character Segmentation}
+Since we used Projection Histogram to fine line, we can use it to fine character segment as well. We started initially to do that, but later switch to the new approach. The approach is similar to Line detection in section \ref{subsec:Find_line}. It weakness is that we may not get the right height of each character, meaning we get more background. See figure \ref{fig:Project_histogram}
+  
 
 \section{Classification}
 \label{sec:Discarded Method:Classification}
