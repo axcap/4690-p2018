@@ -1,16 +1,38 @@
 \documentclass[Report.tex]{subfiles}
-\externaldocument[I-]{chapter_1_introduction}
-\externaldocument[M-]{chapter_2_method}
-\externaldocument[D-]{chapter_3_discardMethod}
-\externaldocument[C-]{chapter_5_conclusion}
-\externaldocument[RE-]{chapter_6_recognition}
-
+\externaldocument[I-]{chapter_1_introduction.tex}
+\externaldocument[M-]{chapter_2_method.tex}
+\externaldocument[D-]{chapter_3_discardMethod.tex}
+\externaldocument[C-]{chapter_5_conclusion.tex}
+\externaldocument[RE-]{chapter_6_recognition.tex}
 
 \begin{document}
 \chapter{Result - Discussion}
-\label{sec:Result - Discussion}
+\label{chap:Result - Discussion}
 \section{Result: Text Segmentation}
+We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{fig:Text_detection_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well  
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Good result on pure text}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text2.png}
+    \caption{Good result on text on paper with little background noise}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text3.png}
+    \caption{Bad result with many non text object segmented as text}
+  \end{subfigure}
+  \caption{Result of the Segment Text}
+  \label{fig:Text_detection_result}
+\end{figure}
+
 \section{Result: Preprocessing}
+
 \subsection{Rotation}
 \begin{figure}[H]
   \centering

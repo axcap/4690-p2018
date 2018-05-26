@@ -56,15 +56,19 @@ def segmentLetters(img):
 
   return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
 
-def segmentPaper(img):
+def find_largest_component_rect(b_img):
+  """ 
+  input: binaery image
+  return: coordinate of largest compnent
   """
-  we assume the paper is white and s the larges component in the image
-  """
-  _, bw = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
-  bw = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
 
-  output = cv2.connectedComponentsWithStats(bw, 4, cv2.CV_32S)
+  # add boundary
+  [M,N] = b_img.shape
+  b_img[0] = 0
+  b_img[M-1] = 0
+
+  b_img = b_img.astype(np.uint8)
+  output = cv2.connectedComponentsWithStats(b_img, 4, cv2.CV_32S)
   stats = output[2]
   areas = stats[1:,cv2.CC_STAT_AREA]
   heights = stats[1:,cv2.CC_STAT_HEIGHT]
@@ -76,30 +80,61 @@ def segmentPaper(img):
   w = stats[i+1, cv2.CC_STAT_WIDTH]
   h = stats[i+1, cv2.CC_STAT_HEIGHT]
 
+  return [x,y,w,h]
+  # return orig[y:y+h, x:x+w] 
+
+def segmentPaper(img):
+  """ 
+  we assume the paper is white and s the larges component in the image
+  """
+  
+  canny = cv2.Canny(img, 100, 200, apertureSize=3)
+  lines = cv2.HoughLines(canny,1,np.pi/180,200)
+  
+  bw = np.ones(img.shape)
+
+  for line in lines:
+    for rho,theta in line:
+      a = np.cos(theta)
+      b = np.sin(theta)
+      x0 = a*rho
+      y0 = b*rho
+      x1 = int(x0 + 2000*(-b))
+      y1 = int(y0 + 2000*(a))
+      x2 = int(x0 - 2000*(-b))
+      y2 = int(y0 - 2000*(a))
+
+      cv2.line(bw,(x1,y1),(x2,y2),0,2)
+
+  [x,y,w,h] = find_largest_component_rect(bw)
   return img[y:y+h, x:x+w]
 
-def highlightSegments(text, img, segments):
-    # Copy input array as cv2 drawing function work inplace
-    temp = np.array(img)
-    for (x,y,w,h) in segments:
-        cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
-    utils.imshow(text, temp)
+
+
+def highlightSegments(img, segments):
+  # Copy input array as cv2 drawing function work inplace
+  temp = np.array(img)
+  for (x,y,w,h) in segments:
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
+  return temp
 
 def main():
   import utils
   SAVE_IMAGE_PATH = '../doc/res/'
   IMAGE_PATH = '../res/images/'
   image_filename1 = 'text_skew.png'
-  image_filename2 = 'ReceiptSwiss.jpg'
-  image_filename3 = 'Android_image.jpg'
+  image_filename2 = 'Android_image.jpg'
+  image_filename3 = 'bad.jpg'
+
 
   image1 = cv2.imread(IMAGE_PATH+image_filename1,0)
   image2 = cv2.imread(IMAGE_PATH+image_filename2,0)
   image3 = cv2.imread(IMAGE_PATH+image_filename3,0)
 
-  paper_region1 = segmentPaper(image1)
-  paper_region2 = segmentPaper(image2)
-  paper_region3 = segmentPaper(image3)
+  # segment paper not finish
+  paper_region1 = image1 #segmentPaper(image1)
+  paper_region2 = image2 #segmentPaper(image2)
+  paper_region3 = image3 #segmentPaper(image3)
 
   text_regions1 = segmentText(paper_region1)
   text_regions2 = segmentText(paper_region2)
@@ -125,6 +160,7 @@ def main():
   cv2.waitKey()
   cv2.destroyAllWindows()
 
+  # segmentPaper(image1)
 
 if __name__ == '__main__':
   main()
