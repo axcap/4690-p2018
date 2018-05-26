@@ -46,13 +46,11 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 \todo[inline]{result: Line segmentation}
 
 \subsection{Character segmentation}
-This part worked quiet well, an alternative would be just using OpenCv findComponent. Result will be much the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better.  
-\todo[inline]{Set result image on Result : Character segmentation} 
-\subsection{Rotation}
+This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions 
+
 \begin{figure}[H]
   \centering
-  \missingfigure[figheight=6cm]{Result of character segmentation}
-  % \includegraphics[height=4cm]{res/}
+  \includegraphics[width=12cm]{res/segment_letter}
   \caption{Result of Character Segmentation}
   \label{fig:Character_segmentation}
 \end{figure}
