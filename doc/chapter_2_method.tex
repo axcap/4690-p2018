@@ -82,9 +82,9 @@ After the text segmentation we assume we have an image consisting of white text 
     \item \textbf{CNN solution - find correct rotation}
     Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options finding the correct angle of the text segment.
     \begin{enumerate}
-	\item{Most straightforward would be to find rotation of first character and rotate the whole segment accordingly (fast and naive)}
-	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation (somewhat slower (depends on N) but gives us bit more confidence than approach above)}
-	\item{Finally we can find angle for each individual character before we try to classify it, gives us the most accuracy but the price is time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
+	\item{The most straightforward approache would be to find the rotation of first character and rotate the whole segment accordingly (fast and naive)}
+	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation. This is somewhat slower (depends on N) but gives us bit more confidence than (a)}
+	\item{Finally we can classify the angle of each individual character before we try to determine the correct angle based on the results. This gives us the highest accuracy but on the cost of time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
 	\end{enumerate}
     \end{enumerate}
 \end{flushleft}
