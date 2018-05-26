@@ -9,8 +9,8 @@
 \chapter{Method}
 \label{chap:Method}
 \section{Description}
-% The following section as described in Section~\ref{subsec:Report Layout} will present our methods. Bellow we present each component individually and the corresponding methods for them. A short description on what challenges have to
-% be solved for each component will be addressed first. \\ \\
+The following section as described in Section~\ref{subsec:Report Layout} will present our methods. Bellow we present each component individually and the corresponding methods for them. A short description on what challenges have to
+be solved for each component will be addressed first. \\ \\
 
 \section{Component: Text segmentation}
 \label{Method:Text_segmentation}
@@ -91,7 +91,8 @@ After the text segmentation we assume we have an image consisting of white text 
 
 
 \subsection{Find line}\label{subsec:Find_line}
-
+After all the preprocessing done up til this point we have rotated segment of text. At this point it is enough to just use projection histogram. We basically sum number of active pixels in each row and end up with one dimensional array with same size as image height, one value for each row in input image.
+E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this will mean there are some data (most likely text) between 5th and 10th row, and 15th  up to another line break. EXAMPLES SHOULD FOLLOW 
 
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
 Letter segmentation was similar to Text Segmentation. we added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
