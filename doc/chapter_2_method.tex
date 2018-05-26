@@ -107,30 +107,27 @@ Since we had problem on getting with both approach 2 and 3 we decided on approac
 \subsection{Description}
 Definition of preprocessing; the act of preparing the data for further use,
 in our case for classification. \par
-After the text segmentation we assume we have an image consisting of only text
-in black, and background in white. What remains for us to do is to segment out
-each character and format it to the right datatype for the classifier. Hence
-the challenges we will have to solve here are:
+After the text segmentation we assume we have an image consisting of white text on black background. What remains for us to do is to segment out each character and format it to the right data type for the classifier. Hence the challenges we will have to solve here are:
 
 
 \begin{flushleft}
   \textbf{Challenges}
   \begin{itemize}
-    \item{Data formating/casting}
+    \item{Data formatting/casting}
     \begin{itemize}
       \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. No need for a specific approach.}
     \end{itemize}
     \item{Rotated text}
     \begin{itemize}
-      \item{Our approach for character segmentation needs text rotated horisontally.}
+      \item{Our approach for character segmentation needs text rotated horizontally.}
     \end{itemize}
       \item{Line segmentation}
     \begin{itemize}
-      \item{Our approach for character segmentation needs lines as input, as a sequence of lines on top of eachother breaks the algorithm.}
+      \item{Our approach for character segmentation needs lines as input, as a sequence of lines on top of each other breaks the algorithm.}
     \end{itemize}
       \item{Character segmentation}
     \begin{itemize}
-      \item{We need to segment each character because the classifier cannot distingush several characters from one image.}
+      \item{We need to segment each character because the classifier cannot distinguish several characters from one image.}
     \end{itemize}
   \end{itemize}
 \end{flushleft}
@@ -143,27 +140,24 @@ the challenges we will have to solve here are:
   to find the convex hull of the text segments, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum Area rectangle. \par
-  One important note here is that this method only works if the images sent as
-  input is binary. Because we want the convex hull algorithm to find the convex
-  hull of the text segment. \par
-  This method is really good at finding the angles, however it does not solve the
-  problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
-  this problem. It will only allow us to rotate it along one of the text
-  segments edges. To rotate the text correctly from the result of cv.minAreaRect
-  we used an approach using Convolutional neural networks.
+  One important note here is that methods above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull algorithm to find the convex hull of the text segment. \par
+  This method is really good at finding the angles, however it does not solve the problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
+  this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document).
 
   \begin{enumerate}
     \item \textbf{Binary image}
-    For the Convex hull algorithm to work, the text segment and the background
-    needs to be distinguishable. Convert image to a binary image.
+    For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and possibly bitwise\textunderscore not to flip foreground and background colors.
     \item \textbf{cv.minAreaRect()}
-    Run the minAreaRect() method.
-    \item \textbf{CNN solution - find correct rotation}
-    Now that we have one of [0\textdegree, 90\textdegree, 180\textdegree,
-    270\textdegree], we run a rotation classifier on a subset of the characters
-    from the text. Next the classifier classifies what state of rotation the
-    text is in, and then we rotate the text accordingly.
-  \end{enumerate}
+    Feed our newly generated image to cv.minAreaRect with some additional parameters.
+    \item \textbf{Custom CNN solution - find correct rotation}
+    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree,
+    270\textdegree], we have several options of finding final rotation angle of current text segment.
+    \begin{enumerate}
+	\item{Most straightforward would be to find rotation of first character and rotate the whole segment accordingly (fast and naive)}
+	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation (somewhat slower (depends on N) but gives us bit more confidence than approach above)}
+	\item{Finally we can find angle for each individual character before we try to classify it, gives us the most accuracy but the price is time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
+	\end{enumerate}
+    \end{enumerate}
 \end{flushleft}
 
 
@@ -202,14 +196,14 @@ test text alksjdfh alsjkdbfkas
   a fully connected network. The fully connected network will then try and
   classify based on the feature images from the filtering/convolution layers. \par
 
-  
+
 
 \end{flushleft}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[height=4cm]{res/CNN_architecture.png}
-  \caption{Convolutional Neural network \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
+  \includegraphics[height=4cm]{res/LeNet.png}
+  \caption{Convolutional Neural network \href{https://adeshpande3.github.io/A-Beginner\%27s-Guide-To-Understanding-Convolutional-Neural-Networks/}{Source}}
   \label{fig:CNN_architecture}
 \end{figure}
 
