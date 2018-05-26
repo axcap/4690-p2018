@@ -9,27 +9,27 @@
 \chapter{Method}
 \label{chap:Method}
 \section{Description}
-% The following section as described in Section~\ref{subsec:Report Layout} will present our methods. Bellow we present each component individually and the corresponding methods for them. A short description on what challenges have to
-% be solved for each component will be addressed first. \\ \\
+The following section as mentioned in Section~\ref{subsec:Report Layout} will present our methods. Bellow we present each component individually and the corresponding methods for them. A short description on what challenges have to
+be solved for each component will be addressed first.
 
 \section{Component: Text segmentation}
 \label{Method:Text_segmentation}
 
 \subsection{Description}
-In this part of the program, we want to be able segment out parts of text in the image. We want to then later segment out lines and letter for further classification, see section \nameref{subsec:Find_line} and \nameref{subsec:Find_Symb} for reference. In this part we assume that the image have black text on white paper and the image mostly only contains text. 
+In this part of the program, we want to be able to segment out text segments in the image. Afterwards we want to segment out lines and letter for further classification, see section \nameref{subsec:Find_line} and \nameref{subsec:Find_Symb} for reference. In this part we assume that the images have black text on white background, and they mostly consists of text.
 
 \begin{flushleft}
   \subsubsection{Approach: Simple Image Analysis Technics}
-  Our approach here was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
+  Our approach here was inspired by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
   \begin{enumerate}
     \item \textbf{Find Edges/Outliners of the image.}
-    Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images.(so long the text and background is close to black and white)
+    Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images (as long as the text and background are close to black and white respectively).
     \item \textbf{Otsu Thresholding.}
-    We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it.
+    We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it that.
     \item \textbf{Morphological Closing.}
-    Since we want line segments we used Morphological Closing with large horizontal filter to merge as many horizontal letter together as possible.
+    Since we want line segments we use Morphological Closing with large horizontal filter to merge as many horizontal letters together as possible.
     \item \textbf{Extract Regions}
-    OpenCv FindContours was used to find the different text regions. We then exclude any regions that is smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
+    OpenCv FindContours was used to find the different text regions. We then exclude regions which are smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
   \end{enumerate}
 \end{flushleft}
 
@@ -70,9 +70,9 @@ After the text segmentation we assume we have an image consisting of white text 
   to find the convex hull of the text segments, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum area rectangle. \par
-  One important note here is that the method above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull \todo[inline]{(Fjerne dette?) algorithm to find the convex hull} of the text segment. \par
+  One important note here is that the method above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull of the text segment. \par
   This method is really good at finding the angles, however it does not solve the problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
-  this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document). 
+  this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document).
 
   \begin{enumerate}
     \item \textbf{Binary image}
@@ -139,7 +139,7 @@ test text alksjdfh alsjkdbfkas
    \item{Convolutional layer}
    \begin{itemize}
     \item{This layer consists of several filters/kernels that are convolved over the image and based on how many filters one uses, the same amount of feature images are made. The purpose of the filters are to grasp some spatial characteristics of the image, and make it available for further processing.
-    The filters here correspond to the weights in the MLP, these are first initialized at random (or with a smart initialization method), then these will be updated as the network is trained. 
+    The filters here correspond to the weights in the MLP, these are first initialized at random (or with a smart initialization method), then these will be updated as the network is trained.
 First layer filters are able to spot simple geometry like straight or curved lines, but the deeper we dive into networks topology the more complex shapes the filters can recognize. It is not unusual that last layers on large networks can differenciate between faces, animals, objects.\par
     In a CNN we can have arbitrary many convolutional layer and arbitrary many filters at each layer. However just like a regular MLP, increasing the number of layers and or filters; can allow the network to fit the training data arbitrarily well, unfortunately at the cost of processing time, mostly during training, but also during prediction phase.}
    \end{itemize}
