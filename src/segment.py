@@ -115,17 +115,19 @@ def segmentPaper(img):
 
 
 
-def highlightSegments(img, segments):
+def highlightSegments(text, img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = np.array(img)
   for (x,y,w,h) in segments:
     cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
+
+  utils.imshow(text,temp)
   return temp
 
 
 def _DEMO_segment_text():
-  SAVE_IMAGE_PATH = '../doc/res/'
-  IMAGE_PATH = '../res/images/'
+  SAVE_IMAGE_PATH = 'doc/res/'
+  IMAGE_PATH = 'res/images/'
   image_filename1 = 'text_skew.png'
   image_filename2 = 'Android_image.jpg'
   image_filename3 = 'bad.jpg'
@@ -143,38 +145,23 @@ def _DEMO_segment_text():
   text_regions2 = segmentText(paper_region2)
   text_regions3 = segmentText(paper_region3)
 
-  demo_image1 = highlightSegments(paper_region1,text_regions1)
-  demo_image2 = highlightSegments(paper_region2,text_regions2)
-  demo_image3 = highlightSegments(paper_region3,text_regions3)
+  demo_image1 = highlightSegments("demo_image1",paper_region1,text_regions1)
+  demo_image2 = highlightSegments("demo_image2",paper_region2,text_regions2)
+  demo_image3 = highlightSegments("demo_image3",paper_region3,text_regions3)
 
   cv2.imwrite(SAVE_IMAGE_PATH + "segment_text1.png", demo_image1)
   cv2.imwrite(SAVE_IMAGE_PATH + "segment_text2.png", demo_image2)
   cv2.imwrite(SAVE_IMAGE_PATH + "segment_text3.png", demo_image3)
 
-  cv2.imshow("demo_image1", demo_image1)
-  cv2.waitKey()
-  cv2.destroyAllWindows()
-
-  cv2.imshow("demo_image2", demo_image2)
-  cv2.waitKey()
-  cv2.destroyAllWindows()
-
-  cv2.imshow("demo_image3", demo_image3)
-  cv2.waitKey()
-  cv2.destroyAllWindows()
 
 def _DEMO_segment_letter():
-  SAVE_IMAGE_PATH = '../doc/res/'
-  IMAGE_PATH = '../res/images/'
+  SAVE_IMAGE_PATH = 'doc/res/'
+  IMAGE_PATH = 'res/images/'
   image_filename = 'simpleR2.png'
   image = cv2.imread(IMAGE_PATH+image_filename,0)
   letter_rect = segmentLetters(image)
-  demo_image = highlightSegments(image, letter_rect)
+  demo_image = highlightSegments("demo_letter_image", image, letter_rect)
 
-  cv2.imwrite(SAVE_IMAGE_PATH + "segment_letter.png", demo_image)
-  cv2.imshow("demo_letter_image", demo_image)
-  cv2.waitKey()
-  cv2.destroyAllWindows()
 
 def main():
   _DEMO_segment_text()

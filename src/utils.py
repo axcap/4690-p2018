@@ -56,7 +56,7 @@ mapping = np.array([
 
 
 def imageParser():
-    path = "res/images/lorem_skew.png"
+    path = "res/images/lorem.png"
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
