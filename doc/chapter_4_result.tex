@@ -1,0 +1,45 @@
+\documentclass[Report.tex]{subfiles}
+\externaldocument[I-]{chapter_1_introduction}
+\externaldocument[M-]{chapter_2_method}
+\externaldocument[D-]{chapter_3_discardMethod}
+\externaldocument[C-]{chapter_5_conclusion}
+\externaldocument[RE-]{chapter_6_recognition}
+
+
+\begin{document}
+\chapter{Result - Discussion}
+\label{sec:Result - Discussion}
+\section{Result: Text Segmentation}
+\section{Result: Preprocessing}
+
+\subsection{Rotation}
+\todo[inline]{
+  We tried this approach, however we would end up with several lines on a text
+  segment, both along the vertical and horizontal direction of the text. However
+  the lines were not restricted to just these directions, we sometimes got lines
+  where there where no apperant reason for it to be. Because of these
+  uncertainties we tried another approach, minAreaRect method from OpenCV, see
+  bellow.
+}
+\subsection{Line segmentation}
+
+
+
+\todo[inline]{include results from line segmentation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=4cm]{res/4angle_rot.png}
+  \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
+  \label{fig:4angle_rot}
+\end{figure}
+
+
+
+\subsection{Character segmentation}
+
+\section{Result: Classification}
+\section{Result: Datasets}
+
+
+\end{document}
