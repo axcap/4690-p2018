@@ -116,21 +116,15 @@ def highlightSegments(img, segments):
   temp = np.array(img)
   for (x,y,w,h) in segments:
     cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
-
-def highlightSegments(text, img, segments):
-    # Copy input array as cv2 drawing function work inplace
-    temp = np.array(img)
-    for (x,y,w,h) in segments:
-        cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
-    utils.imshow(text, temp)
+  return temp
 
 def main():
   import utils
   SAVE_IMAGE_PATH = '../doc/res/'
   IMAGE_PATH = '../res/images/'
   image_filename1 = 'text_skew.png'
-  image_filename2 = 'ReceiptSwiss.jpg'
-  image_filename3 = 'Android_image.jpg'
+  image_filename2 = 'Android_image.jpg'
+  image_filename3 = 'bad.jpg'
 
 
   image1 = cv2.imread(IMAGE_PATH+image_filename1,0)
