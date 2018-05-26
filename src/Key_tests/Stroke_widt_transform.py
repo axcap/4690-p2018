@@ -164,9 +164,6 @@ def draw_mask(mask):
     bin_image = bin_image.astype(np.uint8)
     bin_image *= 255
     
-    kernel = np.ones((3,3),np.uint8)
-    bin_image = cv2.erode(bin_image, kernel)
-
     cv2.imwrite('swt.png', bin_image)
     cv2.imshow("text area", bin_image) 
     cv2.waitKey()
