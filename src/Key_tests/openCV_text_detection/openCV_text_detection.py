@@ -15,10 +15,10 @@ def detect_text(image):
         channels.append((255-channels[c]))
 
     for channel in channels:
-        erc1 = cv2.text.loadClassifierNM1('trained_classifierNM1.xml')
+        erc1 = cv2.text.loadClassifierNM1('Key_tests/openCV_text_detection/trained_classifierNM1.xml')
         er1 = cv2.text.createERFilterNM1(erc1,16,0.00015,0.1,0.2,True,0.1)
 
-        erc2 = cv2.text.loadClassifierNM2('trained_classifierNM2.xml')
+        erc2 = cv2.text.loadClassifierNM2('Key_tests/openCV_text_detection/trained_classifierNM2.xml')
         er2 = cv2.text.createERFilterNM2(erc2,0.5)
 
         regions = cv2.text.detectRegions(channel,er1,er2)
@@ -36,17 +36,16 @@ def detect_text(image):
 
     #Visualization
     cv2.imshow("Text detection result", vis)
+    cv2.imwrite('OpenCV_Std.png', vis)
     cv2.waitKey(0)
     return vis
 
 def main():
 
-    IMAGE_PATH = '../../../res/images/'
-    image_filename = 'Android_image.jpg'
+    IMAGE_PATH = '../res/images/'
+    image_filename = 'ReceiptSwiss.jpg'
 
     image = cv2.imread(IMAGE_PATH+image_filename)
-
-
     detect_text(image)
 
 
