@@ -53,11 +53,6 @@ def swt(image):
         median = np.median([swt[y, x] for (x, y) in ray])
         for (x, y) in ray:
             swt[y, x] = min(median, swt[y, x]) 
-
-    if True:
-        cv2.imwrite('swt.jpg', swt * 100)
-        cv2.imwrite('canny.jpg', edges)
-        cv2.imwrite('angle.jpg', theta)
         
     return swt
               
@@ -172,31 +167,26 @@ def draw_mask(mask):
     kernel = np.ones((3,3),np.uint8)
     bin_image = cv2.erode(bin_image, kernel)
 
-    cv2.imwrite('mask.png', bin_image)
+    cv2.imwrite('swt.png', bin_image)
     cv2.imshow("text area", bin_image) 
     cv2.waitKey()
     cv2.destroyAllWindows()
     return bin_image
 
 def main():
-    import test_find_contour as test 
-    import text_segmentation as text_seg
 
     IMAGE_PATH = '../res/images/'
 
     # image_filename = 'lorem.png'
     # image = cv2.imread(IMAGE_PATH+image_filename,0)
     
-    image_filename = 'text_skew.png'
+    image_filename = 'ReceiptSwiss.jpg'
     image = cv2.imread(IMAGE_PATH+image_filename,0)
 
     SWT = swt(image)
     CC,cc_list,n_label = connect_component(SWT)
-    # find_letter(CC,cc_list)
-    # for i in range(100,500):
-    #     draw_label(CC,i)
     draw_mask(CC)
-    # remove_lines(CC,n_label)
+
 
 
 if __name__ == '__main__':
