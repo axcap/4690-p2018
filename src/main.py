@@ -69,7 +69,7 @@ def extractText(image):
             # If space between chars > agerage insert x 'space char's
             widht = symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])
             if idx+1 < len(symbols) and  widht > space:
-                line_out += " " * widht // space)
+                line_out += " " * widht // space
 
             print(".", end="")
             sys.stdout.flush()

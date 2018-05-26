@@ -1,53 +1,54 @@
 \documentclass[11pt,a4paper,UKenglish]{report}
-  \usepackage[utf8]{inputenc}           %% ... or latin1
-  \usepackage[T1]{fontenc,url}
-  \usepackage{textcomp,csquotes,varioref,graphicx,subcaption}
-  \graphicspath{{res/Text_Segmentation}}
-  \usepackage{gensymb}
-  \usepackage[UKenglish,USenglish]{babel}
-  
-  \usepackage[top=1in]{geometry}
-  \usepackage{float}
-  \usepackage[hidelinks,colorlinks]{hyperref} % trykkbar referering
-  \usepackage[all]{hypcap} % ref til starten av referansen
-  \usepackage{todonotes} % for kladd
-  
-  \usepackage{marginnote}
-  \usepackage[backend=biber,style=numeric-comp]{biblatex}
-  \addbibresource{key.bib}
-  % \addbibresource{bib.bib}
-  %\usepackage{ifikompendium/ifikompendiumforside}
-  \usepackage{ifikompendiumforside}
-  \setcounter{tocdepth}{1} % only show chapter and section
-  \usepackage{imakeidx}
-  
-  \usepackage{subfiles}
-  % To be able to cross refrance
-  \usepackage{xr}
-  \externaldocument[I-]{chapter_1_introduction.tex}
-  \externaldocument[M-]{chapter_2_method.tex}
-  \externaldocument[D-]{chapter_3_discardMethod.tex}
-  \externaldocument[R-]{chapter_4_result.tex}
-  \externaldocument[C-]{chapter_5_conclusion.tex}
-  \externaldocument[RE-]{chapter_6_recognition.tex}
-  
-  \title{UNIK4690 Project}
-  \subtitle{Text Recognition}
-  \author{
-    Akhsarbek Gozoev  - akhsarbg \\
-    Sadegh Hoseinpoor - sadeghh\\
-    Key Lung Wong - keylw
-  }
+\usepackage[utf8]{inputenc}           %% ... or latin1
+\usepackage[T1]{fontenc,url}
+\usepackage{textcomp,csquotes,varioref,graphicx,subcaption}
+\graphicspath{{res/Text_Segmentation}}
+\usepackage{gensymb}
+\usepackage[english,USenglish]{babel}
 
-  \begin{document}
-  \ififorside[kind={Report}]
-  \newpage
-  \tableofcontents
-  \newpage
-  \subfile{chapter_1_introduction}
-  \subfile{chapter_2_method}
-  \subfile{chapter_3_discardMethod}
-  \subfile{chapter_4_result}
-  \subfile{chapter_5_conclusion}
-  \subfile{chapter_6_recognition}
-  \end{document}
+\usepackage[top=1in]{geometry}
+\usepackage{float}
+\usepackage[hidelinks,colorlinks]{hyperref} % trykkbar referering
+\usepackage[all]{hypcap} % ref til starten av referansen
+\usepackage{todonotes} % for kladd
+
+\usepackage{marginnote}
+\usepackage[backend=biber,style=numeric-comp]{biblatex}
+\addbibresource{key.bib}
+% \addbibresource{bib.bib}
+%\usepackage{ifikompendium/ifikompendiumforside}
+\usepackage{ifikompendium/ifikompendiumforside}
+\setcounter{tocdepth}{1} % only show chapter and section
+\usepackage{imakeidx}
+
+\usepackage{subfiles}
+% To be able to cross refrance
+\usepackage{xr}
+\externaldocument[I-]{chapter_1_introduction}
+\externaldocument[M-]{chapter_2_method}
+\externaldocument[D-]{chapter_3_discardMethod}
+\externaldocument[R-]{chapter_4_result}
+\externaldocument[C-]{chapter_5_conclusion}
+\externaldocument[RE-]{chapter_6_recognition}
+
+\title{UNIK4690 Project}
+\subtitle{Text Recognition}
+\author{
+  Akhsarbek Gozoev  - akhsarbg \\
+  Sadegh Hoseinpoor - sadeghh\\
+  Key Lung Wong - keylw
+}
+
+
+\begin{document}
+\ififorside[kind={Report}]
+\newpage
+\tableofcontents
+\newpage
+\subfile{chapter_1_introduction}
+\subfile{chapter_2_method}
+\subfile{chapter_3_discardMethod}
+\subfile{chapter_4_result}
+\subfile{chapter_5_conclusion}
+\subfile{chapter_6_recognition}
+\end{document}

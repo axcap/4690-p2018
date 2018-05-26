@@ -33,20 +33,6 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 \end{figure}
 
 \subsection{Rotation}
-\todo[inline]{
-  We tried this approach, however we would end up with several lines on a text
-  segment, both along the vertical and horizontal direction of the text. However
-  the lines were not restricted to just these directions, we sometimes got lines
-  where there where no apperant reason for it to be. Because of these
-  uncertainties we tried another approach, minAreaRect method from OpenCV, see
-  bellow.
-}
-\subsection{Line segmentation}
-
-
-
-\todo[inline]{include results from line segmentation}
-
 \begin{figure}[H]
   \centering
   \includegraphics[height=4cm]{res/4angle_rot.png}
@@ -55,11 +41,22 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 \end{figure}
 
 
-
+\subsection{Line segmentation}
 \subsection{Character segmentation}
-
 \section{Result: Classification}
+\subsection{Description}
+\begin{flushleft}
+  Convolutional neural networks are especially good for image
+  classification, because they take local spatial connections into account when
+  they classify. This way it doesn't matter where in the image our
+  object/character is it will be able to recognize it, same yields for rotation,
+  as the CNN classifies based on local spatial connections it doesn't matter if
+  the object is rotated. Hence the classification would be even more robust
+  compared to the MLP.
+\end{flushleft}
+
 \section{Result: Datasets}
+\subsection{Description}
 
 
 \end{document}

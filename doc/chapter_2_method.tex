@@ -9,8 +9,7 @@
 \chapter{Method}
 \label{chap:Method}
 \section{Description}
-%The following section as described in Section~\ref{I-subsec:Report Layout} will
-present our methods. Bellow we present each component individually and the
+The following section as described in Section~\ref{subsec:Report Layout} will present our methods. Bellow we present each component individually and the
 corresponding methods for them. A short description on what challenges have to
 be solved for each component will be addressed first. \\ \\
 
@@ -35,40 +34,35 @@ In this part of the program, we want to be able segment out parts of text in the
   \end{enumerate}
 \end{flushleft}
 
-
 \section{Component: Preprocessing}
 \label{Method:Preprocessing}
 \subsection{Description}
 Definition of preprocessing; the act of preparing the data for further use,
 in our case for classification. \par
-After the text segmentation we assume we have an image consisting of only text
-in black, and background in white. What remains for us to do is to segment out
-each character and format it to the right datatype for the classifier. Hence
-the challenges we will have to solve here are:
+After the text segmentation we assume we have an image consisting of white text on black background. What remains for us to do is to segment out each character and format it to the right data type for the classifier. Hence the challenges we will have to solve here are:
 
 
 \begin{flushleft}
   \textbf{Challenges}
   \begin{itemize}
-    \item{Data formating/casting}
+    \item{Data formatting/casting}
     \begin{itemize}
       \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. No need for a specific approach.}
     \end{itemize}
     \item{Rotated text}
     \begin{itemize}
-      \item{Our approach for character segmentation needs text rotated horisontally.}
+      \item{Our approach for character segmentation needs text rotated horizontally.}
     \end{itemize}
       \item{Line segmentation}
     \begin{itemize}
-      \item{Our approach for character segmentation needs lines as input, as a sequence of lines on top of eachother breaks the algorithm.}
+      \item{Our approach for character segmentation needs lines as input, as a sequence of lines on top of each other breaks the algorithm.}
     \end{itemize}
       \item{Character segmentation}
     \begin{itemize}
-      \item{We need to segment each character because the classifier cannot distingush several characters from one image.}
+      \item{We need to segment each character because the classifier cannot distinguish several characters from one image.}
     \end{itemize}
   \end{itemize}
 \end{flushleft}
-
 
 \subsection{Find rotation}
 \begin{flushleft}
@@ -76,29 +70,24 @@ the challenges we will have to solve here are:
   This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
   to find the convex hull of the text segments, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
-  find the minimum Area rectangle. \par
-  One important note here is that this method only works if the images sent as
-  input is binary. Because we want the convex hull algorithm to find the convex
-  hull of the text segment. \par
-  This method is really good at finding the angles, however it does not solve the
-  problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
-  this problem. It will only allow us to rotate it along one of the text
-  segments edges. To rotate the text correctly from the result of cv.minAreaRect
-  we used an approach using Convolutional neural networks.
+  find the minimum area rectangle. \par
+  One important note here is that the method above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull \todo[inline]{(Fjerne dette?) algorithm to find the convex hull} of the text segment. \par
+  This method is really good at finding the angles, however it does not solve the problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
+  this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document). 
 
   \begin{enumerate}
     \item \textbf{Binary image}
-    For the Convex hull algorithm to work, the text segment and the background
-    needs to be distinguishable. Convert image to a binary image.
+    For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and possibly bitwise\textunderscore not to flip foreground and background colors.
     \item \textbf{cv.minAreaRect()}
-    Run the minAreaRect() method.
+    Feed our newly generated image to cv.minAreaRect with some additional parameters.
     \item \textbf{Custom CNN solution - find correct rotation}
-    Now that we have one of [0\textdegree, 90\textdegree, 180\textdegree,
-    270\textdegree], we run a character classification on a subset of the
-    entire text. Next the classifier which returns an angle which has the
-    highest probobility, we set as the true angle, we rotate the text
-    accordingly.
-  \end{enumerate}
+    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options of finding final rotation angle of current text segment. \todo[inline]{As the above method returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we will use a CNN to determine the which angle it is and then rotate it. We have several options when we use a CNN to find the correct angle.}
+    \begin{enumerate}
+	\item{Most straightforward would be to find rotation of first character and rotate the whole segment accordingly (fast and naive)}
+	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation (somewhat slower (depends on N) but gives us bit more confidence than approach above)}
+	\item{Finally we can find angle for each individual character before we try to classify it, gives us the most accuracy but the price is time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
+	\end{enumerate}
+    \end{enumerate}
 \end{flushleft}
 
 
@@ -132,23 +121,17 @@ test text alksjdfh alsjkdbfkas
 
 \begin{flushleft}
   \textbf{Convolutional Neural Network} \\
-  Convolutional neural networks are especially good for image
-  classification, because they take local spatial connections into account when
-  they classify. This way it doesn't matter where in the image our
-  object/character is it will be able to recognize it, same yields for rotation,
-  as the CNN classifies based on local spatial connections it doesn't matter if
-  the object is rotated. Hence the classification would be even more robust
-  compared to the MLP. \par
-  The basic idea of a CNN is somewhat understood, but the algorithms and how to
-  implement it is still not 100\% grasped. Hence because of lack of knowledge,
-  trying to solve the classification problem with a CNN will mostly be done
-  by researching and trying to solve it as it unfolds.
+  The basic idea of a CNN is train some number of filters and then
+  after the filters are trained, run the image which is now ``filterd'', through
+  a fully connected network. The fully connected network will then try and
+  classify based on the feature images from the filtering/convolution layers. \par
+  \todo[inline]{Bellow we will present, a short description of key points of a CNN, the architecture and variable choices we have made for the CNN.}
 \end{flushleft}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[height=4cm]{res/CNN_architecture.png}
-  \caption{Convolutional Neural network \href{ http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/}{Source}}
+  \includegraphics[height=4cm]{res/LeNet.png}
+  \caption{Convolutional Neural network \href{https://adeshpande3.github.io/A-Beginner\%27s-Guide-To-Understanding-Convolutional-Neural-Networks/}{Source}}
   \label{fig:CNN_architecture}
 \end{figure}
 
@@ -157,33 +140,20 @@ test text alksjdfh alsjkdbfkas
   \begin{itemize}
    \item{Convolutional layer}
    \begin{itemize}
-    \item{This layer consists of several filters/kernels that are convolved over
-    the image and based on how many filters one uses, the same amount of feature
-    images are made. The purpose of the filters are to grasp some spatial
-    characteristics of the image, and make it available for further processing.
-    The filters here correspond to the weights in the MLP, these are first
-    initialized at random (or with a smart initialization method), then these
-    will be updated as the network is trained. Some features that the filters
-    might find could be; vertical or horizontal lines, they could also find more
-    complex features like faces or animals at later layers. \par
-    In a CNN we can have arbitrary many convolutional layer and arbitrary many
-    filters at each layer. However just like a regular MLP, increasing the
-    number of layers and or filters; can allow the network to fit the training
-    data arbitrarily well, unfortunately at the cost of processing time.}
+    \item{This layer consists of several filters/kernels that are convolved over the image and based on how many filters one uses, the same amount of feature images are made. The purpose of the filters are to grasp some spatial characteristics of the image, and make it available for further processing.
+    The filters here correspond to the weights in the MLP, these are first initialized at random (or with a smart initialization method), then these will be updated as the network is trained. 
+First layer filters are able to spot simple geometry like straight or curved lines, but the deeper we dive into networks topology the more complex shapes the filters can recognize. It is not unusual that last layers on large networks can differenciate between faces, animals, objects.\par
+    In a CNN we can have arbitrary many convolutional layer and arbitrary many filters at each layer. However just like a regular MLP, increasing the number of layers and or filters; can allow the network to fit the training data arbitrarily well, unfortunately at the cost of processing time, mostly during training, but also during prediction phase.}
    \end{itemize}
    \item{Pooling}
    \begin{itemize}
-    \item{The pooling layer allows us to downsize the data. This makes it
-    possible to start with data which are relatively big, and as the data propagates
-    through the network we downsize it. As for the convolution layer the pooling
-    layer can be used arbitrarily many times in a network.}
+    \item{The pooling layer allows us to downsize the data. This makes it possible to start with images which are relatively big, and as it's data propagates through the network we downsize it. As for the convolution layer the pooling layer can be used arbitrarily many times in a network.
+    Pooling makes our network rotation invariant to minor changes in angle, as outputs max/min value of a (pooling-size) block regardless of where in the block this value is.}
    \end{itemize}
    \item{Fully connected layers (FC)}
    \begin{itemize}
     \item{This layer works basically the same way as the hidden layers in an MLP.
-    The pixels of the image is sent as data for each node and they propagate
-    through these layers (usually 2 layers of FC are used) just as they would in
-    an MLP.}
+    The output of last convolution layer is then flattened and send to N fully connected layers (also sometimes referenced as dense layer). At the last layer we have same number of outputs as we have classes, just like in regular MLP.}
    \end{itemize}
   \end{itemize}
 \end{flushleft}
@@ -195,147 +165,20 @@ test text alksjdfh alsjkdbfkas
 
 \begin{flushleft}
   \textbf{Description} \\
-  Labeled data is needed because our classifiers need to be trained to understand
-  the difference between the characters. This is usually done by training a
-  classifier with a set of training data, labels are needed in our case,
-  since it is a supervised machine learning algorithm we want to use. As the
-  training data is used to train the software, we will need data to test our
-  software as well, hence the need for test data. The test data is used to get a
-  measure of what the error rate of our software is, based on the results we
-  can then tune the hyper-parameters to get a better/smaller error rate. Lastly
-  we will need validation dataset. This is an independent dataset that the software
-  is not familiar with. The accuracy of the software on the validation set will
-  then be a measure of how good the software can classify the characters.
+  In order to learn our network to distinguish between the characters it needs training. Training is done by feeding images of known objects to the network (labeled data) and telling it how inaccurate it's prediction so that network can adjust it's weights accordingly. This type of training is called supervised training as we guide our network during training process.
+For network to get high accuracy of prediction a lot of labeled data is needed. Lucky for us datasets like MNIST exists, more info about it later.
 \end{flushleft}
 
 \begin{flushleft}
   \textbf{Limitation - proof-of-concept} \\
-  As we have limited us to the English alphabet and numbers ranging from [0-9],
-  we will need labeled data for each of these 36 characters; training, test and
-  validation sets. As the concept of classifying only numbers vs all 36
-  characters does not differ that much, we will first see if we can solve the OCR
-  problem with just numbers. Therefore we only need a dataset containing numbers
-  at first. Thereafter we will search for a dataset containing all the characters
-  we need.
+  As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need.
 \end{flushleft}
 
 \begin{flushleft}
   \textbf{Dataset} \\
   \textbf{MNIST} \\
-  This is a dataset containing handwritten numbers [0-9].
-  It has a training set of 60.000 examples and a test set of 10.000 examples.
-  (ref. reader to http://yann.lecun.com/exdb/mnist/).
+  This is a dataset containing images of handwritten digits [0-9]. It has a training set of 60.000 examples and a test set of 10.000 examples. Training set is further divided into 55000 examples of actual training set, while 5000 images are treated as validation set (this number can be changed depending which interface we use to access MNIST data).
+MNIST dataset is compressed into 4 binary *.gz files, but we dont need to implement any readers/parsers ourself as tensorflow already has two we can choose between.
+(ref. reader to http://yann.lecun.com/exdb/mnist/).
 \end{flushleft}
-
-
-\newpage
-
-\section{Classification}
-\label{sec:Discarded Method:Classification}
-
-\begin{flushleft}
-  \textbf{Deep Neural Network} \\
-  Multilayer perceptron neural networks are relatively straight
-  forward to code, however the challenging part is to decide on good
-  hyper-parameters and to not overfit our network. \par
-  Research has shown that the choices of parameters can have huge effects on
-  the error rate through empirical testing. As empirical testing has shown that
-  some combinations of parameters are better than others, we will also use the
-  same method to find decent values on several of the hyper-parameters. More on
-  this bellow, where a short description of the hyper-parameters follow. \par
-  One obvious disadvantage we might face by using MLP is that slight spatial
-  change on where in the image the characters are located, might lead to
-  characters classified differently. This is because there is no spatial
-  connections on a MLP.
-\end{flushleft}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=4cm]{res/neural_net2.jpeg}
-  \caption{MLP Neural network \href{http://cs231n.github.io/neural-networks-1/}{Source}}
-  \label{fig:neural_net2}
-\end{figure}
-
-
-\begin{flushleft}
-  \textbf{Hyper-parameters}
-  \begin{itemize}
-   \item{Number of hidden layers}
-   \begin{itemize}
-    \item{Layers decide how well the software can define the decision borders.
-    Hence increase in layers can have a positive effect, there are also cons with
-    the amount of layers. The more layers, the greater the computational power
-    needed to train the system. We will be using the empirical method to decide
-    how many layers we need}
-   \end{itemize}
-   \item{Number of nodes in each hidden layer}
-   \begin{itemize}
-    \item{Nodes in each hidden layer has the same effect as the number of hidden
-    layers, hence the same applies for this hyper-parameter. }
-   \end{itemize}
-   \item{Activation functions}
-   \begin{itemize}
-    \item{The activation function decides which combination of nodes, with their
-    signals, are allowed to propagate through the network. Here we will be using
-    the \textit{rectified linear unit} (RELU) activation function. This is an
-    activation function that allows propagation if the signal is positive,
-    otherwise it will forward a zero. The reason for choosing this activation
-    function is because this function handles the \textit{vanishing gradient
-    problem} better than sigmoid and a tanh activation functions. More on
-    vanishing gradient problem under ``optimization function''.}
-   \end{itemize}
-   \item{Loss function}
-   \begin{itemize}
-    \item{The loss function describes how far off the predicted class of the
-    character is from the real class. In our case since we have multiple
-    classes and we are going to use \textit{softmax regression} as the output
-    layer, we also will be using the \textit{cross-entropy loss function}.}
-   \end{itemize}
-   \item{Optimization function}
-   \begin{itemize}
-    \item{The backpropogation will train the weights by Gradient Decent
-    Optimization. However as training with several thousand examples, and then
-    optimizing the weights and run the training process, is too costly resource
-    wise, we will have to implement the \textit{mini-batch gradient decent
-    optimizations}. Same principle as gradient decent optimization, but this way
-    we will find the gradient decent for each batch. As long as these batches are
-    randomly chosen, and the sizes are large enough, (we will be using 100 as
-    batch size), these will represent the entire dataset well enough.}
-   \end{itemize}
-   \item{Learning rate}
-   \begin{itemize}
-    \item{Learning rate is a scalar that decides how large the steps towards
-    the gradient minimum will be, for the weights. Choosing too small of a
-    learning-rate we might risk not reaching the bottom of the graph, we also
-    might get stuck in a local minimum. Choosing too large of a learning rate
-    we might risk never settle down on a minimum. \par
-    For the learning rate we will be using the empirical method too.}
-   \end{itemize}
-   \item{Initialization of the weights and biases}
-   \begin{itemize}
-    \item{Initialization of the weights also seems to be of importance,
-    researchers have found out. This is obvious, as for example setting all the
-    weights to zero, would of course lead to a network with very few active
-    nodes. \par
-    We will be using the initialization of zeros for the biases, not any
-    apparent reason. Based on our research, it seems people have gotten decent
-    results when using this initialization. For the weights we will be using a
-    gaussian distribution, mean=0, standard deviation=1. Again this is also
-    something that we have read should be a good initialization for the weights,
-    no other reason.}
-   \end{itemize}
-   \item{Number of epochs}
-   \begin{itemize}
-    \item{Number of epochs are only relevant when we have a small number of
-    dataset. When we have a small dataset we might want to run the software on
-    the same dataset several times. This might result in overfitting the software
-    to the dataset, therefore it is really important to be careful of the number of
-    epochs, in cases with small datasets.}
-   \end{itemize}
-  \end{itemize}
-\end{flushleft}
-
-
-\section{Datasets}
-
 \end{document}
