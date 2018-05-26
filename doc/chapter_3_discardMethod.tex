@@ -96,10 +96,10 @@ We decided to avoid using MLP in our project as it required lots of training dat
 \section{Datasets}
 \begin{flushleft}
 
-MNIST was discarded as were decided to stick with machine printed digits and letters, none of which were included in MNIST. It was a good starting point to test our networks (both MLP and CNN) but it was time to move on.
+\textbf{MNIST} was discarded as were decided to stick with machine printed digits and letters, none of which were included in MNIST. It was a good starting point to test our networks (both MLP and CNN) but it was time to move on.
 
 \par
-ROT* - dataset containing rotated examples of another set but labels corespont to angle of rotation. In our case we only had 4 classes [0-3], one for each angle in [0, 90, 180, 270].
+\textbf{ROT*} - dataset containing rotated examples of another set (*) but labels corespont to angle of rotation. In our case we only had 4 classes [0-3], one for each angle in [0, 90, 180, 270].
 This set was discarded as out network showed very little learning progress as the accuracy of predictions was constantly around 65\%. Now that is not datasets fault, most likely it was due to bad network topology or poor choice of hyper parameters but we didn't had enough time to debug this part of project and decided to stick to OpenCV's minAreaRect() results. 
 
 

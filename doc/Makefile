@@ -4,12 +4,16 @@ all: clean copy latex_start latex_bib latex_end move
 latex_start: Report.tex
 	pdflatex -output-directory=src/ Report.tex
 
-clean: clean2 #clean1
-#clean1: bib.bib
-#	rm src/bib.bib
-
-clean2: text_seg.bib
-	rm src/text_seg.bib
+clean:
+	rm -f src/text_seg.bib
+	rm -f *.gz
+	rm -f *.pdf
+	rm -f *.bcf
+	rm -f *.aux
+	rm -f *.log
+	rm -f *.toc 
+	rm -f *.out
+	rm -f *.xml
 
 copy: copy2 #copy1
 #copy1: bib.bib
