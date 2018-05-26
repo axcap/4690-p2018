@@ -23,23 +23,13 @@ the before mentioned chapter.
 \begin{flushleft}
   \textbf{Approach: Hough Transform} \\
   \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a
-  well known algorithm to find lines, its approach is to see if it can
+  well known algorithm which finds lines, its approach is to see if it can
   alligne some threshold of pixels on one straight line. To help with this
-  process we will do a simple edge detection algorithm on the image before
-  running it through the Hough Transform. \par
-  Bellow, the steps needed to perform this approach are mentioned.
-
-  \begin{enumerate}
-    \item \textbf{Edge detection}
-    Too make the Hough transform perform better we want to remove unnecessary
-    noise. Canny edge detection algorithm is a robust and fast solution for
-    this.
-    \item \textbf{Line detection}
-    Now perform the actuall Hough Transform.
-    \item \textbf{Rotate image}
-    Lastly we need to rotate the image according to the lines from the Hough
-    Transform.
-  \end{enumerate}
+  process we will do a simple edge detection (Canny) algorithm on the image
+  before running it through the Hough Transform. \par
+  We discarded this approach because we would end up with lines where there
+  were no apperant reason for it to be, and because the approach mentioned
+  earlier, cv.minAreaRect() had a satisfactory result.
 \end{flushleft}
 
 \end{document}

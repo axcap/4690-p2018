@@ -158,12 +158,11 @@ the challenges we will have to solve here are:
     needs to be distinguishable. Convert image to a binary image.
     \item \textbf{cv.minAreaRect()}
     Run the minAreaRect() method.
-    \item \textbf{Custom CNN solution - find correct rotation}
+    \item \textbf{CNN solution - find correct rotation}
     Now that we have one of [0\textdegree, 90\textdegree, 180\textdegree,
-    270\textdegree], we run a character classification on a subset of the
-    entire text. Next the classifier which returns an angle which has the
-    highest probobility, we set as the true angle, we rotate the text
-    accordingly.
+    270\textdegree], we run a rotation classifier on a subset of the characters
+    from the text. Next the classifier classifies what state of rotation the
+    text is in, and then we rotate the text accordingly.
   \end{enumerate}
 \end{flushleft}
 
@@ -191,24 +190,20 @@ test text alksjdfh alsjkdbfkas
   Convolutional Neural Network (CNN), the architecture is illustration in
   Figure~\ref{fig:CNN_architecture}, and a Multilayer Perceptron (MLP or Deep
   neural network (DNN)), Figure~\ref{fig:neural_net2}. However the method we
-  ended up choosing for the final result is CNN. In
+  ended up choosing for the final result is a CNN. In
   Section~\ref{D-sec:Discarded Method:Classification} we explain why we discarded
-  the MLP approach. \par
+  the MLP approach.
 \end{flushleft}
 
 \begin{flushleft}
   \textbf{Convolutional Neural Network} \\
-  Convolutional neural networks are especially good for image
-  classification, because they take local spatial connections into account when
-  they classify. This way it doesn't matter where in the image our
-  object/character is it will be able to recognize it, same yields for rotation,
-  as the CNN classifies based on local spatial connections it doesn't matter if
-  the object is rotated. Hence the classification would be even more robust
-  compared to the MLP. \par
-  The basic idea of a CNN is somewhat understood, but the algorithms and how to
-  implement it is still not 100\% grasped. Hence because of lack of knowledge,
-  trying to solve the classification problem with a CNN will mostly be done
-  by researching and trying to solve it as it unfolds.
+  The basic idea of a CNN is train some number of filters and then
+  after the filters are trained, run the image which is now ``filterd'', through
+  a fully connected network. The fully connected network will then try and
+  classify based on the feature images from the filtering/convolution layers. \par
+
+  
+
 \end{flushleft}
 
 \begin{figure}[H]
