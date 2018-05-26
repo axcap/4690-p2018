@@ -1,22 +1,48 @@
 \documentclass[Report.tex]{subfiles}
-\externaldocument[I-]{chapter_1_introduction}
-\externaldocument[M-]{chapter_2_method}
-\externaldocument[R-]{chapter_4_result}
-\externaldocument[C-]{chapter_5_conclusion}
-\externaldocument[RE-]{chapter_6_recognition}
-
-
+\externaldocument[I-]{chapter_1_introduction.tex}
+\externaldocument[M-]{chapter_2_method.tex}
+\externaldocument[R-]{chapter_4_result.tex}
+\externaldocument[C-]{chapter_5_conclusion.tex}
+\externaldocument[RE-]{chapter_6_recognition.tex}
 
 \begin{document}
 \chapter{Discarded Method}
-\label{sec:Discarded Method}
+\label{chap:Discarded Method}
 \section{Description}
 This chapter covers the methods tried but not included in the end result,
-becasue they showed dissatisfactory results. This chapter is also organized
-like Chapter~\ref{2-sec:Method}, but for component description please refer to
-the before mentioned chapter.
+because they showed dissatisfactory results. This chapter is also organized
+like Chapter~\ref{chap:Method}, but for component description please refer to the before mentioned chapter.
 
 \section{Text Segmentation}
+We tried to expand the original approach to be able to detect text with noise, natural images. We tried Stroke Width Transform first, then OpenCv scene text detection. We abandon both approach because of time constrain and difficulties of implementation. We decided therefore to focus on other part of the project first. 
+
+\begin{flushleft}
+  \subsubsection{Other Approach 1: Stroke Width Transform}
+  We tried Stroke Width Transform to do Text Segmentation when original approach gave a decent result. It was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. Additional sources was used in our attempt to implement it\cite{werner_text_????, _c++_????, bunn_strokewidthtransform:_2018}. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
+  \begin{enumerate}
+    \item \textbf{Edge Detection and edge orientation(Done)}
+    We need to have Edge image and orientation of the gradient image.
+    Canny and Sobel was used in the original paper and other sources. This is simple since OpenCv have both Canny and Sobel implemented.
+    \item \textbf{Stroke Width Transform(Done)}
+    Here we had to do more. We have to find a line from a starting point and the angle. We was able to implement this part, but was some uncertainties. It only work on black text with white background. That is because the orientation(Sobel filtering) are dependent on it. The paper talk about doing a second pass with inverse image, but we decided to ignore it, in order to come farther in the algorithm.
+    \item \textbf{Find Connected Component(Done)}
+    In this point we are find connect component. The caveat here is the components need to be connected with regards to the Stride Length. We used 'One Component At A Time' algorithm to find all the different components. This part we was able to finish.
+    \item \textbf{Exclude noise and find letters(not Done)}
+    Since Stroke Width Transform tend to make a lot of noise. The obvious one is making single lines. This part are suppose to exclude this noise and at the same time exclude anything that is not a letter.The theory is, since letter and text all usually have the same stroke width, we can use this information do estimate what is letter and what is not. We was not able to finish this part.
+    \item \textbf{Find lines/words(not Done)}
+    Was not able to get to this part, but ideal it will combine letters to a single line or words.
+  \end{enumerate}
+  In cases where the image have a lot of non text object, it will work fine with it. We ended up discarding this approach since it was to time consuming and decided on working on simple approach first.
+\end{flushleft}
+
+\begin{flushleft}
+  \subsubsection{Other Approach 2: OpenCv Scene Text Detection}
+  OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}. Since we already discarded Stroke Width Transform to focus on simple approach, we decided not use it. We had some problem to get propel result as well.
+\end{flushleft}
+
+\subsection{Used in end result}
+Since we had problem on getting with both approach 2 and 3 we decided on approach 1. It gave us ideal result on most images, but have some problem in images with non text objects.
+
 \section{Preprocessing}
 \subsection{Find rotation}
 

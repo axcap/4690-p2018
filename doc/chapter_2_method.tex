@@ -1,38 +1,28 @@
 \documentclass[Report.tex]{subfiles}
-\externaldocument[I-]{chapter_1_introduction}
-\externaldocument[D-]{chapter_3_discardMethod}
-\externaldocument[R-]{chapter_4_result}
-\externaldocument[C-]{chapter_5_conclusion}
-\externaldocument[RE-]{chapter_6_recognition}
-
+\externaldocument[I-]{chapter_1_introduction.tex}
+\externaldocument[D-]{chapter_3_discardMethod.tex}
+\externaldocument[R-]{chapter_4_result.tex}
+\externaldocument[C-]{chapter_5_conclusion.tex}
+\externaldocument[RE-]{chapter_6_recognition.tex}
 
 \begin{document}
 \chapter{Method}
-\label{sec:Method}
+\label{chap:Method}
 \section{Description}
 %The following section as described in Section~\ref{I-subsec:Report Layout} will
 present our methods. Bellow we present each component individually and the
 corresponding methods for them. A short description on what challenges have to
 be solved for each component will be addressed first. \\ \\
 
-
 \section{Component: Text segmentation}
 \label{Method:Text_segmentation}
 
 \subsection{Description}
-In this part of the program, we want to be able segment out parts of text in the image. We want to then later segment out lines and letter for further classification. In this part wee assume that the image will mainly black text on white paper.
-
-\subsection{Tried}
-We where uncertain on how to do this part when we initial started the project. We ended up looking for a lot of different ways to do this part. We ended up trying 3 different approaches with mix result.
-\begin{enumerate}
-  \item Simple image analysis technics, using Otsu thresholding and Morphology.(Used)
-  \item Stroke Width Transform(SWT) to detect text in natural images.(Discarded)
-  \item OpenCv implementation of Scene Text Detection.(Discarded)
-\end{enumerate}
+In this part of the program, we want to be able segment out parts of text in the image. We want to then later segment out lines and letter for further classification, see section \nameref{subsec:Find_line} and \nameref{subsec:Find_Symb} for reference. In this part we assume that the image have black text on white paper and the image mostly only contains text. 
 
 \begin{flushleft}
-  \subsubsection{Approach 1: Simple Image Analysis Technics}
-  We was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
+  \subsubsection{Approach: Simple Image Analysis Technics}
+  Our approach here was inspired by the this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
   \begin{enumerate}
     \item \textbf{Find Edges/Outliners of the image.}
     Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images.(so long the text and background is close to black and white)
@@ -44,62 +34,6 @@ We where uncertain on how to do this part when we initial started the project. W
     OpenCv FindContours was used to find the different text regions. We then exclude any regions that is smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
   \end{enumerate}
 \end{flushleft}
-
-\begin{flushleft}
-  \subsubsection{Approach 2: Stroke Width Transform}
-  The second approach we tried Stroke Width Transform to do Text Segmentation, it was original propose by Epstein et al 2010 \cite{epshtein_stroke_2010}. Since OpenCv do not have this implemented we tried to implement it ourself. Additional sources was used in our attempt to implement it\cite{werner_text_????, _c++_????, bunn_strokewidthtransform:_2018}. We was not able to finish this, but think we should mention it since we spend some time on it. The steps of Stroke Width Transform is as followed:
-  \begin{enumerate}
-    \item \textbf{Edge Detection and edge orientation(Done)}
-    We need to have Edge image and orientation of the gradient image.
-    Canny and Sobel was used in the original paper and other sources. This is simple since OpenCv have both Canny and Sobel implemented.
-    \item \textbf{Stroke Width Transform(Done)}
-    Here we had to do more. We have to find a line from a starting point and the angle. We was able to implement this part, but was some uncertainties. It only work on black text with white background. That is because the orientation(Sobel filtering) are dependent on it. The paper talk about doing a second pass with inverse image, but we decided to ignore it, in order to come farther in the algorithm.
-    \item \textbf{Find Connected Component(Done)}
-    In this point we are to connect component with the same Stride length together. We used One component at a time algorithm to find all the different components. We was able to finish it.
-    \item \textbf{Exclude noise and find letters(not Done)}
-    Since Stroke Width Transform tend to make a lot of noise. The obvious one is making single lines. This part are suppose to exclude this noise and at the same time exclude anything that is not a letter.The theory is, since letter and text all usually have the same stroke width, we can use this information do estimate what is letter and what is not. We was not able to finish this part.
-    \item \textbf{Find lines/words(not Done)}
-    Was not able to get to this part, but ideal it will combine letters to a single line or words.
-  \end{enumerate}
-  In cases where the image have a lot of non text object, it will work fine with it. We ended up discarding this approach since it was to time consuming and decided on working on simple approach first.
-\end{flushleft}
-
-\begin{flushleft}
-  \subsubsection{Approach 3: OpenCv Scene Text Detection}
-  OpenCV have it own Text Scene Detection. The approach of this algorithm is to detect text in scene using Classifier and Components Tree, propose by Lukás Neumann \& Jiri Matas \cite{neumann_real-time_2012}. Since we already discarded Stroke Width Transform to focus on simple approach, we decided not use it. We had some problem to get propel result as well.
-\end{flushleft}
-
-\subsection{Used in end result}
-Since we had problem on getting with both approach 2 and 3 we decided on approach 1. It gave us ideal result on most images, but have some problem in images with non text objects.
-
-\todo{fill the figure with good examples}
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
-    \caption{Example 1, Good result on just text}
-  \end{subfigure}
-  \hspace{5mm}%
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text2.png}
-    \caption{Example 2, Good result on paper}
-  \end{subfigure}
-  \hspace{5mm}%
-  \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text3.png}
-    \caption{text}
-  \end{subfigure}
-  \caption{Example 3, Part of the text was not included}
-  \label{fig:Text_detection_approaches}
-\end{figure}
-
-
-
-
-
-
-
-
 
 
 \section{Component: Preprocessing}
@@ -168,10 +102,10 @@ the challenges we will have to solve here are:
 \end{flushleft}
 
 
-\subsection{Find line}
+\subsection{Find line}\label{subsec:Find_line}
 
 
-\subsection{Find Symbol/Letter Segmentation}
+\subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
 Letter segmentation was similar to Text Segmentation. we added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
 \begin{enumerate}
   \item Do threshold.
@@ -192,7 +126,7 @@ test text alksjdfh alsjkdbfkas
   Figure~\ref{fig:CNN_architecture}, and a Multilayer Perceptron (MLP or Deep
   neural network (DNN)), Figure~\ref{fig:neural_net2}. However the method we
   ended up choosing for the final result is CNN. In
-  Section~\ref{D-sec:Discarded Method:Classification} we explain why we discarded
+  Section~\ref{sec:Discarded Method:Classification} we explain why we discarded
   the MLP approach. \par
 \end{flushleft}
 
@@ -292,9 +226,6 @@ test text alksjdfh alsjkdbfkas
   It has a training set of 60.000 examples and a test set of 10.000 examples.
   (ref. reader to http://yann.lecun.com/exdb/mnist/).
 \end{flushleft}
-
-
-
 
 
 \newpage

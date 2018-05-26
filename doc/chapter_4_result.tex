@@ -1,16 +1,36 @@
 \documentclass[Report.tex]{subfiles}
-\externaldocument[I-]{chapter_1_introduction}
-\externaldocument[M-]{chapter_2_method}
-\externaldocument[D-]{chapter_3_discardMethod}
-\externaldocument[C-]{chapter_5_conclusion}
-\externaldocument[RE-]{chapter_6_recognition}
-
+\externaldocument[I-]{chapter_1_introduction.tex}
+\externaldocument[M-]{chapter_2_method.tex}
+\externaldocument[D-]{chapter_3_discardMethod.tex}
+\externaldocument[C-]{chapter_5_conclusion.tex}
+\externaldocument[RE-]{chapter_6_recognition.tex}
 
 \begin{document}
 \chapter{Result - Discussion}
-\label{sec:Result - Discussion}
+\label{chap:Result - Discussion}
 \section{Result: Text Segmentation}
+We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. It work in our project. 
+
 \section{Result: Preprocessing}
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text1.png}
+    \caption{Example 1, Good result on just text}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text2.png}
+    \caption{Example 2, Good result on paper}
+  \end{subfigure}
+  \hspace{5mm}%
+  \begin{subfigure}[t]{4cm}
+    \includegraphics[width=3cm]{res/segment_text3.png}
+    \caption{text}
+  \end{subfigure}
+  \caption{Example 3, Part of the text was not included}
+  \label{fig:Text_detection_approaches}
+\end{figure}
 
 \subsection{Rotation}
 \todo[inline]{
