@@ -1,0 +1,45 @@
+\documentclass[Report.tex]{subfiles}
+\externaldocument[I-]{chapter_1_introduction}
+\externaldocument[M-]{chapter_2_method}
+\externaldocument[R-]{chapter_4_result}
+\externaldocument[C-]{chapter_5_conclusion}
+\externaldocument[RE-]{chapter_6_recognition}
+
+
+
+\begin{document}
+\chapter{Discarded Method}
+\label{sec:Discarded Method}
+\section{Description}
+This chapter covers the methods tried but not included in the end result,
+becasue they showed dissatisfactory results. This chapter is also organized
+like Chapter~\ref{2-sec:Method}, but for component description please refer to
+the before mentioned chapter.
+
+\section{Text Segmentation}
+\section{Preprocessing}
+\subsection{Find rotation}
+
+\begin{flushleft}
+  \textbf{Approach: Hough Transform} \\
+  \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a
+  well known algorithm to find lines, its approach is to see if it can
+  alligne some threshold of pixels on one straight line. To help with this
+  process we will do a simple edge detection algorithm on the image before
+  running it through the Hough Transform. \par
+  Bellow, the steps needed to perform this approach are mentioned.
+
+  \begin{enumerate}
+    \item \textbf{Edge detection}
+    Too make the Hough transform perform better we want to remove unnecessary
+    noise. Canny edge detection algorithm is a robust and fast solution for
+    this.
+    \item \textbf{Line detection}
+    Now perform the actuall Hough Transform.
+    \item \textbf{Rotate image}
+    Lastly we need to rotate the image according to the lines from the Hough
+    Transform.
+  \end{enumerate}
+\end{flushleft}
+
+\end{document}
