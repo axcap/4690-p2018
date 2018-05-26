@@ -43,8 +43,23 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 
 
 \subsection{Line segmentation}
+\todo[inline]{result: Line segmentation}
+
 \subsection{Character segmentation}
+This part worked quiet well, an alternative would be just using OpenCv findComponent. Result will be much the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better.  
+\todo[inline]{Set result image on Result : Character segmentation} 
+\subsection{Rotation}
+\begin{figure}[H]
+  \centering
+  \missingfigure[figheight=6cm]{Result of character segmentation}
+  % \includegraphics[height=4cm]{res/}
+  \caption{Result of Character Segmentation}
+  \label{fig:Character_segmentation}
+\end{figure}
+
 \section{Result: Classification}
+\todo[inline]{Result: Classification}
+
 \subsection{Description}
 \begin{flushleft}
   Convolutional neural networks are especially good for image
