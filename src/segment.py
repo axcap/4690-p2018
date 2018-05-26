@@ -32,11 +32,15 @@ def segmentText(img, point = (21, 21)):
 
 def segmentLetters(img):
   [M,N] = img.shape
+
   # invert since we are working black on white
   _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
 
-  # tresh_img[0] = 0
-  # tresh_img[M-1] = 0
+  kernel = np.ones((M//8,1), np.uint8)
+  tresh_img = cv2.dilate(tresh_img, kernel)
+
+  tresh_img[0] = 0
+  tresh_img[M-1] = 0
 
   im_floodfill = tresh_img.copy()
 
@@ -118,14 +122,13 @@ def highlightSegments(img, segments):
     cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
   return temp
 
-def main():
-  import utils
+
+def _DEMO_segment_text():
   SAVE_IMAGE_PATH = '../doc/res/'
   IMAGE_PATH = '../res/images/'
   image_filename1 = 'text_skew.png'
   image_filename2 = 'Android_image.jpg'
   image_filename3 = 'bad.jpg'
-
 
   image1 = cv2.imread(IMAGE_PATH+image_filename1,0)
   image2 = cv2.imread(IMAGE_PATH+image_filename2,0)
@@ -160,7 +163,22 @@ def main():
   cv2.waitKey()
   cv2.destroyAllWindows()
 
-  # segmentPaper(image1)
+def _DEMO_segment_letter():
+  SAVE_IMAGE_PATH = '../doc/res/'
+  IMAGE_PATH = '../res/images/'
+  image_filename = 'simpleR2.png'
+  image = cv2.imread(IMAGE_PATH+image_filename,0)
+  letter_rect = segmentLetters(image)
+  demo_image = highlightSegments(image, letter_rect)
+
+  cv2.imwrite(SAVE_IMAGE_PATH + "segment_letter.png", demo_image)
+  cv2.imshow("demo_letter_image", demo_image)
+  cv2.waitKey()
+  cv2.destroyAllWindows()
+
+def main():
+  _DEMO_segment_text()
+  _DEMO_segment_letter()
 
 if __name__ == '__main__':
   main()
