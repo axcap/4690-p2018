@@ -67,20 +67,20 @@ After the text segmentation we assume we have an image consisting of white text 
 \begin{flushleft}
   \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
   This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
-  to find the convex hull of the text segments, and then
+  to find the convex hull of the text, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum area rectangle. \par
-  One important note here is that the method above operate on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. Because we want the convex hull of the text segment. \par
-  This method is really good at finding the angles, however it does not solve the problem of rotating the text correctly, Figure~\ref{fig:4angle_rot} illustrates
-  this problem. It will only allow us to rotate it along one of the text segments edges. To rotate the text correctly from the result of cv.minAreaRect we decided to try and use another Convolutional neural networks to find if the text was rotated 0, 90, 180 or 270 degrees. For this we had to feed our new network new dataset with rotated images with their corresponding angles. After a quick search on Internet no such dataset was found, so we decided to create it  ourself (We describe our approach later in this document).
+  One important note here is that the method above operates on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. \par
+  cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration. We will use a CNN to determine which of the angles is correct and then rotate it accordingly.
+  To train the network we needed a dataset with the corresponding angles as labels, as we couldnt find one, we decided to create it ourself. We describe our approach later in this document.
 
   \begin{enumerate}
     \item \textbf{Binary image}
-    For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and possibly bitwise\textunderscore not to flip foreground and background colors.
+    For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
     \item \textbf{cv.minAreaRect()}
-    Feed our newly generated image to cv.minAreaRect with some additional parameters.
-    \item \textbf{Custom CNN solution - find correct rotation}
-    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options of finding final rotation angle of current text segment. \todo[inline]{As the above method returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we will use a CNN to determine the which angle it is and then rotate it. We have several options when we use a CNN to find the correct angle.}
+    Feed our newly generated image to cv.minAreaRect.
+    \item \textbf{CNN solution - find correct rotation}
+    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options finding the correct angle of the text segment.
     \begin{enumerate}
 	\item{Most straightforward would be to find rotation of first character and rotate the whole segment accordingly (fast and naive)}
 	\item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation (somewhat slower (depends on N) but gives us bit more confidence than approach above)}
@@ -99,10 +99,8 @@ Letter segmentation was similar to Text Segmentation. we added a few steps and r
   \item Do threshold.
   \item Inverse the image since we work on black text on white background.
   \item Fill any holes, cv2.floodFills
-  \item FindContours
+  \item Find Contours
 \end{enumerate}
-\subsection{Approach: find contour after Filled holes}
-test text alksjdfh alsjkdbfkas
 
 
 \section{Component: Classification}
