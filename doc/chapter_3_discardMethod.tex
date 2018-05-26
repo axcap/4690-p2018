@@ -12,7 +12,7 @@
 This chapter covers the methods tried but not included in the end result, because they showed dissatisfactory results. This chapter is also organized like Chapter~\ref{chap:Method}, but for component description please refer to the previous chapter.
 
 \section{Text Segmentation}
-We tried to expand the original approach to be able to detect text with noise, natural images. We tried Stroke Width Transform first, then OpenCv scene text detection. We abandon both approach because of time constrain and difficulties of implementation. We decided therefore to focus on other part of the project first. 
+We tried to expand the original approach to be able to detect text with noise, natural images. We tried Stroke Width Transform first, then OpenCv scene text detection. We abandon both approach because of time constrain and difficulties of implementation. We decided therefore to focus on other part of the project first.
 
 \begin{flushleft}
   \subsubsection{Other Method 1: Stroke Width Transform}
@@ -72,8 +72,8 @@ We tried to expand the original approach to be able to detect text with noise, n
 \end{flushleft}
 
 \subsection{Character Segmentation}
-Since we used Projection Histogram to fine line, we can use it to fine character segment as well. We started initially to do that, but later switch to the new approach. The approach is similar to Line detection in section \ref{subsec:Find_line}. It weakness is that we may not get the right height of each character, meaning we get more background. See figure \ref{fig:Project_histogram} for reference. 
-  
+Since we used Projection Histogram to fine line, we can use it to fine character segment as well. We started initially to do that, but later switch to the new approach. The approach is similar to Line detection in section \ref{subsec:Find_line}. It weakness is that we may not get the right height of each character, meaning we get more background. See figure \ref{fig:Project_histogram}
+
 
 \section{Classification}
 \label{sec:Discarded Method:Classification}
@@ -135,7 +135,7 @@ Since we used Projection Histogram to fine line, we can use it to fine character
 \end{flushleft}
 
 \begin{flushleft}
-We decided to avoid using MLP in our project as it required lots of training data, is not able to detect spacial or minor rotation changes, e.g. a network trained with MNIST with accuracy over 95\% was doing poorly in recognizing machine-printed characters, even though they were etalon of a perfect input. 
+We decided to avoid using MLP in our project as it required lots of training data, is not able to detect spacial or minor rotation changes, e.g. a network trained with MNIST with accuracy over 95\% was doing poorly in recognizing machine-printed characters, even though they were etalon of a perfect input.
 
 \end{flushleft}
 
@@ -146,7 +146,7 @@ We decided to avoid using MLP in our project as it required lots of training dat
 
 \par
 \textbf{ROT*} - dataset containing rotated examples of another set (*) but labels corespont to angle of rotation. In our case we only had 4 classes [0-3], one for each angle in [0, 90, 180, 270].
-This set was discarded as out network showed very little learning progress as the accuracy of predictions was constantly around 65\%. Now that is not datasets fault, most likely it was due to bad network topology or poor choice of hyper parameters but we didn't had enough time to debug this part of project and decided to stick to OpenCV's minAreaRect() results. 
+This set was discarded as out network showed very little learning progress as the accuracy of predictions was constantly around 65\%. Now that is not datasets fault, most likely it was due to bad network topology or poor choice of hyper parameters but we didn't had enough time to debug this part of project and decided to stick to OpenCV's minAreaRect() results.
 
 
 \end{flushleft}

@@ -122,7 +122,7 @@ Letter segmentation was similar to Text Segmentation. We added a few steps and r
   Convolutional Neural Network (CNN), the architecture is illustration in
   Figure~\ref{fig:CNN_architecture}, and a Multilayer Perceptron (MLP or Deep
   neural network (DNN)), Figure~\ref{fig:neural_net2}. However the method we ended up choosing for the final result is CNN. In
-  Section~\ref{Method:Classification} we explain why we discarded
+  Section~\nameref{Method:Classification} we explain why we discarded
   the MLP approach. \par
 \end{flushleft}
 
@@ -132,7 +132,7 @@ Letter segmentation was similar to Text Segmentation. We added a few steps and r
   after the filters are trained, run the image which is now ``filterd'', through
   a fully connected network. The fully connected network will then try and
   classify based on the feature images from the filtering/convolution layers. \par
-  \todo[inline]{Bellow we will present, a short description of key points of a CNN, the architecture and variable choices we have made for the CNN.}
+  A short description of key points of a CNN, the architecture and variable choices we have made for the CNN, is presented below
 \end{flushleft}
 
 \begin{figure}[H]
@@ -165,13 +165,23 @@ First layer filters are able to spot simple geometry like straight or curved lin
   \end{itemize}
 \end{flushleft}
 
+\todo[inline]{Architecture description should follow, choices of variables too \\
+. \\
+. \\
+. \\
+. \\
+}
+
 
 \section{Component: Datasets}
 \label{Method:Datasets}
+
+\todo[inline]{include only datasets we have used for the final software \\
+Remove MNIST from this place, and moove it to chapter 3 discardMethod}
+
 \subsection{Description}
 
 \begin{flushleft}
-  \textbf{Description} \\
   In order to learn our network to distinguish between the characters it needs training. Training is done by feeding images of known objects to the network (labeled data) and telling it how inaccurate it's prediction so that network can adjust it's weights accordingly. This type of training is called supervised training as we guide our network during training process.
 For network to get high accuracy of prediction a lot of labeled data is needed. Lucky for us datasets like MNIST exists, more info about it later.
 \end{flushleft}
