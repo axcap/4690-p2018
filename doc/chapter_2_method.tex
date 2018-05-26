@@ -94,15 +94,16 @@ After the text segmentation we assume we have an image consisting of white text 
 
 
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
-Letter segmentation was similar to Text Segmentation. we added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
+Letter segmentation was similar to Text Segmentation. We added a few steps and removed the morphology part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem. 
 \begin{enumerate}
   \item Do threshold.
   \item Inverse the image since we work on black text on white background.
-  \item Fill any holes, cv2.floodFills
-  \item FindContours
+  \item Do morphological dilation with long vertical kernel, This is to include the dot in 'i'.
+  \item Add a bolder around the line-image, that is separate elements from edge after previous step. This is to make cv2.floodFills work. 
+  \item Fill any holes, cv2.floodFills.
+  \item Use FindContours
+  \item Ignore element where contour size smaller than a threshold(half the letter size), to ignore ',','.' and other non letter element. 
 \end{enumerate}
-\subsection{Approach: find contour after Filled holes}
-test text alksjdfh alsjkdbfkas
 
 
 \section{Component: Classification}
