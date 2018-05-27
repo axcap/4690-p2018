@@ -114,6 +114,14 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 
 \subsection{Data formatting/casting}\label{subsec:method:Data_formatting}
 \todo[inline]{missing method:Data formatting/casting }
+\begin{flushleft}
+After we extracted single symbol from the line we have to feed it to the classificator. As we know our classificator accepts 28x28 grayscale images so we could simple resize the image to feed it, but this will more often than not yield poor results as the image will not follow the same convention images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our image look more like images our CNN is good at recognizing. Lets take a look at some images from training sets: PICTURE FOLLOWS
+As we can see the digit is centered and has about 4 pixels boarder around it. Furthermore it is not binary image with sharp edges, but rather smoothed out.  
+
+The algorithm we found working best is described below:
+First we find the dominant axis of the image using n = max(x, y), then we create new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$, then we paste our original character image in the center of newly created background image and only now resize it to 28x28 pixels. The resize operation will smooth the edges even though original digit may have been a binary image. Next we decided to out the noise by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255.
+And this gives us an image most likely to be correctly classified by our CNN.
+\end{flushleft}
 
 \section{Component: Classification}
 \label{Method:Classification}
