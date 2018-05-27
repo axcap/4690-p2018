@@ -73,7 +73,7 @@ If the image has no space between lines or is slightly rotated, it can cause an 
 \subsection{Character segmentation}
 \begin{flushleft}
 This part worked quiet well, an alternative would be to just use OpenCv findComponent. The steps and results would not differ too much, but we could have dropped cv2.floodFills. \par
-A weakness of this approach is, if multiple characters are merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test images with that problem, but it came up in latter discussions.
+A weakness of this approach is, if multiple characters are merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. Another problem we came across was we require image to be in a somewhat good quality. If image have not good enough quality it became harder to separate character from each other, as we require clear space in between them.
 \end{flushleft}
 
 \begin{figure}[H]
@@ -104,4 +104,23 @@ A weakness of this approach is, if multiple characters are merged with one anoth
   the object is slightly rotated. Hence the classification would be even more robust
   compared to the MLP.
 \end{flushleft}
+
+\section{Final Result}
+We saw that each component was able to its part reasonably. Each have weakness and fails, but if we are to combine them together we are able to do get a somewhat reasonable result. Figure \ref{fig:Result:Final_result} show an input image and what we got in the output. Some of the letter are not able to be classify correctly. The main error came from character segmentation and classification, but we got somewhat readable result... 
+
+\begin{figure}[H]
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \frame{\includegraphics[width=12cm]{res/lorem.png}}
+    \caption{Original image 'lorem.png' as input image}
+  \end{subfigure}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=12cm]{res/lorem_output.png}
+    \caption{Terminal output of lorem.png}
+  \end{subfigure}
+  \caption{Final Result of lorem.png}
+  \label{fig:Result:Final_result}
+\end{figure}
+
 \end{document}
