@@ -56,6 +56,32 @@ We tried to expand the original approach to be able to detect text with noise, n
 
 \section{Preprocessing}
 \subsection{Find rotation}
+\label{Discard:rotation}
+\begin{flushleft}
+  \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
+  This approach is the same as final approach, only we added a additional step with CNN to classify wrong angle rotation. Our method returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot}for illustration. We will use a CNN to determine which of the angles is correct and then rotate it accordingly.
+  To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourself. We discarded it because it gave only a 60\% accuracy of the right angle, and we are only working on simple text images with little skew. The approach is described below: 
+  \begin{enumerate}
+    \item \textbf{OpenCV minAreaRect()}
+    The same approach mention in section \ref{Method:Preprocessing} find rotation
+    \item \textbf{CNN solution - find correct rotation}
+    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options finding the correct angle of the text segment.
+    \begin{enumerate}
+      \item{The most straightforward approach would be to find the rotation of first character and rotate the whole segment accordingly (fast and naive)}
+      \item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation. This is somewhat slower (depends on N) but gives us bit more confidence than (a)}
+      \item{Finally we can classify the angle of each individual character before we try to determine the correct angle based on the results. This gives us the highest accuracy but on the cost of time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
+      \end{enumerate}
+    \end{enumerate}
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[height=4cm]{res/4angle_rot.png}
+      \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
+      \label{fig:4angle_rot}
+    \end{figure}
+
+\end{flushleft}
+
 
 \begin{flushleft}
   \textbf{Approach: Hough Transform} \\

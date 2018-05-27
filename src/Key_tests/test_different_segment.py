@@ -161,8 +161,10 @@ def rotate(img):
   
   # show the output image
   print("[INFO] angle: {:.3f}".format(angle))
+
   cv2.imshow("Input", img)
   cv2.imshow("Rotated", rotated)
+  cv2.imwrite("Rotated.png",rot)
   cv2.waitKey(0)
 
   return rotated
