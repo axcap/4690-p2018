@@ -71,7 +71,7 @@ If the image have no space between lines or is slightly skew, it can cause an er
 \end{figure}
 
 \subsection{Character segmentation}
-This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions
+This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions. There is also another weakness where spaces is not segmented. We tried to solved this in the classification part, by calculate the average space between character  
 
 \begin{figure}[H]
   \begin{subfigure}[t]{\textwidth}
