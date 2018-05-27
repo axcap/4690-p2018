@@ -68,15 +68,24 @@ In this part of the program, we want to be able to segment out text segments in 
 
 \subsection{Find rotation}
 \label{subsec:Find rotation}
-\begin{flushleft}
-  \textbf{Approach: OpenCV minAreaRect()} \\
-  This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
-  to find the convex hull of the text, and then
-  \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
-  find the minimum area rectangle. \par
-  cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
-  Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is manitioned in Chapter~\ref{chap:Discarded Method}.
+\textbf{Approach: OpenCV minAreaRect()} \\
+This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
+to find the convex hull of the text, and then
+\href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
+find the minimum area rectangle. \par
+cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
+Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is manitioned in Chapter~\ref{chap:Discarded Method}.
 
+
+
+
+
+\begin{flushleft}
+  \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
+  This approach is inspired by this online blog \href{https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/}{Source}\cite{rosebrock_text_2017}.
+  We use cv.minAreaRect, it finds the \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} of the text, and then use
+  \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
+  find the minimum area rectangle. Then rotate the image based on the minimum area rectangle. Full approach below.
   \begin{enumerate}
     \item \textbf{Binary image.}
     For the Convex hull algorithm to work, the text segments and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
@@ -117,7 +126,22 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 \end{enumerate}
 
 \subsection{Data formatting/casting}\label{subsec:method:Data_formatting}
-\todo[inline]{missing method:Data formatting/casting }
+\begin{flushleft}
+After we extracted single symbol from the line we have to feed it to the classificator. As we know our classificator accepts 28x28 grayscale images so we could simple resize the image to feed it, but this will more often than not yield poor results as the image will not follow the same convention images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our image look more like images our CNN is good at recognizing. Lets take a look at some images from training sets:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{res/dataset_samples}
+  \caption{Dataset samples}
+  \label{fig:DATASET Samples}
+\end{figure}
+
+As we can see the characters are centered and has about 4 pixels boarder around it. Furthermore it is not binary image with sharp edges, but rather smoothed out. One may have noticed that x and y axis are swaped, making image look transposed, but that's how EMNIST set stored its data, so we just decided to stick with it.
+
+The algorithm we found working best is described below:
+First we find the dominant axis of the image using n = max(x, y), then we create new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$, then we paste our original character image in the center of newly created background image and only now resize it to 28x28 pixels. The resize operation will smooth the edges even though original digit may have been a binary image. Next we decided remove unnecessary noise resize operation may have introduced by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255 (this only affects the core of the character, edges are still smoothed).
+And this gives us an image most likely to be correctly classified by our CNN. The final image is then transposed to match EMNIST data.
+\end{flushleft}
 
 \section{Component: Classification}
 \label{Method:Classification}

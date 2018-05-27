@@ -34,18 +34,18 @@ def write_data_to_set(fd_train, fd_test, n, images, labels):
 
 #Path where dataset files will be saves
 #same path used by MNIST's input_data.read_data_sets(..)
-dataset_path = "res/datasets/SANS/"
+dataset_path = "res/datasets/FNIST/"
 
 if not os.path.exists(dataset_path):
     os.makedirs(dataset_path)
 
-fontpath = "res/fonts/"
+fontpath = "/home/axcap/Downloads/all/"
 #fontpath = "/run/media/akhsarbg/47E8-126A/homo/all/"
 #fontpath = None # use system default
 
 # Which digits/lettes to export from each font
-#alphabeth = "0123456789"
-alphabeth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+alphabeth = "0123456789"
+#alphabeth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 # Number of entries in dataset
 alphabeth_lenth = len(alphabeth)
@@ -96,7 +96,7 @@ tot_images = n_images
 n_images   = 0
 div        = 6 # every 6th image goes to test collection
 n_test     = tot_images // div
-n_train    = tot_images - n_test
+n_train    = tot_images - n_test - 1
 
 print("Total: ", n_train)
 print("Train: ", n_train)
@@ -143,7 +143,6 @@ kernel = np.array([[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]], dtype=np.uint8)
 
-llls = np.zeros(47)
 # For each font in fontpath
 for i, fontname in enumerate(os.listdir(fontpath)):
     print("%d/%d - %s" % (i+1, n_fonts, fontname))
@@ -159,16 +158,16 @@ for i, fontname in enumerate(os.listdir(fontpath)):
         if img.size == 0:
             continue
 
-        img = img*255
+        img = (np.transpose(img)*255)
         img = utils.img2data(img)
 
-        label = utils.char2class(alphabeth[index])
-        llls[label] += 1
+        #label = utils.char2class(alphabeth[index])
+        label = index
         if label > 47:
             print(label)
             utils.imshow("Over", img)
 
-
+            
         if n_test > 0 and ((i*alphabeth_lenth + index) % div) == 0:
             test_images_buffer[test_idx*28*28:(test_idx+1)*28*28] = np.ravel(img)
             test_labels_buffer[test_idx] = label
@@ -220,11 +219,6 @@ print(dataset.train.num_examples)
 print(dataset.test.num_examples)
 print("%d - %d" % (min(dataset.test.labels), max(dataset.test.labels)))
 
-values = list(range(47))
-print(values)
-print(np.in1d(values, dataset.train.labels))
-print(llls)
-
 while True:
     fig = plt.figure()
     for y in range(4):
@@ -237,3 +231,4 @@ while True:
             ax.imshow(img, cmap='gray')
 
     plt.show()
+    

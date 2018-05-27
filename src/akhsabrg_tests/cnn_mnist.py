@@ -143,7 +143,15 @@ def main(unused_argv):
 
   # Create the Estimator
   mnist_classifier = tf.estimator.Estimator(
+<<<<<<< HEAD
+<<<<<<< HEAD
+      model_fn=cnn_model_fn, model_dir="res/model/cnn_mnist")
+=======
       model_fn=cnn_model_fn, model_dir="res/model/visual_cnn")
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
+      model_fn=cnn_model_fn, model_dir="res/model/visual_cnn")
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
   # Set up logging for predictions
   # Log the values in the "Softmax" tensor with label "probabilities"
@@ -158,9 +166,22 @@ def main(unused_argv):
       batch_size=100,
       num_epochs=None,
       shuffle=True)
+<<<<<<< HEAD
+<<<<<<< HEAD
+  mnist_classifier.train(
+      input_fn=train_input_fn,
+      steps=20000)
+    #hooks=[logging_hook])
+=======
 
 
   mnist_classifier.train(input_fn=train_input_fn,steps=1000)#, hooks=[logging_hook])
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
+
+
+  mnist_classifier.train(input_fn=train_input_fn,steps=1000)#, hooks=[logging_hook])
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
   # Evaluate the model and print results
   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -173,8 +194,8 @@ def main(unused_argv):
 
   # Evaluate the model and print results
   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-      x={"x": fnist.test.images},
-      y=np.asarray(fnist.test.labels, dtype=np.int32),
+      x={"x": fnist.train.images},
+      y=np.asarray(fnist.train.labels, dtype=np.int32),
       num_epochs=1,
       shuffle=False)
   eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
