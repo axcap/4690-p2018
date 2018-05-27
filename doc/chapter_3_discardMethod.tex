@@ -93,7 +93,6 @@ The original thought was to use the Hough Transform to find the lines in a text,
       \end{enumerate}
     \end{enumerate}
 
-
     \begin{figure}[H]
       \centering
       \includegraphics[height=4cm]{res/4angle_rot.png}
@@ -112,6 +111,7 @@ This approach is similar to Line detection in Section~\ref{subsec:Find_line}. It
 
 \section{Classification}
 \label{sec:Discarded Method:Classification}
+
 \begin{flushleft}
   As mention in Section~\ref{Method:Classification}, we also tried to use MLP to do classification of characters.
   We decided to avoid using MLP in our project as it required lots of training data; is not able to detect spatial or minor rotation changes, e.g. a network trained with MNIST with accuracy over 95\% was doing poorly in recognizing machine-printed characters, even though they were etalon of a perfect input.
