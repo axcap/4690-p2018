@@ -76,16 +76,7 @@ find the minimum area rectangle. \par
 cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
 Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is mentioned in Chapter~\ref{chap:Discarded Method}.
 
-
-
-
-
 \begin{flushleft}
-  \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
-  This approach is inspired by this online blog \href{https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/}{Source}\cite{rosebrock_text_2017}.
-  We use cv.minAreaRect, it finds the \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} of the text, and then use
-  \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
-  find the minimum area rectangle. Then rotate the image based on the minimum area rectangle. Full approach below.
   \begin{enumerate}
     \item \textbf{Binary image.}
     For the Convex hull algorithm to work, the text segments and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
@@ -197,9 +188,6 @@ Given the time we had left for model testing this topology have us best result.
   In order to learn our network to distinguish between the characters it needs training. Training is done by feeding images of known objects to the network (labeled data) and telling it how inaccurate it's prediction so that network can adjust it's weights accordingly. This type of training is called supervised training as we guide our network during training process.
   For network to get high accuracy of prediction a lot of labeled data is needed. Lucky for us datasets like MNIST exists, more info about it later.
 \end{flushleft}
-
-\textbf{description Limitation} \\
-As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need. \\
 
 \begin{flushleft}
   \textbf{Dataset} \\
