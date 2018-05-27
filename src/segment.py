@@ -120,7 +120,7 @@ def highlightSegments(text, img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = img.copy()
   for (x,y,w,h) in segments:
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 3, 8, 0)
+    cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 1, 8, 0)
 
   utils.imshow(text,temp)
   return temp
