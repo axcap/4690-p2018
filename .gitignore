@@ -5,4 +5,5 @@
 *.snm
 *.toc
 *.pyc
-*.DS_Store
+**.DS_Store
+**.nfs*
