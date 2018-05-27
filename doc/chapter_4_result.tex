@@ -43,7 +43,9 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 
 
 \subsection{Line segmentation}
-\todo[inline]{result: Line segmentation}
+If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images. 
+\todo[inline]{Result: Line Seg, add a figure if possible}
+
 
 \subsection{Character segmentation}
 This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions 
