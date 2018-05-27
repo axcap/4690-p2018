@@ -90,9 +90,6 @@ Hence we have a limitation on what angles the text can have, [0, 90] degrees, fo
 \end{flushleft}
 
 
-
-
-
 \subsection{Find line}\label{subsec:Find_line}
 After all the preprocessing done up to this point, we assume we have a segment of correctly rotated text. At this point it is enough to just use projection histogram. We basically sum number of active pixels in each row and end up with one dimensional array with same size as image height, one value for each row in input image.
 E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this means there are some data (most likely text) between 5th and 10th row, and 15th  up to another line break. see fig \ref{fig:Project_histogram}
@@ -107,8 +104,7 @@ E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this means there are some dat
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
 Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_segmentation}. We added a few steps and kernel shapes in the morphological part. The additional step was to fill holes in the image, for example; 8 and O, can give multiple wrong contours. cv2.floodFill was used to solve this problem.
 \begin{enumerate}
-  \item Do threshold. \todo[inline]{Why do we do this? threshold the letters, for what reason?}
-  \item Inverse the image since we work on black text on white background.
+  \item Get binary image.
   \item Do morphological dilation with a long vertical kernel, This is to include the dot in 'i'.
   \item Add a border around the line-image, that separates elements from the edge after the previous step. This is to make cv2.floodFills work.
   \item Fill all holes, cv2.floodFills.
@@ -118,7 +114,7 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 
 \subsection{Data formatting/casting}\label{subsec:method:Data_formatting}
 \begin{flushleft}
-After we extracted single symbol from the line we have to feed it to the classificator. As we know our classificator accepts 28x28 grayscale images so we could simple resize the image to feed it, but this will more often than not yield poor results as the image will not follow the same convention images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our image look more like images our CNN is good at recognizing. Lets take a look at some images from training sets:
+After we extract single symbols from the lines, we have to feed them to the classifier. As the classifier is trained on 28x28 grayscale images, we could simply resize the images, but this will more often than not lead to poor results as the images does not follow the same convention; the images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our images look more like the images our CNN is good at recognizing. Lets take a look at some images from our training sets:
 
 \begin{figure}[H]
   \centering
@@ -127,11 +123,15 @@ After we extracted single symbol from the line we have to feed it to the classif
   \label{fig:DATASET Samples}
 \end{figure}
 
-As we can see the characters are centered and has about 4 pixels boarder around it. Furthermore it is not binary image with sharp edges, but rather smoothed out. One may have noticed that x and y axis are swaped, making image look transposed, but that's how EMNIST set stored its data, so we just decided to stick with it.
+As showen above, the characters are centered and have about 4 pixels as border around them. Furthermore they are not binary images with sharp edges, but rather smoothed out. Additionaly the x and y axis are swapped, making the image look transposed, but that's how the EMNIST dataset has stored its data, so we just decided to stick with their convention.
 
-The algorithm we found working best is described below:
-First we find the dominant axis of the image using n = max(x, y), then we create new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$, then we paste our original character image in the center of newly created background image and only now resize it to 28x28 pixels. The resize operation will smooth the edges even though original digit may have been a binary image. Next we decided remove unnecessary noise resize operation may have introduced by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255 (this only affects the core of the character, edges are still smoothed).
-And this gives us an image most likely to be correctly classified by our CNN. The final image is then transposed to match EMNIST data.
+The algorithm we found working best is described below: \\
+\begin{enumerate}
+  \item We find the dominant axis of the image using n = max(x, y).
+  \item We create a new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$.
+  \item We paste our original character image in the center of our newly created background image, and now resize it to 28x28 pixels. The resize operation will smooth out the edges, even though the original image may have been a binary image.
+  \item Decided to remove unnecessary noise, the resize operation may have introduced by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255 (this only affects the core of the character, edges are still smoothed). This should give us an image most likely to be correctly classified by our CNN. The final image is then transposed to match EMNIST data.
+\end{enumerate}
 \end{flushleft}
 
 \section{Component: Classification}
@@ -176,7 +176,7 @@ Second and third conv-layers have 64 filters as we thought this amount is needed
 We added pooling layers for two reasons: to reduce computation time and to add some rotation invariance.
 Dropout layer was added to reduce overfitting during training.
 
-Given the time we had left for model testing this topology have us best result. 
+Given the time we had left for model testing this topology have us best result.
 \end{flushleft}
 
 
@@ -198,10 +198,10 @@ As we have limited us to the digits and English alphabet, we will need labeled d
   Dataset created by ourself.
   Small dataset containing only 3 most used font in machine typing:
   \textbf{Sans}, \textbf{Times New Roman} and \textbf{Calibri}. These will be the foundation for our CNN as we for the most part will try to recognize characters from there fonts. Therefore we decided to run multiple training steps on this dataset to learn our network the 'etalon' of each character.
-  
+
   \textbf{FNIST} \\
   Another dataset generated by our scripts. This one contain over 1000 free fonts found on the Internet. Here we can find examples of multiple variations of the  same character like \textbf{bold}, \textit{italics} and regular.
-  
+
   \textbf{EMNIST-ByMerge} \\
   The EMNIST dataset is a set of handwritten character digits derived from the NIST Special Database 19  and converted to a 28x28 pixel image format and dataset structure that directly matches the MNIST dataset. Further information on the dataset contents and conversion process can be found in the paper available at \href{https://arxiv.org/abs/1702.05373v1}{https://arxiv.org/abs/1702.05373v1}
 

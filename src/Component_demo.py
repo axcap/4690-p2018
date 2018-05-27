@@ -122,6 +122,7 @@ def main():
   _DEMO_segment_line('Lorem.png','segment_line.png')
   _DEMO_segment_letter('exemple_text_line.png','segment_letter1.png')
   _DEMO_segment_letter('SimpleR2.png','segment_letter2.png')
+  _DEMO_segment_letter('SimpleR2.png','segment_letter2.png')
 
 if __name__ == '__main__':
   main()

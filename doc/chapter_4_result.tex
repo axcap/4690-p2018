@@ -9,7 +9,7 @@
 \chapter{Result - Discussion}
 \label{chap:Result - Discussion}
 \section{Result: Text Segmentation}
-We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{result:fig:Text_seg_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well.
+We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We ended up with the simple solution, Morphological approach. It gives good results, but has a lot of limitations. It only works on black text with white background, images with little noise, and with text only in the image, you can see the result in figure~\ref{result:fig:Text_seg_result}. We could include a part to distinguish between text and non-text areas to improve this solution. A strategy to do that can be to compare numbers of connected components, since we know text regions have a lot of letters/components, compared to a coffee cup or a wallet.
 
 \begin{figure}[ht]
   \centering
@@ -27,14 +27,14 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
     \includegraphics[width=3cm]{res/segment_text3.png}
     \caption{Bad result with many non text object segmented as text}
   \end{subfigure}
-  \caption{Result of the Segment Text}
+  \caption{Result of the Text Segmentation}
   \label{result:fig:Text_seg_result}
 \end{figure}
 
 \section{Result: Preprocessing}
 
-\subsection{Rotation}
-Rotation only work if the angle of rotation is less that 45 degree. This problem is mention in section \ref{Method:Preprocessing} and an attempt to solve the problem was given in section \ref{Discard:rotation}. Below are a result image of a less skew image.
+\subsection*{Rotation}
+Rotation only work if the angle of rotation is less than 45 degree. This problem is mentioned in section~\ref{Method:Preprocessing}, and an attempt to solve the problem was given in section~\ref{Discard:rotation}. Below the result of a image with rotation less than 45 degrees is showed in figure \ref{fig:result:rotation}
 
 \begin{figure}[ht]
   \centering
@@ -53,7 +53,7 @@ Rotation only work if the angle of rotation is less that 45 degree. This problem
 \end{figure}
 
 \subsection{Line segmentation}
-If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images.
+If the image has no space between lines or is slightly rotated, it can cause an error, lines will not be separated. As our previous steps handles these problem our method worked quite well on our test images.
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{6cm}
@@ -71,7 +71,10 @@ If the image have no space between lines or is slightly skew, it can cause an er
 \end{figure}
 
 \subsection{Character segmentation}
-This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions. There is also another weakness where spaces is not segmented. We tried to solved this in the classification part, by calculate the average space between character  
+\begin{flushleft}
+This part worked quiet well, an alternative would be to just use OpenCv findComponent. The steps and results would not differ too much, but we could have dropped cv2.floodFills. \par
+A weakness of this approach is, if multiple characters are merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. Another problem we came across was we require image to be in a somewhat good quality. If image have not good enough quality it became harder to separate character from each other, as we require clear space in between them.
+\end{flushleft}
 
 \begin{figure}[H]
   \begin{subfigure}[t]{\textwidth}
@@ -98,12 +101,26 @@ This part worked quiet well, an alternative would be to just using OpenCv findCo
   they classify. This way it doesn't matter where in the image our
   object/character is it will be able to recognize it, same yields for rotation,
   as the CNN classifies based on local spatial connections it doesn't matter if
-  the object is rotated. Hence the classification would be even more robust
+  the object is slightly rotated. Hence the classification would be even more robust
   compared to the MLP.
 \end{flushleft}
 
-\section{Result: Datasets}
-\subsection{Description}
+\section{Final Result}
+We saw that each component was able to its part reasonably. Each have weakness and fails, but if we are to combine them together we are able to do get a somewhat reasonable result. Figure \ref{fig:Result:Final_result} show an input image and what we got in the output. Some of the letter are not able to be classify correctly. The main error came from character segmentation and classification, but we got somewhat readable result... 
 
+\begin{figure}[H]
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \frame{\includegraphics[width=12cm]{res/lorem.png}}
+    \caption{Original image 'lorem.png' as input image}
+  \end{subfigure}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=12cm]{res/lorem_output.png}
+    \caption{Terminal output of lorem.png}
+  \end{subfigure}
+  \caption{Final Result of lorem.png}
+  \label{fig:Result:Final_result}
+\end{figure}
 
 \end{document}
