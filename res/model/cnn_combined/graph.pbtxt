@@ -1045,13 +1045,13 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/shape"
+  name: "conv1/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1089,13 +1089,13 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/min"
+  name: "conv1/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1127,13 +1127,13 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/max"
+  name: "conv1/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1165,9 +1165,9 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/RandomUniform"
+  name: "conv1/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "conv2d/kernel/Initializer/random_uniform/shape"
+  input: "conv1/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -1178,7 +1178,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1223,10 +1223,10 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/sub"
+  name: "conv1/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "conv2d/kernel/Initializer/random_uniform/max"
-  input: "conv2d/kernel/Initializer/random_uniform/min"
+  input: "conv1/kernel/Initializer/random_uniform/max"
+  input: "conv1/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -1237,7 +1237,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1252,10 +1252,10 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform/mul"
+  name: "conv1/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "conv2d/kernel/Initializer/random_uniform/RandomUniform"
-  input: "conv2d/kernel/Initializer/random_uniform/sub"
+  input: "conv1/kernel/Initializer/random_uniform/RandomUniform"
+  input: "conv1/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -1266,7 +1266,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1293,10 +1293,10 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Initializer/random_uniform"
+  name: "conv1/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "conv2d/kernel/Initializer/random_uniform/mul"
-  input: "conv2d/kernel/Initializer/random_uniform/min"
+  input: "conv1/kernel/Initializer/random_uniform/mul"
+  input: "conv1/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -1307,7 +1307,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1334,13 +1334,13 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel"
+  name: "conv1/kernel"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1404,10 +1404,10 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/Assign"
+  name: "conv1/kernel/Assign"
   op: "Assign"
-  input: "conv2d/kernel"
-  input: "conv2d/kernel/Initializer/random_uniform"
+  input: "conv1/kernel"
+  input: "conv1/kernel/Initializer/random_uniform"
   attr {
     key: "T"
     value {
@@ -1418,7 +1418,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1457,9 +1457,9 @@ node {
   }
 }
 node {
-  name: "conv2d/kernel/read"
+  name: "conv1/kernel/read"
   op: "Identity"
-  input: "conv2d/kernel"
+  input: "conv1/kernel"
   attr {
     key: "T"
     value {
@@ -1470,7 +1470,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -1497,13 +1497,13 @@ node {
   }
 }
 node {
-  name: "conv2d/bias/Initializer/zeros"
+  name: "conv1/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -1541,13 +1541,13 @@ node {
   }
 }
 node {
-  name: "conv2d/bias"
+  name: "conv1/bias"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -1593,10 +1593,10 @@ node {
   }
 }
 node {
-  name: "conv2d/bias/Assign"
+  name: "conv1/bias/Assign"
   op: "Assign"
-  input: "conv2d/bias"
-  input: "conv2d/bias/Initializer/zeros"
+  input: "conv1/bias"
+  input: "conv1/bias/Initializer/zeros"
   attr {
     key: "T"
     value {
@@ -1607,7 +1607,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -1637,9 +1637,9 @@ node {
   }
 }
 node {
-  name: "conv2d/bias/read"
+  name: "conv1/bias/read"
   op: "Identity"
-  input: "conv2d/bias"
+  input: "conv1/bias"
   attr {
     key: "T"
     value {
@@ -1650,7 +1650,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -1668,7 +1668,7 @@ node {
   }
 }
 node {
-  name: "conv2d/dilation_rate"
+  name: "conv1/dilation_rate"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -1704,10 +1704,10 @@ node {
   }
 }
 node {
-  name: "conv2d/Conv2D"
+  name: "conv1/Conv2D"
   op: "Conv2D"
   input: "Reshape"
-  input: "conv2d/kernel/read"
+  input: "conv1/kernel/read"
   attr {
     key: "T"
     value {
@@ -1777,10 +1777,10 @@ node {
   }
 }
 node {
-  name: "conv2d/BiasAdd"
+  name: "conv1/BiasAdd"
   op: "BiasAdd"
-  input: "conv2d/Conv2D"
-  input: "conv2d/bias/read"
+  input: "conv1/Conv2D"
+  input: "conv1/bias/read"
   attr {
     key: "T"
     value {
@@ -1816,9 +1816,9 @@ node {
   }
 }
 node {
-  name: "conv2d/Relu"
+  name: "conv1/Relu"
   op: "Relu"
-  input: "conv2d/BiasAdd"
+  input: "conv1/BiasAdd"
   attr {
     key: "T"
     value {
@@ -1850,7 +1850,7 @@ node {
 node {
   name: "max_pooling2d/MaxPool"
   op: "MaxPool"
-  input: "conv2d/Relu"
+  input: "conv1/Relu"
   attr {
     key: "T"
     value {
@@ -1914,13 +1914,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/shape"
+  name: "conv2/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -1958,13 +1958,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/min"
+  name: "conv2/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -1996,13 +1996,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/max"
+  name: "conv2/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2034,9 +2034,9 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/RandomUniform"
+  name: "conv2/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "conv2d_1/kernel/Initializer/random_uniform/shape"
+  input: "conv2/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -2047,7 +2047,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2092,10 +2092,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/sub"
+  name: "conv2/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "conv2d_1/kernel/Initializer/random_uniform/max"
-  input: "conv2d_1/kernel/Initializer/random_uniform/min"
+  input: "conv2/kernel/Initializer/random_uniform/max"
+  input: "conv2/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -2106,7 +2106,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2121,10 +2121,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform/mul"
+  name: "conv2/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "conv2d_1/kernel/Initializer/random_uniform/RandomUniform"
-  input: "conv2d_1/kernel/Initializer/random_uniform/sub"
+  input: "conv2/kernel/Initializer/random_uniform/RandomUniform"
+  input: "conv2/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -2135,7 +2135,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2162,10 +2162,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Initializer/random_uniform"
+  name: "conv2/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "conv2d_1/kernel/Initializer/random_uniform/mul"
-  input: "conv2d_1/kernel/Initializer/random_uniform/min"
+  input: "conv2/kernel/Initializer/random_uniform/mul"
+  input: "conv2/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -2176,7 +2176,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2203,13 +2203,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel"
+  name: "conv2/kernel"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2273,10 +2273,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/Assign"
+  name: "conv2/kernel/Assign"
   op: "Assign"
-  input: "conv2d_1/kernel"
-  input: "conv2d_1/kernel/Initializer/random_uniform"
+  input: "conv2/kernel"
+  input: "conv2/kernel/Initializer/random_uniform"
   attr {
     key: "T"
     value {
@@ -2287,7 +2287,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2326,9 +2326,9 @@ node {
   }
 }
 node {
-  name: "conv2d_1/kernel/read"
+  name: "conv2/kernel/read"
   op: "Identity"
-  input: "conv2d_1/kernel"
+  input: "conv2/kernel"
   attr {
     key: "T"
     value {
@@ -2339,7 +2339,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -2366,13 +2366,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/bias/Initializer/zeros"
+  name: "conv2/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -2410,13 +2410,13 @@ node {
   }
 }
 node {
-  name: "conv2d_1/bias"
+  name: "conv2/bias"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -2462,10 +2462,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/bias/Assign"
+  name: "conv2/bias/Assign"
   op: "Assign"
-  input: "conv2d_1/bias"
-  input: "conv2d_1/bias/Initializer/zeros"
+  input: "conv2/bias"
+  input: "conv2/bias/Initializer/zeros"
   attr {
     key: "T"
     value {
@@ -2476,7 +2476,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -2506,9 +2506,9 @@ node {
   }
 }
 node {
-  name: "conv2d_1/bias/read"
+  name: "conv2/bias/read"
   op: "Identity"
-  input: "conv2d_1/bias"
+  input: "conv2/bias"
   attr {
     key: "T"
     value {
@@ -2519,7 +2519,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -2537,7 +2537,7 @@ node {
   }
 }
 node {
-  name: "conv2d_1/dilation_rate"
+  name: "conv2/dilation_rate"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -2573,10 +2573,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/Conv2D"
+  name: "conv2/Conv2D"
   op: "Conv2D"
   input: "max_pooling2d/MaxPool"
-  input: "conv2d_1/kernel/read"
+  input: "conv2/kernel/read"
   attr {
     key: "T"
     value {
@@ -2646,10 +2646,10 @@ node {
   }
 }
 node {
-  name: "conv2d_1/BiasAdd"
+  name: "conv2/BiasAdd"
   op: "BiasAdd"
-  input: "conv2d_1/Conv2D"
-  input: "conv2d_1/bias/read"
+  input: "conv2/Conv2D"
+  input: "conv2/bias/read"
   attr {
     key: "T"
     value {
@@ -2685,9 +2685,9 @@ node {
   }
 }
 node {
-  name: "conv2d_1/Relu"
+  name: "conv2/Relu"
   op: "Relu"
-  input: "conv2d_1/BiasAdd"
+  input: "conv2/BiasAdd"
   attr {
     key: "T"
     value {
@@ -2719,7 +2719,7 @@ node {
 node {
   name: "max_pooling2d_1/MaxPool"
   op: "MaxPool"
-  input: "conv2d_1/Relu"
+  input: "conv2/Relu"
   attr {
     key: "T"
     value {
@@ -2783,13 +2783,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/shape"
+  name: "conv3/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -2827,13 +2827,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/min"
+  name: "conv3/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -2865,13 +2865,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/max"
+  name: "conv3/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -2903,9 +2903,9 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/RandomUniform"
+  name: "conv3/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "conv2d_2/kernel/Initializer/random_uniform/shape"
+  input: "conv3/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -2916,7 +2916,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -2961,10 +2961,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/sub"
+  name: "conv3/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "conv2d_2/kernel/Initializer/random_uniform/max"
-  input: "conv2d_2/kernel/Initializer/random_uniform/min"
+  input: "conv3/kernel/Initializer/random_uniform/max"
+  input: "conv3/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -2975,7 +2975,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -2990,10 +2990,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform/mul"
+  name: "conv3/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "conv2d_2/kernel/Initializer/random_uniform/RandomUniform"
-  input: "conv2d_2/kernel/Initializer/random_uniform/sub"
+  input: "conv3/kernel/Initializer/random_uniform/RandomUniform"
+  input: "conv3/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -3004,7 +3004,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -3031,10 +3031,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Initializer/random_uniform"
+  name: "conv3/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "conv2d_2/kernel/Initializer/random_uniform/mul"
-  input: "conv2d_2/kernel/Initializer/random_uniform/min"
+  input: "conv3/kernel/Initializer/random_uniform/mul"
+  input: "conv3/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -3045,7 +3045,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -3072,13 +3072,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel"
+  name: "conv3/kernel"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -3142,10 +3142,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/Assign"
+  name: "conv3/kernel/Assign"
   op: "Assign"
-  input: "conv2d_2/kernel"
-  input: "conv2d_2/kernel/Initializer/random_uniform"
+  input: "conv3/kernel"
+  input: "conv3/kernel/Initializer/random_uniform"
   attr {
     key: "T"
     value {
@@ -3156,7 +3156,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -3195,9 +3195,9 @@ node {
   }
 }
 node {
-  name: "conv2d_2/kernel/read"
+  name: "conv3/kernel/read"
   op: "Identity"
-  input: "conv2d_2/kernel"
+  input: "conv3/kernel"
   attr {
     key: "T"
     value {
@@ -3208,7 +3208,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -3235,13 +3235,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/bias/Initializer/zeros"
+  name: "conv3/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -3279,13 +3279,13 @@ node {
   }
 }
 node {
-  name: "conv2d_2/bias"
+  name: "conv3/bias"
   op: "VariableV2"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -3331,10 +3331,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/bias/Assign"
+  name: "conv3/bias/Assign"
   op: "Assign"
-  input: "conv2d_2/bias"
-  input: "conv2d_2/bias/Initializer/zeros"
+  input: "conv3/bias"
+  input: "conv3/bias/Initializer/zeros"
   attr {
     key: "T"
     value {
@@ -3345,7 +3345,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -3375,9 +3375,9 @@ node {
   }
 }
 node {
-  name: "conv2d_2/bias/read"
+  name: "conv3/bias/read"
   op: "Identity"
-  input: "conv2d_2/bias"
+  input: "conv3/bias"
   attr {
     key: "T"
     value {
@@ -3388,7 +3388,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -3406,7 +3406,7 @@ node {
   }
 }
 node {
-  name: "conv2d_2/dilation_rate"
+  name: "conv3/dilation_rate"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -3442,10 +3442,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/Conv2D"
+  name: "conv3/Conv2D"
   op: "Conv2D"
   input: "max_pooling2d_1/MaxPool"
-  input: "conv2d_2/kernel/read"
+  input: "conv3/kernel/read"
   attr {
     key: "T"
     value {
@@ -3515,10 +3515,10 @@ node {
   }
 }
 node {
-  name: "conv2d_2/BiasAdd"
+  name: "conv3/BiasAdd"
   op: "BiasAdd"
-  input: "conv2d_2/Conv2D"
-  input: "conv2d_2/bias/read"
+  input: "conv3/Conv2D"
+  input: "conv3/bias/read"
   attr {
     key: "T"
     value {
@@ -3554,9 +3554,9 @@ node {
   }
 }
 node {
-  name: "conv2d_2/Relu"
+  name: "conv3/Relu"
   op: "Relu"
-  input: "conv2d_2/BiasAdd"
+  input: "conv3/BiasAdd"
   attr {
     key: "T"
     value {
@@ -3624,7 +3624,7 @@ node {
 node {
   name: "Reshape_1"
   op: "Reshape"
-  input: "conv2d_2/Relu"
+  input: "conv3/Relu"
   input: "Reshape_1/shape"
   attr {
     key: "T"
@@ -6727,6 +6727,829 @@ node {
   }
 }
 node {
+  name: "Cast"
+  op: "Cast"
+  input: "ArgMax"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 100
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "Equal"
+  op: "Equal"
+  input: "Cast"
+  input: "random_shuffle_queue_DequeueMany:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 100
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "ToFloat"
+  op: "Cast"
+  input: "Equal"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_BOOL
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 100
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/total/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/total"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "acc_op/total/Assign"
+  op: "Assign"
+  input: "acc_op/total"
+  input: "acc_op/total/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "acc_op/total/read"
+  op: "Identity"
+  input: "acc_op/total"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/count/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/count"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "acc_op/count/Assign"
+  op: "Assign"
+  input: "acc_op/count"
+  input: "acc_op/count/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "acc_op/count/read"
+  op: "Identity"
+  input: "acc_op/count"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/Size"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/ToFloat_1"
+  op: "Cast"
+  input: "acc_op/Size"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/Const"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/Sum"
+  op: "Sum"
+  input: "ToFloat"
+  input: "acc_op/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "acc_op/AssignAdd"
+  op: "AssignAdd"
+  input: "acc_op/total"
+  input: "acc_op/Sum"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "acc_op/AssignAdd_1"
+  op: "AssignAdd"
+  input: "acc_op/count"
+  input: "acc_op/ToFloat_1"
+  input: "^ToFloat"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "acc_op/truediv"
+  op: "RealDiv"
+  input: "acc_op/total/read"
+  input: "acc_op/count/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/zeros_like"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/Greater"
+  op: "Greater"
+  input: "acc_op/count/read"
+  input: "acc_op/zeros_like"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/value"
+  op: "Select"
+  input: "acc_op/Greater"
+  input: "acc_op/truediv"
+  input: "acc_op/zeros_like"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/truediv_1"
+  op: "RealDiv"
+  input: "acc_op/AssignAdd"
+  input: "acc_op/AssignAdd_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/zeros_like_1"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/Greater_1"
+  op: "Greater"
+  input: "acc_op/AssignAdd_1"
+  input: "acc_op/zeros_like_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "acc_op/update_op"
+  op: "Select"
+  input: "acc_op/Greater_1"
+  input: "acc_op/truediv_1"
+  input: "acc_op/zeros_like_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "accuracy/tags"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "accuracy"
+      }
+    }
+  }
+}
+node {
+  name: "accuracy"
+  op: "ScalarSummary"
+  input: "accuracy/tags"
+  input: "acc_op/update_op"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
   name: "loss/tags"
   op: "Const"
   attr {
@@ -9303,10 +10126,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Relu_grad/ReluGrad"
+  name: "gradients/conv3/Relu_grad/ReluGrad"
   op: "ReluGrad"
   input: "gradients/Reshape_1_grad/Reshape"
-  input: "conv2d_2/Relu"
+  input: "conv3/Relu"
   attr {
     key: "T"
     value {
@@ -9336,9 +10159,9 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/BiasAdd_grad/BiasAddGrad"
+  name: "gradients/conv3/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/conv2d_2/Relu_grad/ReluGrad"
+  input: "gradients/conv3/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -9365,16 +10188,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/BiasAdd_grad/tuple/group_deps"
+  name: "gradients/conv3/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_2/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d_2/Relu_grad/ReluGrad"
+  input: "^gradients/conv3/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv3/Relu_grad/ReluGrad"
 }
 node {
-  name: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency"
+  name: "gradients/conv3/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d_2/Relu_grad/ReluGrad"
-  input: "^gradients/conv2d_2/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv3/Relu_grad/ReluGrad"
+  input: "^gradients/conv3/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9385,7 +10208,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_2/Relu_grad/ReluGrad"
+        s: "loc:@gradients/conv3/Relu_grad/ReluGrad"
       }
     }
   }
@@ -9412,10 +10235,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency_1"
+  name: "gradients/conv3/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d_2/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d_2/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv3/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv3/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9426,7 +10249,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_2/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@gradients/conv3/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
@@ -9444,10 +10267,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/ShapeN"
+  name: "gradients/conv3/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "max_pooling2d_1/MaxPool"
-  input: "conv2d_2/kernel/read"
+  input: "conv3/kernel/read"
   attr {
     key: "N"
     value {
@@ -9485,7 +10308,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/Const"
+  name: "gradients/conv3/Conv2D_grad/Const"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -9521,7 +10344,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/Const_1"
+  name: "gradients/conv3/Conv2D_grad/Const_1"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -9557,11 +10380,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
+  name: "gradients/conv3/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/conv2d_2/Conv2D_grad/Const"
-  input: "conv2d_2/kernel/read"
-  input: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv3/Conv2D_grad/Const"
+  input: "conv3/kernel/read"
+  input: "gradients/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -9631,11 +10454,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/Conv2DBackpropFilter"
+  name: "gradients/conv3/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "max_pooling2d_1/MaxPool"
-  input: "gradients/conv2d_2/Conv2D_grad/Const_1"
-  input: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv3/Conv2D_grad/Const_1"
+  input: "gradients/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -9705,16 +10528,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/tuple/group_deps"
+  name: "gradients/conv3/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_2/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv3/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv3/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/tuple/control_dependency"
+  name: "gradients/conv3/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/conv2d_2/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv3/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv3/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9725,7 +10548,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_2/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@gradients/conv3/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
@@ -9752,10 +10575,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_2/Conv2D_grad/tuple/control_dependency_1"
+  name: "gradients/conv3/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d_2/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d_2/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv3/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv3/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9766,7 +10589,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_2/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@gradients/conv3/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
@@ -9795,9 +10618,9 @@ node {
 node {
   name: "gradients/max_pooling2d_1/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
-  input: "conv2d_1/Relu"
+  input: "conv2/Relu"
   input: "max_pooling2d_1/MaxPool"
-  input: "gradients/conv2d_2/Conv2D_grad/tuple/control_dependency"
+  input: "gradients/conv3/Conv2D_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -9861,10 +10684,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Relu_grad/ReluGrad"
+  name: "gradients/conv2/Relu_grad/ReluGrad"
   op: "ReluGrad"
   input: "gradients/max_pooling2d_1/MaxPool_grad/MaxPoolGrad"
-  input: "conv2d_1/Relu"
+  input: "conv2/Relu"
   attr {
     key: "T"
     value {
@@ -9894,9 +10717,9 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/BiasAdd_grad/BiasAddGrad"
+  name: "gradients/conv2/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/conv2d_1/Relu_grad/ReluGrad"
+  input: "gradients/conv2/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -9923,16 +10746,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/BiasAdd_grad/tuple/group_deps"
+  name: "gradients/conv2/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_1/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d_1/Relu_grad/ReluGrad"
+  input: "^gradients/conv2/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv2/Relu_grad/ReluGrad"
 }
 node {
-  name: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency"
+  name: "gradients/conv2/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d_1/Relu_grad/ReluGrad"
-  input: "^gradients/conv2d_1/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv2/Relu_grad/ReluGrad"
+  input: "^gradients/conv2/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9943,7 +10766,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_1/Relu_grad/ReluGrad"
+        s: "loc:@gradients/conv2/Relu_grad/ReluGrad"
       }
     }
   }
@@ -9970,10 +10793,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency_1"
+  name: "gradients/conv2/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d_1/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d_1/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv2/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv2/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -9984,7 +10807,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_1/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@gradients/conv2/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
@@ -10002,10 +10825,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/ShapeN"
+  name: "gradients/conv2/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "max_pooling2d/MaxPool"
-  input: "conv2d_1/kernel/read"
+  input: "conv2/kernel/read"
   attr {
     key: "N"
     value {
@@ -10043,7 +10866,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/Const"
+  name: "gradients/conv2/Conv2D_grad/Const"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -10079,7 +10902,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/Const_1"
+  name: "gradients/conv2/Conv2D_grad/Const_1"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -10115,11 +10938,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
+  name: "gradients/conv2/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/conv2d_1/Conv2D_grad/Const"
-  input: "conv2d_1/kernel/read"
-  input: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv2/Conv2D_grad/Const"
+  input: "conv2/kernel/read"
+  input: "gradients/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -10189,11 +11012,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/Conv2DBackpropFilter"
+  name: "gradients/conv2/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "max_pooling2d/MaxPool"
-  input: "gradients/conv2d_1/Conv2D_grad/Const_1"
-  input: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv2/Conv2D_grad/Const_1"
+  input: "gradients/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -10263,16 +11086,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/tuple/group_deps"
+  name: "gradients/conv2/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d_1/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/tuple/control_dependency"
+  name: "gradients/conv2/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/conv2d_1/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv2/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv2/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10283,7 +11106,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_1/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@gradients/conv2/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
@@ -10310,10 +11133,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d_1/Conv2D_grad/tuple/control_dependency_1"
+  name: "gradients/conv2/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d_1/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d_1/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10324,7 +11147,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d_1/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@gradients/conv2/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
@@ -10353,9 +11176,9 @@ node {
 node {
   name: "gradients/max_pooling2d/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
-  input: "conv2d/Relu"
+  input: "conv1/Relu"
   input: "max_pooling2d/MaxPool"
-  input: "gradients/conv2d_1/Conv2D_grad/tuple/control_dependency"
+  input: "gradients/conv2/Conv2D_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -10419,10 +11242,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Relu_grad/ReluGrad"
+  name: "gradients/conv1/Relu_grad/ReluGrad"
   op: "ReluGrad"
   input: "gradients/max_pooling2d/MaxPool_grad/MaxPoolGrad"
-  input: "conv2d/Relu"
+  input: "conv1/Relu"
   attr {
     key: "T"
     value {
@@ -10452,9 +11275,9 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/BiasAdd_grad/BiasAddGrad"
+  name: "gradients/conv1/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/conv2d/Relu_grad/ReluGrad"
+  input: "gradients/conv1/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -10481,16 +11304,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/BiasAdd_grad/tuple/group_deps"
+  name: "gradients/conv1/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d/Relu_grad/ReluGrad"
+  input: "^gradients/conv1/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv1/Relu_grad/ReluGrad"
 }
 node {
-  name: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency"
+  name: "gradients/conv1/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d/Relu_grad/ReluGrad"
-  input: "^gradients/conv2d/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv1/Relu_grad/ReluGrad"
+  input: "^gradients/conv1/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10501,7 +11324,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d/Relu_grad/ReluGrad"
+        s: "loc:@gradients/conv1/Relu_grad/ReluGrad"
       }
     }
   }
@@ -10528,10 +11351,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency_1"
+  name: "gradients/conv1/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/conv2d/BiasAdd_grad/tuple/group_deps"
+  input: "gradients/conv1/BiasAdd_grad/BiasAddGrad"
+  input: "^gradients/conv1/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10542,7 +11365,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@gradients/conv1/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
@@ -10560,10 +11383,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/ShapeN"
+  name: "gradients/conv1/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "Reshape"
-  input: "conv2d/kernel/read"
+  input: "conv1/kernel/read"
   attr {
     key: "N"
     value {
@@ -10601,7 +11424,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/Const"
+  name: "gradients/conv1/Conv2D_grad/Const"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -10637,7 +11460,7 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/Const_1"
+  name: "gradients/conv1/Conv2D_grad/Const_1"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -10673,11 +11496,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
+  name: "gradients/conv1/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/conv2d/Conv2D_grad/Const"
-  input: "conv2d/kernel/read"
-  input: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv1/Conv2D_grad/Const"
+  input: "conv1/kernel/read"
+  input: "gradients/conv1/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -10747,11 +11570,11 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/Conv2DBackpropFilter"
+  name: "gradients/conv1/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "Reshape"
-  input: "gradients/conv2d/Conv2D_grad/Const_1"
-  input: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency"
+  input: "gradients/conv1/Conv2D_grad/Const_1"
+  input: "gradients/conv1/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -10821,16 +11644,16 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/tuple/group_deps"
+  name: "gradients/conv1/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/conv2d/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv1/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/tuple/control_dependency"
+  name: "gradients/conv1/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/conv2d/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv1/Conv2D_grad/Conv2DBackpropInput"
+  input: "^gradients/conv1/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10841,7 +11664,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@gradients/conv1/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
@@ -10868,10 +11691,10 @@ node {
   }
 }
 node {
-  name: "gradients/conv2d/Conv2D_grad/tuple/control_dependency_1"
+  name: "gradients/conv1/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/conv2d/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/conv2d/Conv2D_grad/tuple/group_deps"
+  input: "gradients/conv1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv1/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -10882,7 +11705,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv2d/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@gradients/conv1/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
@@ -10939,11 +11762,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d/kernel/ApplyGradientDescent"
+  name: "GradientDescent/update_conv1/kernel/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d/kernel"
+  input: "conv1/kernel"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d/Conv2D_grad/tuple/control_dependency_1"
+  input: "gradients/conv1/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -10954,7 +11777,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -10987,11 +11810,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d/bias/ApplyGradientDescent"
+  name: "GradientDescent/update_conv1/bias/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d/bias"
+  input: "conv1/bias"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d/BiasAdd_grad/tuple/control_dependency_1"
+  input: "gradients/conv1/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -11002,7 +11825,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -11026,11 +11849,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d_1/kernel/ApplyGradientDescent"
+  name: "GradientDescent/update_conv2/kernel/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d_1/kernel"
+  input: "conv2/kernel"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d_1/Conv2D_grad/tuple/control_dependency_1"
+  input: "gradients/conv2/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -11041,7 +11864,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -11074,11 +11897,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d_1/bias/ApplyGradientDescent"
+  name: "GradientDescent/update_conv2/bias/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d_1/bias"
+  input: "conv2/bias"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d_1/BiasAdd_grad/tuple/control_dependency_1"
+  input: "gradients/conv2/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -11089,7 +11912,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -11113,11 +11936,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d_2/kernel/ApplyGradientDescent"
+  name: "GradientDescent/update_conv3/kernel/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d_2/kernel"
+  input: "conv3/kernel"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d_2/Conv2D_grad/tuple/control_dependency_1"
+  input: "gradients/conv3/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -11128,7 +11951,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -11161,11 +11984,11 @@ node {
   }
 }
 node {
-  name: "GradientDescent/update_conv2d_2/bias/ApplyGradientDescent"
+  name: "GradientDescent/update_conv3/bias/ApplyGradientDescent"
   op: "ApplyGradientDescent"
-  input: "conv2d_2/bias"
+  input: "conv3/bias"
   input: "GradientDescent/learning_rate"
-  input: "gradients/conv2d_2/BiasAdd_grad/tuple/control_dependency_1"
+  input: "gradients/conv3/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -11176,7 +11999,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -11364,12 +12187,12 @@ node {
 node {
   name: "GradientDescent/update"
   op: "NoOp"
-  input: "^GradientDescent/update_conv2d/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d/kernel/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_1/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_1/kernel/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_2/bias/ApplyGradientDescent"
-  input: "^GradientDescent/update_conv2d_2/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv1/bias/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv1/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2/bias/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2/kernel/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv3/bias/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv3/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_dense/bias/ApplyGradientDescent"
   input: "^GradientDescent/update_dense/kernel/ApplyGradientDescent"
   input: "^GradientDescent/update_output/bias/ApplyGradientDescent"
@@ -11452,12 +12275,12 @@ node {
 node {
   name: "init"
   op: "NoOp"
-  input: "^conv2d/bias/Assign"
-  input: "^conv2d/kernel/Assign"
-  input: "^conv2d_1/bias/Assign"
-  input: "^conv2d_1/kernel/Assign"
-  input: "^conv2d_2/bias/Assign"
-  input: "^conv2d_2/kernel/Assign"
+  input: "^conv1/bias/Assign"
+  input: "^conv1/kernel/Assign"
+  input: "^conv2/bias/Assign"
+  input: "^conv2/kernel/Assign"
+  input: "^conv3/bias/Assign"
+  input: "^conv3/kernel/Assign"
   input: "^dense/bias/Assign"
   input: "^dense/kernel/Assign"
   input: "^global_step/Assign"
@@ -11505,12 +12328,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_1"
   op: "IsVariableInitialized"
-  input: "conv2d/kernel"
+  input: "conv1/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -11533,12 +12356,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_2"
   op: "IsVariableInitialized"
-  input: "conv2d/bias"
+  input: "conv1/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -11561,12 +12384,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_3"
   op: "IsVariableInitialized"
-  input: "conv2d_1/kernel"
+  input: "conv2/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -11589,12 +12412,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_4"
   op: "IsVariableInitialized"
-  input: "conv2d_1/bias"
+  input: "conv2/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -11617,12 +12440,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_5"
   op: "IsVariableInitialized"
-  input: "conv2d_2/kernel"
+  input: "conv3/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -11645,12 +12468,12 @@ node {
 node {
   name: "report_uninitialized_variables/IsVariableInitialized_6"
   op: "IsVariableInitialized"
-  input: "conv2d_2/bias"
+  input: "conv3/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -11783,6 +12606,62 @@ node {
   }
 }
 node {
+  name: "report_uninitialized_variables/IsVariableInitialized_11"
+  op: "IsVariableInitialized"
+  input: "acc_op/total"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/total"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "report_uninitialized_variables/IsVariableInitialized_12"
+  op: "IsVariableInitialized"
+  input: "acc_op/count"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@acc_op/count"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
   name: "report_uninitialized_variables/stack"
   op: "Pack"
   input: "report_uninitialized_variables/IsVariableInitialized"
@@ -11796,11 +12675,13 @@ node {
   input: "report_uninitialized_variables/IsVariableInitialized_8"
   input: "report_uninitialized_variables/IsVariableInitialized_9"
   input: "report_uninitialized_variables/IsVariableInitialized_10"
+  input: "report_uninitialized_variables/IsVariableInitialized_11"
+  input: "report_uninitialized_variables/IsVariableInitialized_12"
   device: "/device:CPU:0"
   attr {
     key: "N"
     value {
-      i: 11
+      i: 13
     }
   }
   attr {
@@ -11815,7 +12696,7 @@ node {
       list {
         shape {
           dim {
-            size: 11
+            size: 13
           }
         }
       }
@@ -11839,7 +12720,7 @@ node {
       list {
         shape {
           dim {
-            size: 11
+            size: 13
           }
         }
       }
@@ -11856,7 +12737,7 @@ node {
       list {
         shape {
           dim {
-            size: 11
+            size: 13
           }
         }
       }
@@ -11875,20 +12756,22 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 11
+            size: 13
           }
         }
         string_val: "global_step"
-        string_val: "conv2d/kernel"
-        string_val: "conv2d/bias"
-        string_val: "conv2d_1/kernel"
-        string_val: "conv2d_1/bias"
-        string_val: "conv2d_2/kernel"
-        string_val: "conv2d_2/bias"
+        string_val: "conv1/kernel"
+        string_val: "conv1/bias"
+        string_val: "conv2/kernel"
+        string_val: "conv2/bias"
+        string_val: "conv3/kernel"
+        string_val: "conv3/bias"
         string_val: "dense/kernel"
         string_val: "dense/bias"
         string_val: "output/kernel"
         string_val: "output/bias"
+        string_val: "acc_op/total"
+        string_val: "acc_op/count"
       }
     }
   }
@@ -11925,7 +12808,7 @@ node {
             size: 1
           }
         }
-        int_val: 11
+        int_val: 13
       }
     }
   }
@@ -12207,7 +13090,7 @@ node {
             size: 1
           }
         }
-        int_val: 11
+        int_val: 13
       }
     }
   }
@@ -12417,7 +13300,7 @@ node {
             size: 1
           }
         }
-        int_val: 11
+        int_val: 13
       }
     }
   }
@@ -12725,7 +13608,7 @@ node {
       list {
         shape {
           dim {
-            size: 11
+            size: 13
           }
         }
       }
@@ -12793,7 +13676,7 @@ node {
       list {
         shape {
           dim {
-            size: 11
+            size: 13
           }
         }
       }
@@ -13060,12 +13943,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_1"
   op: "IsVariableInitialized"
-  input: "conv2d/kernel"
+  input: "conv1/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -13088,12 +13971,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_2"
   op: "IsVariableInitialized"
-  input: "conv2d/bias"
+  input: "conv1/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -13116,12 +13999,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_3"
   op: "IsVariableInitialized"
-  input: "conv2d_1/kernel"
+  input: "conv2/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -13144,12 +14027,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_4"
   op: "IsVariableInitialized"
-  input: "conv2d_1/bias"
+  input: "conv2/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -13172,12 +14055,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_5"
   op: "IsVariableInitialized"
-  input: "conv2d_2/kernel"
+  input: "conv3/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }
@@ -13200,12 +14083,12 @@ node {
 node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_6"
   op: "IsVariableInitialized"
-  input: "conv2d_2/bias"
+  input: "conv3/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -13434,12 +14317,12 @@ node {
           }
         }
         string_val: "global_step"
-        string_val: "conv2d/kernel"
-        string_val: "conv2d/bias"
-        string_val: "conv2d_1/kernel"
-        string_val: "conv2d_1/bias"
-        string_val: "conv2d_2/kernel"
-        string_val: "conv2d_2/bias"
+        string_val: "conv1/kernel"
+        string_val: "conv1/bias"
+        string_val: "conv2/kernel"
+        string_val: "conv2/bias"
+        string_val: "conv3/kernel"
+        string_val: "conv3/bias"
         string_val: "dense/kernel"
         string_val: "dense/bias"
         string_val: "output/kernel"
@@ -14486,6 +15369,8 @@ node {
 node {
   name: "init_2"
   op: "NoOp"
+  input: "^acc_op/count/Assign"
+  input: "^acc_op/total/Assign"
 }
 node {
   name: "init_all_tables"
@@ -14506,11 +15391,12 @@ node {
   name: "Merge/MergeSummary"
   op: "MergeSummary"
   input: "enqueue_input/queue/enqueue_input/random_shuffle_queuefraction_over_250_of_750_full"
+  input: "accuracy"
   input: "loss"
   attr {
     key: "N"
     value {
-      i: 2
+      i: 3
     }
   }
   attr {
@@ -14578,7 +15464,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_3b6f9cda8930480aa93671e6a9fbd04b/part"
+        string_val: "_temp_a88018ac3de64e85a49a1d5944183451/part"
       }
     }
   }
@@ -14720,12 +15606,12 @@ node {
             size: 11
           }
         }
-        string_val: "conv2d/bias"
-        string_val: "conv2d/kernel"
-        string_val: "conv2d_1/bias"
-        string_val: "conv2d_1/kernel"
-        string_val: "conv2d_2/bias"
-        string_val: "conv2d_2/kernel"
+        string_val: "conv1/bias"
+        string_val: "conv1/kernel"
+        string_val: "conv2/bias"
+        string_val: "conv2/kernel"
+        string_val: "conv3/bias"
+        string_val: "conv3/kernel"
         string_val: "dense/bias"
         string_val: "dense/kernel"
         string_val: "global_step"
@@ -14788,12 +15674,12 @@ node {
   input: "save/ShardedFilename"
   input: "save/SaveV2/tensor_names"
   input: "save/SaveV2/shape_and_slices"
-  input: "conv2d/bias"
-  input: "conv2d/kernel"
-  input: "conv2d_1/bias"
-  input: "conv2d_1/kernel"
-  input: "conv2d_2/bias"
-  input: "conv2d_2/kernel"
+  input: "conv1/bias"
+  input: "conv1/kernel"
+  input: "conv2/bias"
+  input: "conv2/kernel"
+  input: "conv3/bias"
+  input: "conv3/kernel"
   input: "dense/bias"
   input: "dense/kernel"
   input: "global_step"
@@ -14954,12 +15840,12 @@ node {
             size: 11
           }
         }
-        string_val: "conv2d/bias"
-        string_val: "conv2d/kernel"
-        string_val: "conv2d_1/bias"
-        string_val: "conv2d_1/kernel"
-        string_val: "conv2d_2/bias"
-        string_val: "conv2d_2/kernel"
+        string_val: "conv1/bias"
+        string_val: "conv1/kernel"
+        string_val: "conv2/bias"
+        string_val: "conv2/kernel"
+        string_val: "conv3/bias"
+        string_val: "conv3/kernel"
         string_val: "dense/bias"
         string_val: "dense/kernel"
         string_val: "global_step"
@@ -15085,7 +15971,7 @@ node {
 node {
   name: "save/Assign"
   op: "Assign"
-  input: "conv2d/bias"
+  input: "conv1/bias"
   input: "save/RestoreV2"
   attr {
     key: "T"
@@ -15097,7 +15983,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/bias"
+        s: "loc:@conv1/bias"
       }
     }
   }
@@ -15129,7 +16015,7 @@ node {
 node {
   name: "save/Assign_1"
   op: "Assign"
-  input: "conv2d/kernel"
+  input: "conv1/kernel"
   input: "save/RestoreV2:1"
   attr {
     key: "T"
@@ -15141,7 +16027,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d/kernel"
+        s: "loc:@conv1/kernel"
       }
     }
   }
@@ -15182,7 +16068,7 @@ node {
 node {
   name: "save/Assign_2"
   op: "Assign"
-  input: "conv2d_1/bias"
+  input: "conv2/bias"
   input: "save/RestoreV2:2"
   attr {
     key: "T"
@@ -15194,7 +16080,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/bias"
+        s: "loc:@conv2/bias"
       }
     }
   }
@@ -15226,7 +16112,7 @@ node {
 node {
   name: "save/Assign_3"
   op: "Assign"
-  input: "conv2d_1/kernel"
+  input: "conv2/kernel"
   input: "save/RestoreV2:3"
   attr {
     key: "T"
@@ -15238,7 +16124,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_1/kernel"
+        s: "loc:@conv2/kernel"
       }
     }
   }
@@ -15279,7 +16165,7 @@ node {
 node {
   name: "save/Assign_4"
   op: "Assign"
-  input: "conv2d_2/bias"
+  input: "conv3/bias"
   input: "save/RestoreV2:4"
   attr {
     key: "T"
@@ -15291,7 +16177,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/bias"
+        s: "loc:@conv3/bias"
       }
     }
   }
@@ -15323,7 +16209,7 @@ node {
 node {
   name: "save/Assign_5"
   op: "Assign"
-  input: "conv2d_2/kernel"
+  input: "conv3/kernel"
   input: "save/RestoreV2:5"
   attr {
     key: "T"
@@ -15335,7 +16221,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@conv2d_2/kernel"
+        s: "loc:@conv3/kernel"
       }
     }
   }

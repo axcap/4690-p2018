@@ -2,18 +2,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 import cv2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#mapping_path = "res/datasets/EMNIST_ByMerge/"
-#mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
-=======
 # mapping_path = "res/datasets/EMNIST_ByMerge/"
 # mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-=======
-# mapping_path = "res/datasets/EMNIST_ByMerge/"
-# mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
 mapping = np.array([
     [0, 48],
@@ -63,22 +53,9 @@ mapping = np.array([
     [44, 113],
     [45, 114],
     [46, 116]])
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 def imageParser():
     path = "res/images/lorem_skew2.png"
-=======
-=======
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-
-
-def imageParser():
-    path = "res/images/lorem.png"
-<<<<<<< HEAD
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-=======
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
