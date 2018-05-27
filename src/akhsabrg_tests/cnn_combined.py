@@ -41,7 +41,7 @@ def imshow(text, img):
     return input("<Hit Enter To Continue>")
 
 
-dataset_path = "res/datasets/EMNIST_ByMerge/"
+dataset_path = "res/datasets/"
 
 class COMBINED_CNN:
     def __init__(self, model_dir=None):
@@ -118,6 +118,7 @@ class COMBINED_CNN:
             inputs=input_layer,
             filters=32,
             kernel_size=[5, 5],
+            name = "conv1",
             padding="same",
         activation=tf.nn.relu)
 
@@ -136,6 +137,7 @@ class COMBINED_CNN:
             inputs=pool1,
             filters=64,
             kernel_size=[5, 5],
+            name = "conv2",
             padding="same",
             activation=tf.nn.relu)
 
@@ -154,6 +156,7 @@ class COMBINED_CNN:
             inputs=pool2,
             filters=64,
             kernel_size=[5, 5],
+            name = "conv3",
             padding="same",
             activation=tf.nn.relu)
 
@@ -190,6 +193,12 @@ class COMBINED_CNN:
         # Calculate Loss (for both TRAIN and EVAL modes)
         loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
+        # Compute evaluation metrics.
+        accuracy = tf.metrics.accuracy(labels=labels,
+                                       predictions=predictions['classes'],
+                                       name='acc_op')
+        metrics = {'accuracy': accuracy}
+        tf.summary.scalar('accuracy', accuracy[1])
         tf.summary.scalar("loss", loss)
 
         # Configure the Training Op (for TRAIN mode)
@@ -254,6 +263,11 @@ class COMBINED_CNN:
             input_fn=train_input_fn,
             steps=steps)
 
+        for x in [1, 2, 3]:
+            weights = self.classifier.get_variable_value("conv"+str(x)+"/kernel")
+            np.savetxt("conv"+str(x)+"_"+str(np.shape(weights))+".txt", weights.flatten())
+
+
 
     def evaluate(self, num_epochs=1, shuffle=False):
         # Evaluate the model and print results
@@ -270,27 +284,10 @@ class COMBINED_CNN:
 
 if __name__ == "__main__":
 
-    # Load training and eval data
-    emnist = input_data.read_data_sets(dataset_path, validation_size=0)
-    eval_data    = emnist.test.images  # Returns np.array
-    eval_labels  = np.asarray(emnist.test.labels, dtype=np.int32)
-
     nn = COMBINED_CNN()
-    nn.load_data(dataset = emnist)
-    nn.train(10000, batch_size=50)
 
-    nn.evaluate()
-    exit()
-
-    for idx in range(eval_data.size):
-        img = eval_data[idx]
-        label = eval_labels[idx]
-        print(label)
-        img = np.reshape(img, (28, 28))
-        demo = np.transpose(img)
-        print("forward")
-        guessed = nn.forward(img)
-        print(guessed)
-        print("%s : %s" % (nn.class2char(label) ,
-                           nn.class2char(guessed)))
-        imshow("Test: ", img)
+    for sett in [('SANS', 100, 50000, 0), ('FNIST', 100, 50000, 5000), ('EMNIST_ByMerge/', 100, 30000, 5000)]:
+        dataset = input_data.read_data_sets(dataset_path+sett[0], validation_size=sett[3])
+        nn.load_data(dataset = dataset)
+        nn.train(sett[2], batch_size=sett[1])
+        nn.evaluate()
