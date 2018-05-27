@@ -9,15 +9,15 @@
 \chapter{Result - Discussion}
 \label{chap:Result - Discussion}
 \section{Result: Text Segmentation}
-We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{fig:Text_detection_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well  
+We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{fig:Text_seg_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well. 
 
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{4cm}
-    \includegraphics[width=3cm]{res/segment_text1.png}
+    \includegraphics[width=4cm]{res/segment_text1.png}
     \caption{Good result on pure text}
   \end{subfigure}
-  \hspace{5mm}%
+  \hspace{7mm}%
   \begin{subfigure}[t]{4cm}
     \includegraphics[width=3cm]{res/segment_text2.png}
     \caption{Good result on text on paper with little background noise}
@@ -28,19 +28,29 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
     \caption{Bad result with many non text object segmented as text}
   \end{subfigure}
   \caption{Result of the Segment Text}
-  \label{fig:Text_detection_result}
+  \label{fig:Text_seg_result}
 \end{figure}
 
 \section{Result: Preprocessing}
 
 \subsection{Rotation}
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=4cm]{res/4angle_rot.png}
-  \caption{cv.minAreaRect cannot differentiate between 0\textdegree and 180\textdegree, and 90\textdegree and 270\textdegree}
-  \label{fig:4angle_rot}
-\end{figure}
+Rotation only work if the angle of rotation is less that 45 degree. This problem is mention in section \ref{Method:Preprocessing} and an attempt to solve the problem was given in section \ref{Discard:rotation}. Below are a result image of a less skew image. 
 
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{6cm}
+    \frame{\includegraphics[width=6cm]{res/text_skew_region.png}}
+    \caption{Region of skew text, after text segmentation}
+  \end{subfigure}
+  \hspace{2cm}%
+  \begin{subfigure}[t]{6cm}
+    \frame{\includegraphics[width=6cm]{res/text_skew_region_rotated.png}}
+    \caption{After rotation}
+  \end{subfigure}
+
+  \caption{Result of rotation}
+  \label{fig:result:rotation}
+\end{figure}
 
 \subsection{Line segmentation}
 If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images. 

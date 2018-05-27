@@ -73,7 +73,6 @@ In this part of the program, we want to be able to segment out text segments in 
   to find the convex hull of the text, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum area rectangle. \par
-  One important note here is that the method above operates on binary images, therefor we need to convert our image to binary, possibly using some threshold algorithm. \par
   cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration. We will use a CNN to determine which of the angles is correct and then rotate it accordingly.
   To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourself. 
 
@@ -82,13 +81,10 @@ In this part of the program, we want to be able to segment out text segments in 
     For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
     \item \textbf{cv.minAreaRect()}
     Feed our newly generated image to cv.minAreaRect.
-    \item \textbf{CNN solution - find correct rotation}
-    Now that we have text rotated in one of [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], we have several options finding the correct angle of the text segment.
-    \begin{enumerate}
-      \item{The most straightforward approach would be to find the rotation of first character and rotate the whole segment accordingly (fast and naive)}
-      \item{Pick N characters and find their rotation, angle with most matches will be our final angle of rotation. This is somewhat slower (depends on N) but gives us bit more confidence than (a)}
-      \item{Finally we can classify the angle of each individual character before we try to determine the correct angle based on the results. This gives us the highest accuracy but on the cost of time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
-      \end{enumerate}
+    \item \textbf{calculate angle differences}
+    From cv.minAreaRect() we can find the angle of the rectangle. From that we can calculate the angle of the potential rotated rectangle. 
+    \item \textbf{Affine transform to rotate image}
+    We use Affine transform to rotate the rectangle.
     \end{enumerate}
 \end{flushleft}
 
