@@ -3,13 +3,13 @@
 \externaldocument[D-]{chapter_3_discardMethod.tex}
 \externaldocument[R-]{chapter_4_result.tex}
 \externaldocument[C-]{chapter_5_conclusion.tex}
-\externaldocument[RE-]{chapter_6_recognition.tex}
+\externaldocument[RE-]{chapter_6_references.tex}
 
 \begin{document}
 \chapter{Method}
 \label{chap:Method}
 \section{Description}
-The following section ,as mentioned in Section~\ref{subsec:Report Layout}, will present our methods. Bellow we present each component individually and the corresponding methods for them. A short description on what challenges have to
+The following section, as mentioned in Section~\ref{subsec:Report Layout}, will present our methods. Bellow we present each component individually and the corresponding methods. A short description on what challenges have to
 be solved for each component will be addressed first.
 
 \section{Component: Text segmentation}
@@ -17,21 +17,21 @@ be solved for each component will be addressed first.
 
 \begin{flushleft}
   \textbf{Description} \\
-In this part of the program, we want to be able to segment out text segments in the image. Afterwards we want to segment out lines and letter for further classification, see section \ref{subsec:Find_line} and \ref{subsec:Find_Symb} for reference. In this part we assume that the images have black text on white background, and it mostly consists of text.
+In this part of the program, we want to be able to segment out text segments in the image. Afterwards we want to segment out lines and then letters for further classification, see section \ref{subsec:Find_line} and \ref{subsec:Find_Symb} for reference. In this part we assume that the images have black text on white background, and it mostly consists of text.
 \end{flushleft}
 
 \begin{flushleft}
   \subsubsection{Approach: Simple Image Analysis Technics}
-  Our approach here was inspired by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
+  Our approach here is inspired by this online blog \href{https://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html}{Source}\cite{_finding_????}. We simplified the original approach to the following steps:
   \begin{enumerate}
     \item \textbf{Find Edges/Outliners of the image.}
-    Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images (as long as the text and background are close to black and white respectively).
+    Initial idea is to use Canny, but we found Morphological Gradient to perform better. It indicates the contrast of the edges, so we can get better differences in some natural images (granted the text and background are close to black and white respectively).
     \item \textbf{Otsu Thresholding.}
     We need our image to be a binary image. We simply use OpenCV Otsu algorithm to achieve it that.
     \item \textbf{Morphological Closing.}
     Since we want line segments we use Morphological Closing with large horizontal filter to merge as many horizontal letters together as possible.
-    \item \textbf{Extract Regions}
-    OpenCv FindContours was used to find the different text regions. We then exclude regions which are smaller than a selected threshold. The different region are return as coordinate of the different rectangular boxes.
+    \item \textbf{Extract Regions.}
+    OpenCv FindContours was used to find the different text regions. We then exclude regions which are smaller than a selected threshold. The different region are returned as coordinates of the different rectangular boxes.
   \end{enumerate}
 \end{flushleft}
 
@@ -41,11 +41,11 @@ In this part of the program, we want to be able to segment out text segments in 
   \textbf{Description} \\
   Definition of preprocessing; the act of preparing the data for further use,
   in our case for classification. \par
-  After the text segmentation we assume we have an image consisting of white text on black background. What remains for us to do is to segment out each character and format it to the right data type for the classifier. Hence we have 4 additional steps:
+  After the text segmentation we assume we have an image consisting of white text on black background. What remains for us to do is to segment out each character and format them to the right data type for the classifier. Hence we have 4 problems to solve:
 \end{flushleft}
 
 \begin{flushleft}
-  \textbf{Mini-steps}
+  \textbf{Problems}
   \begin{itemize}
     \item{Rotated text}
     \begin{itemize}
@@ -61,37 +61,41 @@ In this part of the program, we want to be able to segment out text segments in 
     \end{itemize}
     \item{Data formatting/casting}
     \begin{itemize}
-      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. No need for a specific approach.}
+      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. \todo[inline]{Find steps and write a subsection on this} No need for a specific approach.}
     \end{itemize}
   \end{itemize}
 \end{flushleft}
 
 \subsection{Find rotation}
+\label{subsec:Find rotation}
 \begin{flushleft}
-  \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
+  \textbf{Approach: OpenCV minAreaRect()} \\
   This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
   to find the convex hull of the text, and then
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
   find the minimum area rectangle. \par
-  cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration. We will use a CNN to determine which of the angles is correct and then rotate it accordingly.
-  To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourself. 
+  cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
+  Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is manitioned in Chapter~\ref{chap:Discarded Method}.
 
   \begin{enumerate}
-    \item \textbf{Binary image}
-    For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
-    \item \textbf{cv.minAreaRect()}
+    \item \textbf{Binary image.}
+    For the Convex hull algorithm to work, the text segments and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
+    \item \textbf{cv.minAreaRect().}
     Feed our newly generated image to cv.minAreaRect.
-    \item \textbf{calculate angle differences}
-    From cv.minAreaRect() we can find the angle of the rectangle. From that we can calculate the angle of the potential rotated rectangle. 
-    \item \textbf{Affine transform to rotate image}
+    \item \textbf{Calculate angle differences.}
+    From cv.minAreaRect() we can find the angle of the rectangle. From that we can calculate the angle of the potential rotated rectangle.
+    \item \textbf{Affine transform to rotate image.}
     We use Affine transform to rotate the rectangle.
     \end{enumerate}
 \end{flushleft}
 
 
+
+
+
 \subsection{Find line}\label{subsec:Find_line}
 After all the preprocessing done up to this point, we assume we have a segment of correctly rotated text. At this point it is enough to just use projection histogram. We basically sum number of active pixels in each row and end up with one dimensional array with same size as image height, one value for each row in input image.
-E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this will mean there are some data (most likely text) between 5th and 10th row, and 15th  up to another line break. see fig \ref{fig:Project_histogram}
+E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this means there are some data (most likely text) between 5th and 10th row, and 15th  up to another line break. see fig \ref{fig:Project_histogram}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{proj_histogram.png}
@@ -101,13 +105,13 @@ E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this will mean there are some
 
 
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
-Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_segmentation}. We added a few steps and kernel shape in the morphologic part. The additional step was to fill holes in the image, example like 8 and O can give multiple wrong contour. cv2.floodFill was used to solve this problem.
+Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_segmentation}. We added a few steps and kernel shapes in the morphological part. The additional step was to fill holes in the image, for example; 8 and O, can give multiple wrong contours. cv2.floodFill was used to solve this problem.
 \begin{enumerate}
-  \item Do threshold.
+  \item Do threshold. \todo[inline]{Why do we do this? threshold the letters, for what reason?}
   \item Inverse the image since we work on black text on white background.
-  \item Do morphological dilation with long vertical kernel, This is to include the dot in 'i'.
-  \item Add a bolder around the line-image, that is separate elements from edge after previous step. This is to make cv2.floodFills work.
-  \item Fill any holes, cv2.floodFills.
+  \item Do morphological dilation with a long vertical kernel, This is to include the dot in 'i'.
+  \item Add a border around the line-image, that separates elements from the edge after the previous step. This is to make cv2.floodFills work.
+  \item Fill all holes, cv2.floodFills.
   \item Use cv2.FindContours
   \item Ignore element where contour size smaller than a threshold(half the letter size), to ignore ',','.' and other non letter element.
 \end{enumerate}
@@ -129,11 +133,11 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 
 \begin{flushleft}
   \textbf{Convolutional Neural Network} \\
-  The basic idea of a CNN is train some number of filters and then
+  The basic idea of a CNN is; train some number of filters and then
   after the filters are trained, run the image which is now ``filtered'', through
   a fully connected network. The fully connected network will then try and
   classify based on the feature images from the convolution layers. \par
-  A short description of key points of a CNN is presented in chapter \ref{chap:Recognition}. Below are the architecture and variable choices we have made for the CNN, 
+  Below we present the architecture and variable choices we have made for the CNN.
 \end{flushleft}
 
 \begin{figure}[H]
@@ -155,7 +159,11 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 \label{Method:Datasets}
 
 \todo[inline]{include only datasets we have used for the final software \\
-Remove MNIST from this place, and moove it to chapter 3 discardMethod}
+. \\
+. \\
+. \\
+. \\
+. \\}
 
 \subsection{Description}
 
@@ -164,16 +172,14 @@ Remove MNIST from this place, and moove it to chapter 3 discardMethod}
   For network to get high accuracy of prediction a lot of labeled data is needed. Lucky for us datasets like MNIST exists, more info about it later.
 \end{flushleft}
 
-\begin{flushleft}
-  \textbf{Limitation - proof-of-concept} \\
-  As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need.
-\end{flushleft}
+\textbf{description Limitation} \\
+As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need. \\
 
-\begin{flushleft}
-  \textbf{Dataset} \\
-  \textbf{MNIST} \\
-  This is a dataset containing images of handwritten digits [0-9]. It has a training set of 60.000 examples and a test set of 10.000 examples. Training set is further divided into 55000 examples of actual training set, while 5000 images are treated as validation set (this number can be changed depending which interface we use to access MNIST data).
-  MNIST dataset is compressed into 4 binary *.gz files, but we do not need to implement any readers/parsers ourself as tensorflow already has two we can choose between.
-  (ref. reader to http://yann.lecun.com/exdb/mnist/).
-\end{flushleft}
+\todo[inline]{
+edit the text above, has to be updated \\
+. \\
+. \\
+. \\
+. \\}
+
 \end{document}
