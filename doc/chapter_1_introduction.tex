@@ -1,0 +1,72 @@
+\documentclass[Report.tex]{subfiles}
+\externaldocument[M-]{chapter_2_method.tex}
+\externaldocument[D-]{chapter_3_discardMethod.tex}
+\externaldocument[R-]{chapter_4_result.tex}
+\externaldocument[C-]{chapter_5_conclusion.tex}
+\externaldocument[RE-]{chapter_6_recognition.tex}
+
+\begin{document}
+\chapter{Introduction}
+\label{sec:Introduction}
+\section{Project Description}
+\textbf{The purpose of our project is to recognize text from image, and be able to do string manipulation on it. Hence this falls under the ``Optical character recognition'' (OCR) problem}
+
+\section{Project Limitations}
+As OCRs are still a challenging task even for companies like
+Google, ref. reader to Googles OCR translator application on smartphones;
+``Translate'', drawbacks such as; difficulty finding all the text on the photo
+because of lighting, noise etc., therefore we take it for granted that we should limit our text recognition problem.
+
+\begin{flushleft}
+  \textbf{Initial limitations}
+  \begin{itemize}
+    \item{English alphabet [upper and lower case] + numbers [0-9] + space}
+    \item{Homogeneous background, white}
+    \item{Skew free text}
+    \item{Computer printed text}
+    \item{Even lighting}
+  \end{itemize}
+\end{flushleft}
+
+\section{Project Components}
+We have come to the conclusion that the OCR software has 3 main parts. Each
+part is essential, for the OCR software to be able to perform its purpose.
+\begin{enumerate}
+ \item{\textit{Text segmentation}}
+ \begin{itemize}
+  \item{Finding text segments on an image and returning the text segments}
+ \end{itemize}
+ \item{\textit{Preprocessing}}
+ \begin{itemize}
+  \item{Do preprocessing on the segmented text, such as rotation and line and
+  symbol segmentation. Preprocessing from definition, should be done first,
+  however because of simplification we assume we manage to segment out text
+  first.}
+ \end{itemize}
+ \item{\textit{Classification}}
+ \begin{itemize}
+  \item{Classification of the symbols}
+ \end{itemize}
+\end{enumerate}
+
+\begin{flushleft}
+  Additionally there is one more very important component for this
+  OCR software to work, \textit{\textbf{labeled data}}. Even though one might not
+  need to code for this part, a good pool of labeled data is needed to be able to
+  classify symbols. More on this later. \\
+  4. \textit{Data classification - Gathering labeled data to train a classification algorithm}
+\end{flushleft}
+
+\section{Report Layout}
+\label{subsec:Report Layout}
+This report is divided into 6 sections. In
+Chapter~\ref{sec:Introduction}, we introduce the project and how the report
+is organized. Chapter~\ref{chap:Method} is where we present methods we have
+used in our final result. Discarded methods tried will be cover in Chapter~\ref{chap:Discarded Method}.
+In Chapter~\ref{chap:Result - Discussion} we review our approach and
+its results, we present the confidence in our solution and what vulnerability
+exist. In Chapter~\ref{chap:Conclusion} we present our thoughts on the project;
+our ambition vs the actuals result, and potential future improvements on the software.
+Chapter~\ref{chap:Recognition} includes reference to third party
+material we have used, such as; code, articles and datasets.
+\end{document}
