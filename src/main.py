@@ -67,13 +67,21 @@ def extractText(image):
 
             line_out += digit
 <<<<<<< HEAD
+<<<<<<< HEAD
             # If space between chars > agerage insert 'space char'
             if idx+1 < len(symbols) and symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2]) > space:
                 line_out += " "*((symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])) // space)
+=======
+            # If space between chars > agerage insert x 'space char's
+            widht = symbols[idx+1][0]-(symbols[idx][0] + symbols[idx][2])
+            if idx+1 < len(symbols) and  widht > space:
+                line_out += " " * widht // space
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
             print(".", end="")
             sys.stdout.flush()
 
+<<<<<<< HEAD
 
 =======
             # If space between chars > agerage insert x 'space char's
@@ -84,6 +92,9 @@ def extractText(image):
             print(".", end="")
             sys.stdout.flush()
 
+
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
 
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
         end = time.time()
@@ -117,15 +128,21 @@ if __name__ == "__main__":
         seg = utils.extractContour(binary, contour)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         coords = np.column_stack(np.where(seg > 0))
         angle  = np.around(cv2.minAreaRect(coords)[-1]).astype(int)
         angle  = utils.correct_angle(angle)
 =======
+=======
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
         # Simple rotation fix
         coords = np.column_stack(np.where(seg > 0))
         angle  = np.around(cv2.minAreaRect(coords)[-1]).astype(int)
         angle  = utils.correct_angle(angle)
 
+<<<<<<< HEAD
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
         seg    = utils.rotate2angle(seg, angle)
         utils.imshow("Segment", seg)

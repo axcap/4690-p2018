@@ -144,7 +144,11 @@ def main(unused_argv):
   # Create the Estimator
   mnist_classifier = tf.estimator.Estimator(
 <<<<<<< HEAD
+<<<<<<< HEAD
       model_fn=cnn_model_fn, model_dir="res/model/cnn_mnist")
+=======
+      model_fn=cnn_model_fn, model_dir="res/model/visual_cnn")
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 =======
       model_fn=cnn_model_fn, model_dir="res/model/visual_cnn")
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
@@ -163,10 +167,16 @@ def main(unused_argv):
       num_epochs=None,
       shuffle=True)
 <<<<<<< HEAD
+<<<<<<< HEAD
   mnist_classifier.train(
       input_fn=train_input_fn,
       steps=20000)
     #hooks=[logging_hook])
+=======
+
+
+  mnist_classifier.train(input_fn=train_input_fn,steps=1000)#, hooks=[logging_hook])
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 =======
 
 

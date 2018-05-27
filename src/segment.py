@@ -3,7 +3,11 @@ import numpy as np
 import cv2
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.35):
+=======
+def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 =======
 def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
@@ -60,6 +64,9 @@ def segmentLetters(img):
 
   tresh_img[0] = 0
   tresh_img[M-1] = 0
+<<<<<<< HEAD
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
   im_floodfill = tresh_img.copy()
@@ -78,6 +85,7 @@ def segmentLetters(img):
   im_out = tresh_img | im_floodfill_inv
 
   _, contours, __ = cv2.findContours(im_out.copy(),
+<<<<<<< HEAD
                                      cv2.RETR_EXTERNAL,
                                      cv2.CHAIN_APPROX_NONE)
 
@@ -85,6 +93,13 @@ def segmentLetters(img):
 
 <<<<<<< HEAD
 =======
+=======
+                                              cv2.RETR_EXTERNAL,
+                                              cv2.CHAIN_APPROX_NONE)
+
+  return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
+
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 def find_largest_component_rect(b_img):
   """ 
   input: binaery image
@@ -139,6 +154,9 @@ def segmentPaper(img):
   return img[y:y+h, x:x+w]
 
 
+<<<<<<< HEAD
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
 >>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
 def highlightSegments(text, img, segments):
@@ -146,9 +164,12 @@ def highlightSegments(text, img, segments):
   temp = img.copy()
   for (x,y,w,h) in segments:
 <<<<<<< HEAD
+<<<<<<< HEAD
     cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 3, 8, 0)
   utils.imshow(text, temp)
 =======
+=======
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
     cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
 
   utils.imshow(text,temp)
