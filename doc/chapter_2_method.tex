@@ -61,7 +61,7 @@ In this part of the program, we want to be able to segment out text segments in 
     \end{itemize}
     \item{Data formatting/casting}
     \begin{itemize}
-      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. \todo[inline]{Find steps and write a subsection on this} No need for a specific approach.}
+      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets.  Done using simple array manipulation, described in \ref{subsec:method:Data_formatting}}
     \end{itemize}
   \end{itemize}
 \end{flushleft}
@@ -74,7 +74,7 @@ to find the convex hull of the text, and then
 \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
 find the minimum area rectangle. \par
 cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
-Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is manitioned in Chapter~\ref{chap:Discarded Method}.
+Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is mentioned in Chapter~\ref{chap:Discarded Method}.
 
 
 
