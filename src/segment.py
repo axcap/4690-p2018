@@ -2,15 +2,7 @@ import utils as utils
 import numpy as np
 import cv2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.35):
-=======
-def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-=======
-def findBoundingRect(img, contours, min_w=8, min_h=8, min_r = 0.25):
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
   boundRect = []
   mask = np.zeros(img.shape, dtype=np.uint8)
 
@@ -38,36 +30,17 @@ def segmentText(img, point = (21, 21)):
                                               cv2.CHAIN_APPROX_NONE)
   return findBoundingRect(img, contours)
 
-<<<<<<< HEAD
-def segmentLetters(image):
-  [M,N] = image.shape
-
-  kernel = np.ones((M//2,1), np.uint8)
-  img = cv2.dilate(image, kernel)
-  #utils.imshow("dilate", img)
-
-  #img = image
-  # invert since we are working black on white
-  _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-  tresh_img[0] = 0
-  tresh_img[M-1] = 0
-  #tresh_img = img
-=======
 def segmentLetters(img):
   [M,N] = img.shape
 
   # invert since we are working black on white
-  _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+  _, tresh_img = cv2.threshold(img, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
   kernel = np.ones((M//8,1), np.uint8)
   tresh_img = cv2.dilate(tresh_img, kernel)
 
   tresh_img[0] = 0
   tresh_img[M-1] = 0
-<<<<<<< HEAD
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-=======
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
   im_floodfill = tresh_img.copy()
   #print(im_floodfill)
@@ -85,23 +58,12 @@ def segmentLetters(img):
   im_out = tresh_img | im_floodfill_inv
 
   _, contours, __ = cv2.findContours(im_out.copy(),
-<<<<<<< HEAD
                                      cv2.RETR_EXTERNAL,
                                      cv2.CHAIN_APPROX_NONE)
 
-  return findBoundingRect(img, contours, min_h=10, min_w=0, min_r=0)
-
-<<<<<<< HEAD
-=======
-=======
-                                              cv2.RETR_EXTERNAL,
-                                              cv2.CHAIN_APPROX_NONE)
-
-  return findBoundingRect(img, contours, min_h=10, min_w=0, min_r=0)
-
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+  return findBoundingRect(img, contours, min_h=M//2, min_w=2, min_r=0)
 def find_largest_component_rect(b_img):
-  """ 
+  """
   input: binaery image
   return: coordinate of largest compnent
   """
@@ -125,16 +87,16 @@ def find_largest_component_rect(b_img):
   h = stats[i+1, cv2.CC_STAT_HEIGHT]
 
   return [x,y,w,h]
-  # return orig[y:y+h, x:x+w] 
+  # return orig[y:y+h, x:x+w]
 
 def segmentPaper(img):
-  """ 
+  """
   we assume the paper is white and s the larges component in the image
   """
-  
+
   canny = cv2.Canny(img, 100, 200, apertureSize=3)
   lines = cv2.HoughLines(canny,1,np.pi/180,200)
-  
+
   bw = np.ones(img.shape)
 
   for line in lines:
@@ -154,27 +116,14 @@ def segmentPaper(img):
   return img[y:y+h, x:x+w]
 
 
-<<<<<<< HEAD
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-=======
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-
 def highlightSegments(text, img, segments):
   # Copy input array as cv2 drawing function work inplace
   temp = img.copy()
   for (x,y,w,h) in segments:
-<<<<<<< HEAD
-<<<<<<< HEAD
     cv2.rectangle(temp, (x, y),(x+w, y+h), (255,255,255), 3, 8, 0)
-  utils.imshow(text, temp)
-=======
-=======
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
-    cv2.rectangle(temp, (x, y),(x+w, y+h), (0,0,255), 1, 8, 0)
 
   utils.imshow(text,temp)
   return temp
->>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
 
 def _DEMO_segment_text():
