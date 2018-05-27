@@ -104,8 +104,7 @@ E.g. [0 0 0 0 0 5 12 18 20 15 11 0 0 0 0 5 7 8..], this means there are some dat
 \subsection{Find Symbol/Letter Segmentation}\label{subsec:Find_Symb}
 Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_segmentation}. We added a few steps and kernel shapes in the morphological part. The additional step was to fill holes in the image, for example; 8 and O, can give multiple wrong contours. cv2.floodFill was used to solve this problem.
 \begin{enumerate}
-  \item Do threshold. \todo[inline]{Why do we do this? threshold the letters, for what reason?}
-  \item Inverse the image since we work on black text on white background.
+  \item Get binary image.
   \item Do morphological dilation with a long vertical kernel, This is to include the dot in 'i'.
   \item Add a border around the line-image, that separates elements from the edge after the previous step. This is to make cv2.floodFills work.
   \item Fill all holes, cv2.floodFills.
