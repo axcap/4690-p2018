@@ -189,6 +189,9 @@ Given the time we had left for model testing this topology have us best result.
   For network to get high accuracy of prediction a lot of labeled data is needed. Lucky for us datasets like MNIST exists, more info about it later.
 \end{flushleft}
 
+\textbf{description Limitation} \\
+As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need. \\
+
 \begin{flushleft}
   \textbf{Dataset} \\
   \textbf{SANS} \\
