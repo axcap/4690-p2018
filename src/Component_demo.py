@@ -31,6 +31,23 @@ def rotate(img):
   return rotated
 
 
+def get_line_image(image):
+  """ 
+  Note, not the same method used in main project, but same approach. This is only used for demo purpose.
+  """
+  _, prep_image = cv2.threshold(image, 120.0, 255.0, cv2.THRESH_BINARY_INV)
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+  prep_image = cv2.morphologyEx(prep_image, cv2.MORPH_CLOSE, kernel)
+
+  line_image = image.copy()
+  linesHist = utils.find_lines(prep_image)
+  lines = utils.segment_lines(prep_image, linesHist)
+
+  y,x = image.shape[:2]
+  for l in lines:
+    cv2.rectangle(line_image, (0, l[0]), (x, l[1]), 0, thickness = 1)
+  cv2.imwrite('res/images/exemple_text_line.png',image[lines[0][0]:lines[0][1], 0:x])
+  return line_image
 
 def _DEMO_rotate_text():
   SAVE_IMAGE_PATH = 'doc/res/'
@@ -39,7 +56,7 @@ def _DEMO_rotate_text():
   image = cv2.imread(IMAGE_PATH+image_filename,0)
   rotated = rotate(image)
 
-  cv2.imwrite("Rotated.png",rotated)
+  cv2.imwrite(SAVE_IMAGE_PATH + "Rotated.png",rotated)
   utils.imshow("Non-rotat Input", image)
   utils.imshow("Rotated", rotated)
 
@@ -74,20 +91,37 @@ def _DEMO_segment_text():
   cv2.imwrite(SAVE_IMAGE_PATH + "segment_text3.png", demo_image3)
   return
 
-def _DEMO_segment_letter():
+def _DEMO_segment_letter(FileName,SaveFileName):
   SAVE_IMAGE_PATH = 'doc/res/'
   IMAGE_PATH = 'res/images/'
-  image_filename = 'simpleR2.png'
+  image_filename = FileName
   image = cv2.imread(IMAGE_PATH+image_filename,0)
   letter_rect = seg.segmentLetters(image)
   utils.imshow("non segment Input", image)
   demo_image = seg.highlightSegments("demo_letter_image", image, letter_rect)
+  cv2.imwrite(SAVE_IMAGE_PATH + SaveFileName , demo_image)
   return
+
+def _DEMO_segment_line(FileName,SaveFileName):
+  SAVE_IMAGE_PATH = 'doc/res/'
+  IMAGE_PATH = 'res/images/'
+  image_filename = FileName
+  image = cv2.imread(IMAGE_PATH+image_filename,0)
+
+  line_image = get_line_image(image)
+
+  utils.imshow("non segment line Input", image)
+  utils.imshow("segment line Input", line_image)
+  cv2.imwrite(SAVE_IMAGE_PATH + SaveFileName ,line_image)
+  return
+
 
 def main():
   _DEMO_segment_text()
-  _DEMO_segment_letter()
   _DEMO_rotate_text()
+  _DEMO_segment_line('Lorem.png','segment_line.png')
+  _DEMO_segment_letter('exemple_text_line.png','segment_letter1.png')
+  _DEMO_segment_letter('SimpleR2.png','segment_letter2.png')
 
 if __name__ == '__main__':
   main()

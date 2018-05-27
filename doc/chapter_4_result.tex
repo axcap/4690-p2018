@@ -9,7 +9,7 @@
 \chapter{Result - Discussion}
 \label{chap:Result - Discussion}
 \section{Result: Text Segmentation}
-We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{fig:Text_seg_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well. 
+We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene text detection. We end up with the simple solution Morphological approach. It gave good result, but have a lot of limitations. Only work on black text on white paper, image with little noise and only want text in the image. You can see the result in figure \ref{result:fig:Text_seg_result} We could include a part to see if sections of text or non-text. A strategy to do it can be to compare  numbers of connected component, since we know text regions have a lot of letters/component, compare to a coffee cup or a wallet. Canny edge detection can be used to improve it as well. 
 
 \begin{figure}[ht]
   \centering
@@ -28,7 +28,7 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
     \caption{Bad result with many non text object segmented as text}
   \end{subfigure}
   \caption{Result of the Segment Text}
-  \label{fig:Text_seg_result}
+  \label{result:fig:Text_seg_result}
 \end{figure}
 
 \section{Result: Preprocessing}
@@ -54,16 +54,37 @@ Rotation only work if the angle of rotation is less that 45 degree. This problem
 
 \subsection{Line segmentation}
 If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images. 
-\todo[inline]{Result: Line Seg, add a figure if possible}
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[t]{6cm}
+    \frame{\includegraphics[width=6cm]{res/lorem.png}}
+    \caption{Text Region after rotation}
+  \end{subfigure}
+  \hspace{2cm}%
+  \begin{subfigure}[t]{6cm}
+    \frame{\includegraphics[width=6cm]{res/segment_line.png}}
+    \caption{Boundary box of line region}
+  \end{subfigure}
 
+  \caption{Result of line segmentation}
+  \label{fig:result:rotation}
+\end{figure}
 
 \subsection{Character segmentation}
 This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions 
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=12cm]{res/segment_letter}
-  \caption{Result of Character Segmentation}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=0.45cm]{res/segment_letter1.png}
+    \caption{Result of Character Segmentation from extracted line}
+  \end{subfigure}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=12cm]{res/segment_letter2.png}
+    \caption{Result of Character Segmentation from an example line image}
+  \end{subfigure}
+  \caption{Result of Character segmentation}
   \label{fig:Character_segmentation}
 \end{figure}
 
