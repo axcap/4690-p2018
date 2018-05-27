@@ -91,6 +91,8 @@ A weakness of this approach is, if multiple characters are merged with one anoth
   \label{fig:Character_segmentation}
 \end{figure}
 
+
+
 \section{Result: Classification}
 \subsection{Description}
 \begin{flushleft}
@@ -131,6 +133,15 @@ A weakness of this approach is, if multiple characters are merged with one anoth
   \end{subfigure}
   \caption{Result of Classification}
   \label{fig:Character_segmentation}
+\end{figure}
+
+On Figure \ref{fig_filter_view} we can see what some filters see on an image. Each image shows what one of filters in each convolutional layer can see. Image to the left is filter from conv1 layer, middle from conv2 layer and last one from conv3 layer.\\
+For example we can observe that filter in the middle has brighter colors when is 'sees' vertical lines, while first and last filters detect left edges of the object.
+
+\begin{figure}[!htb]
+\includegraphics[width=\textwidth]{res/filter_view.png}
+\caption{Filter activation}
+\label{fig_filter_view}
 \end{figure}
 
 \newpage
