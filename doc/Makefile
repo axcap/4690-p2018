@@ -15,16 +15,12 @@ clean:
 	rm -f *.out
 	rm -f *.xml
 
-copy: copy2 #copy1
-#copy1: bib.bib
-#	cp bib.bib src
+copy: copy2 
 
 copy2: key.bib
 	cp key.bib src
 
-latex_bib: latex_bib2 #latex_bib1
-#latex_bib1: bib.bib
-#	biber src/Report
+latex_bib: latex_bib2
 
 latex_bib2: key.bib
 	biber src/Report
