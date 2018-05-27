@@ -69,13 +69,10 @@ In this part of the program, we want to be able to segment out text segments in 
 \subsection{Find rotation}
 \begin{flushleft}
   \textbf{Approach: OpenCV minAreaRect() + CNN solution} \\
-  This approach uses \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull}
-  to find the convex hull of the text, and then
+  This approach is inspired by this online blog \href{https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/}{Source}\cite{rosebrock_text_2017}.
+  We use cv.minAreaRect, it finds the \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} of the text, and then use 
   \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
-  find the minimum area rectangle. \par
-  cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration. We will use a CNN to determine which of the angles is correct and then rotate it accordingly.
-  To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourself. 
-
+  find the minimum area rectangle. Then we are to rotate the image based on the minimum area rectangle. Full approach below.
   \begin{enumerate}
     \item \textbf{Binary image}
     For the Convex hull algorithm to work, the text segment and the background needs to be distinguishable. Convert image to a binary image using OpenCV threshold function and/or bitwise\textunderscore not to flip foreground and background colors.
