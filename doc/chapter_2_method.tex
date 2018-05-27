@@ -114,7 +114,7 @@ Letter segmentation was similar to Text Segmentation, section \ref{Method:Text_s
 
 \subsection{Data formatting/casting}\label{subsec:method:Data_formatting}
 \begin{flushleft}
-After we extracted single symbol from the line we have to feed it to the classificator. As we know our classificator accepts 28x28 grayscale images so we could simple resize the image to feed it, but this will more often than not yield poor results as the image will not follow the same convention images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our image look more like images our CNN is good at recognizing. Lets take a look at some images from training sets:
+After we extract single symbols from the lines, we have to feed them to the classifier. As the classifier is trained on 28x28 grayscale images, we could simply resize the images, but this will more often than not lead to poor results as the images does not follow the same convention; the images used to train the network did, execpt for the image size ofc. So we have to do some manipulations in order to make our images look more like the images our CNN is good at recognizing. Lets take a look at some images from our training sets:
 
 \begin{figure}[H]
   \centering
@@ -123,11 +123,15 @@ After we extracted single symbol from the line we have to feed it to the classif
   \label{fig:DATASET Samples}
 \end{figure}
 
-As we can see the characters are centered and has about 4 pixels boarder around it. Furthermore it is not binary image with sharp edges, but rather smoothed out. One may have noticed that x and y axis are swaped, making image look transposed, but that's how EMNIST set stored its data, so we just decided to stick with it.
+As showen above, the characters are centered and have about 4 pixels as border around them. Furthermore they are not binary images with sharp edges, but rather smoothed out. Additionaly the x and y axis are swapped, making the image look transposed, but that's how the EMNIST dataset has stored its data, so we just decided to stick with their convention.
 
-The algorithm we found working best is described below:
-First we find the dominant axis of the image using n = max(x, y), then we create new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$, then we paste our original character image in the center of newly created background image and only now resize it to 28x28 pixels. The resize operation will smooth the edges even though original digit may have been a binary image. Next we decided remove unnecessary noise resize operation may have introduced by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255 (this only affects the core of the character, edges are still smoothed).
-And this gives us an image most likely to be correctly classified by our CNN. The final image is then transposed to match EMNIST data.
+The algorithm we found working best is described below: \\
+\begin{enumerate}
+  \item We find the dominant axis of the image using n = max(x, y).
+  \item We create a new image with both axis equal $n + n//k$ where $k = 7$ as we found $\frac{28_{total-pixel}}{4_{border-pixel}} = 7$.
+  \item We paste our original character image in the center of our newly created background image, and now resize it to 28x28 pixels. The resize operation will smooth out the edges, even though the original image may have been a binary image.
+  \item Decided to remove unnecessary noise, the resize operation may have introduced by setting all pixels with intensity value under 50 to zero, and bring out the main shape of our character by setting all pixels with intensity value over 127 to 255 (this only affects the core of the character, edges are still smoothed). This should give us an image most likely to be correctly classified by our CNN. The final image is then transposed to match EMNIST data.
+\end{enumerate}
 \end{flushleft}
 
 \section{Component: Classification}
