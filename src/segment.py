@@ -58,7 +58,7 @@ def segmentLetters(img):
                                               cv2.RETR_EXTERNAL,
                                               cv2.CHAIN_APPROX_NONE)
 
-  return findBoundingRect(img, contours, min_h=10, min_w=2, min_r=0)
+  return findBoundingRect(img, contours, min_h=10, min_w=0, min_r=0)
 
 def find_largest_component_rect(b_img):
   """ 
