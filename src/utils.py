@@ -2,8 +2,18 @@ from matplotlib import pyplot as plt
 import numpy as np
 import cv2
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+#mapping_path = "res/datasets/EMNIST_ByMerge/"
+#mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
+=======
 # mapping_path = "res/datasets/EMNIST_ByMerge/"
 # mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
+# mapping_path = "res/datasets/EMNIST_ByMerge/"
+# mapping = np.loadtxt(mapping_path+"bymerge-mapping.txt", dtype=np.uint8)
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
 mapping = np.array([
     [0, 48],
@@ -53,10 +63,22 @@ mapping = np.array([
     [44, 113],
     [45, 114],
     [46, 116]])
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+def imageParser():
+    path = "res/images/lorem_skew2.png"
+=======
+=======
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
 
 
 def imageParser():
     path = "res/images/lorem.png"
+<<<<<<< HEAD
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
+=======
+>>>>>>> 968d29c916de6aa01f8830a1c873a695405f7094
     img  = cv2.imread(path, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -113,6 +135,18 @@ def extractContour(img, contour):
     x, y, w, h = contour
     return img[y:y+h, x:x+w]
 
+#Returns angle with closest to 90degree modulo
+def correct_angle(angle):
+    if angle < 0:
+        angle = -(90 + angle)
+        print(1)
+        # otherwise, just take the inverse of the angle to make
+        # it positive
+    else:
+        angle = -angle
+        print(0)
+    return angle
+
 def rotate2angle(img, angle, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE):
     (h, w) = img.shape[:2]
 
@@ -149,14 +183,14 @@ def histogramProjection(img, direction = 'vertical'):
 
 
 #Returns image with rectangles around around each line
-def show_lines(img):
-    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+def show_lines(image):
+    img = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
     linesHist = find_lines(img)
     lines = segment_lines(img, linesHist)
     y,x = img.shape[:2]
     for l in lines:
         cv2.rectangle(img, (0, l[0]), (x, l[1]), color=(255,0,0), thickness = 1)
-    return img
+    imshow("Line", img)
 
 
 #Returns image with rectangles around around each symbol in input line image
