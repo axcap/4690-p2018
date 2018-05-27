@@ -61,7 +61,7 @@ We tried different approaches only on find rotation and character segmentation. 
 The original thought was to use the Hough Transform to find the lines in a text, and then from that, find the rotation. However because of bad results, we moved to cv.minAreaRect. This too had some limitations on what it could rotate, see Section~\ref{subsec:Find rotation}. These limitation we tried to solve useing a CNN solution, presented below.
 
 \begin{flushleft}
-  \textbf{Discarded Method 1: : Hough Transform} \\
+  \textbf{Discarded Method 1: Hough Transform} \\
   \href{https://en.wikipedia.org/wiki/Hough_transform}{Hough transform} is a well known algorithm to find lines, its approach is to see if it can aligne some threshold of pixels on one straight line. To help with this process we will do a simple edge detection algorithm on the image before running it through the Hough Transform. \par Bellow, the steps needed to perform this approach are mentioned.
 
   \begin{enumerate}
@@ -76,10 +76,10 @@ The original thought was to use the Hough Transform to find the lines in a text,
 
 
 \begin{flushleft}
-  \textbf{Discarded Method 2: : OpenCV minAreaRect() + CNN solution} \\
+  \textbf{Discarded Method 2: OpenCV minAreaRect() + CNN solution} \\
   This approach builds on the approach presented in Section~\ref{subsec:Find rotation}. As cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration. We wanted to add a CNN to determine which of the angles is correct and then rotate it accordingly.
-  To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourselves, see Section~\ref{sec:Datasets}. \par
-  We discarded this approach because it gave only a 60\% accuracy of the right angle, and we are only working on simple text images with little rotation, hence no need for this addition in our software. \par
+  To train the network we needed a dataset with the corresponding angles as labels, as we could not find one, we decided to create it ourselves, see Section~\ref{sec:Datasets} for more on this. \par
+  We discarded this approach because it gave only a 65\% accuracy of the right angle, and we are only working on simple text images with little rotation, hence no need for this addition in our software. \par
   The approach is described below:
   \begin{enumerate}
     \item \textbf{OpenCV minAreaRect()}
@@ -92,7 +92,6 @@ The original thought was to use the Hough Transform to find the lines in a text,
       \item{Finally we can classify the angle of each individual character before we try to determine the correct angle based on the results. This gives us the highest accuracy but on the cost of time/computation power. This is the only approach able to successfully recognize this type of text: (find better example)\LaTeX}
       \end{enumerate}
     \end{enumerate}
-
 
     \begin{figure}[H]
       \centering
@@ -112,30 +111,28 @@ This approach is similar to Line detection in Section~\ref{subsec:Find_line}. It
 
 \section{Classification}
 \label{sec:Discarded Method:Classification}
+
 \begin{flushleft}
-  As mention in Section\ref{Method:Classification}, we also tried to use MLP to do classification of characters.
-  We decided to avoid using MLP in our project as it required lots of training data, is not able to detect spacial or minor rotation changes, e.g. a network trained with MNIST with accuracy over 95\% was doing poorly in recognizing machine-printed characters, even though they were etalon of a perfect input.
+  As mention in Section~\ref{Method:Classification}, we also tried to use MLP to do classification of characters.
+  We decided to avoid using MLP in our project as it required lots of training data; is not able to detect spatial or minor rotation changes, e.g. a network trained with MNIST with accuracy over 95\% was doing poorly in recognizing machine-printed characters, even though they were etalon of a perfect input.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[height=4cm]{res/neural_net2.jpeg}
+    \caption{MLP Neural network \href{http://cs231n.github.io/neural-networks-1/}{Source}}
+    \label{fig:neural_net2}
+  \end{figure}
+
 \end{flushleft}
 
 \section{Datasets}
 \label{sec:Datasets}
+\subsection{MNIST}
+\textit{MNIST} was discarded as we decided to stick with machine printed digits and letters, none of which were included in MNIST. It was a good starting point to test our networks (both MLP and CNN), however to be able to achive a classifier which could classify the english alphabet in addition to numbers ranging from [0-9] we had to go with EMNIST.
 
-\todo[inline]{
-  Moved from method to discarded method - see if there is anything u want to keep.
-  \textbf{Dataset} \\
-  \textbf{MNIST} \\
-  This is a dataset containing images of handwritten digits [0-9]. It has a training set of 60.000 examples and a test set of 10.000 examples. Training set is further divided into 55000 examples of actual training set, while 5000 images are treated as validation set (this number can be changed depending which interface we use to access MNIST data).
-  MNIST dataset is compressed into 4 binary *.gz files, but we do not need to implement any readers/parsers ourself as tensorflow already has two we can choose between.
-  (ref. reader to http://yann.lecun.com/exdb/mnist/).
-}
+\subsection{ROT*}
+\textit{ROT*} - dataset containing rotated examples of the same dataset, but with labels corresponding to angle of rotation, e.g. [0, 90, 180, 270]. \par
+This dataset was discarded as our network showed very little learning progress as the accuracy of predictions was constantly around 65\%. This is not the datasets fault, most likely it was due to bad network topology or poor choice of hyper parameters but we didn't have enough time to debug this part of the project and decided to stick to OpenCV's minAreaRect() results.
 
-\begin{flushleft}
-\textbf{MNIST} was discarded as were decided to stick with machine printed digits and letters, none of which were included in MNIST. It was a good starting point to test our networks (both MLP and CNN) but it was time to move on.
-
-
-\par
-\textbf{ROT*} - dataset containing rotated examples of another set (*) but labels corespont to angle of rotation. In our case we only had 4 classes [0-3], one for each angle in [0, 90, 180, 270].
-This set was discarded as out network showed very little learning progress as the accuracy of predictions was constantly around 65\%. Now that is not datasets fault, most likely it was due to bad network topology or poor choice of hyper parameters but we didn't had enough time to debug this part of project and decided to stick to OpenCV's minAreaRect() results.
-\end{flushleft}
 
 \end{document}

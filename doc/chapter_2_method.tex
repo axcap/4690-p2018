@@ -61,7 +61,7 @@ In this part of the program, we want to be able to segment out text segments in 
     \end{itemize}
     \item{Data formatting/casting}
     \begin{itemize}
-      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets. \todo[inline]{Find steps and write a subsection on this} No need for a specific approach.}
+      \item{The data we want to test a classifier on needs to match the data we trained our classifier with. Hence we need to format our data to the same format as the datasets.  Done using simple array manipulation, described in \ref{subsec:method:Data_formatting}}
     \end{itemize}
   \end{itemize}
 \end{flushleft}
@@ -74,7 +74,7 @@ to find the convex hull of the text, and then
 \href{https://en.wikipedia.org/wiki/Rotating_calipers}{rotating calipers} to
 find the minimum area rectangle. \par
 cv.minAreaRect returns text rotated in one of following angles [0\textdegree, 90\textdegree, 180\textdegree, 270\textdegree], see Figure~\ref{fig:4angle_rot} for illustration.
-Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is manitioned in Chapter~\ref{chap:Discarded Method}.
+Hence we have a limitation on what angles the text can have, [0, 90] degrees, for us to be able to rotate and classify the text correctly. An approach that covers this vulnerability is mentioned in Chapter~\ref{chap:Discarded Method}.
 
 
 
@@ -150,7 +150,7 @@ And this gives us an image most likely to be correctly classified by our CNN. Th
   For the classification component there where only 2 approaches we considered,
   Convolutional Neural Network (CNN), the architecture is illustration in
   Figure~\ref{fig:CNN_architecture}, and a Multilayer Perceptron (MLP or Deep
-  neural network (DNN)), Figure~\ref{fig:neural_net2}. However the method we ended up choosing for the final result is CNN. In
+  neural network (DNN)), Figure~\ref{fig:neural_net2} illustrates the architecture. However the method we ended up choosing for the final result is CNN. In
   Section~\ref{sec:Discarded Method:Classification} we explain why we discarded
   the MLP approach. \par
 \end{flushleft}
@@ -170,25 +170,27 @@ And this gives us an image most likely to be correctly classified by our CNN. Th
   \caption{Convolutional Neural network \href{https://adeshpande3.github.io/A-Beginner\%27s-Guide-To-Understanding-Convolutional-Neural-Networks/}{Source}}
   \label{fig:CNN_architecture}
 \end{figure}
+\begin{flushleft}
+Our final model/topology looks like this:\\
+conv(32$\times$5$\times$5) $\rightarrow$ pool(2$\times$2, 2) $\rightarrow$ conv(64$\times$5$\times$5) $\rightarrow$ pool(2$\times$2, 2) $\rightarrow$ conv(64$\times$5$\times$5) $\rightarrow$ dense(1024) $\rightarrow$ dropout(0.4) $\rightarrow$ dense(48)
 
-\todo[inline]{Architecture description should follow, choices of variables too \\
-. \\
-. \\
-. \\
-. \\
-}
+\begin{enumerate}
+\item \textbf{conv(X$\times$Y$\times$Z)}: X-filters, Y$\times$Z filter size, All conv layers have ReLu as an activation function.
+\item \textbf{pool(2$\times$2, 2)}: 2$\times$2 pooling size, 2 stride. Standart size in smaller networks.
+\item \textbf{dense(Z)}: Z outputs
+\item \textbf{dropout(F)}: dropout rate (1-F probability that element will be kept)
+\end{enumerate}
+
+Second and third conv-layers have 64 filters as we thought this amount is needed to recognize more complicated geometry in characters like \textbf{G, Q}, and maybe for further \textbf{Æ,Ø,Å}.
+We added pooling layers for two reasons: to reduce computation time and to add some rotation invariance.
+Dropout layer was added to reduce overfitting during training.
+
+Given the time we had left for model testing this topology have us best result. 
+\end{flushleft}
 
 
 \section{Component: Datasets}
 \label{Method:Datasets}
-
-\todo[inline]{include only datasets we have used for the final software \\
-. \\
-. \\
-. \\
-. \\
-. \\}
-
 \subsection{Description}
 
 \begin{flushleft}
@@ -199,11 +201,18 @@ And this gives us an image most likely to be correctly classified by our CNN. Th
 \textbf{description Limitation} \\
 As we have limited us to the digits and English alphabet, we will need labeled data for each of these [0..9] + 36 characters; divided into training, test and validation sets. As the concept of classifying only numbers vs all 36 characters does not differ that much, we will first see if we can solve the OCR problem with just numbers. Therefore we only need a dataset containing numbers at first. After that we can proceed our search for a dataset containing all the characters we need. \\
 
-\todo[inline]{
-edit the text above, has to be updated \\
-. \\
-. \\
-. \\
-. \\}
+\begin{flushleft}
+  \textbf{Dataset} \\
+  \textbf{SANS} \\
+  Dataset created by ourself.
+  Small dataset containing only 3 most used font in machine typing:
+  \textbf{Sans}, \textbf{Times New Roman} and \textbf{Calibri}. These will be the foundation for our CNN as we for the most part will try to recognize characters from there fonts. Therefore we decided to run multiple training steps on this dataset to learn our network the 'etalon' of each character.
+  
+  \textbf{FNIST} \\
+  Another dataset generated by our scripts. This one contain over 1000 free fonts found on the Internet. Here we can find examples of multiple variations of the  same character like \textbf{bold}, \textit{italics} and regular.
+  
+  \textbf{EMNIST-ByMerge} \\
+  The EMNIST dataset is a set of handwritten character digits derived from the NIST Special Database 19  and converted to a 28x28 pixel image format and dataset structure that directly matches the MNIST dataset. Further information on the dataset contents and conversion process can be found in the paper available at \href{https://arxiv.org/abs/1702.05373v1}{https://arxiv.org/abs/1702.05373v1}
 
+\end{flushleft}
 \end{document}
