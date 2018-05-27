@@ -57,7 +57,7 @@ If the image has no space between lines or is slightly rotated, it can cause an 
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{6cm}
-    \frame{\includegraphics[width=6cm]{res/lorem.png}}
+    \frame{\includegraphics[width=6cm]{res/lorem_hq.png}}
     \caption{Text Region after rotation}
   \end{subfigure}
   \hspace{2cm}%
@@ -92,10 +92,6 @@ A weakness of this approach is, if multiple characters are merged with one anoth
 \end{figure}
 
 \section{Result: Classification}
-\begin{flushleft}
-Accuracy: 87.76 %
-\end{flushleft}
-
 \subsection{Description}
 \begin{flushleft}
   Convolutional neural networks are especially good for image
@@ -103,17 +99,48 @@ Accuracy: 87.76 %
   they classify. This way it doesn't matter where in the image our
   object/character is it will be able to recognize it, same yields for rotation,
   as the CNN classifies based on local spatial connections it doesn't matter if
-  the object is slightly rotated. Hence the classification would be even more robust
-  compared to the MLP.
+  the object is slightly rotated. Hence the classification would be even more robust compared to the MLP.\par
+  
+  Following figures show topology and performance during training.
+  Topology stays the same as described in Figure \ref{fig_topology}.
+  In Figure \ref{fig_accuracy} we can observe how the accuracy changes over time.
+  You can notice drastic acceleration after 2'000 steps, this is due to us changing the dataset context as we used multiple independent datasets during one training session.
+  Loss graph \ref{fig_loss} swings follow expected path and resemble pretty much every loss graph for correctly setup network, be it MLP, CNN or any other.
+  
+  The final accuracy we were able to get is \textbf{87.76\%} and it only took us approximately 30 min of training on \textbf{nVidia GeForce 840M GPU}.
 \end{flushleft}
 
+\begin{figure}[!htb]
+\includegraphics[width=\textwidth]{res/topology.png}
+\caption{CNN topology}
+\label{fig_topology}
+\end{figure}
+
+\begin{figure}[!htb]
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{res/accuracy.png}
+    \caption{Accuracy during training}
+    \label{fig_accuracy}
+  \end{subfigure}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{res/loss.png}
+    \caption{Loss graph during training}
+    \label{fig_loss}
+  \end{subfigure}
+  \caption{Result of Classification}
+  \label{fig:Character_segmentation}
+\end{figure}
+
+\newpage
 \section{Final Result}
 We saw that each component was able to its part reasonably. Each have weakness and fails, but if we are to combine them together we are able to do get a somewhat reasonable result. Figure \ref{fig:Result:Final_result} show an input image and what we got in the output. Some of the letter are not able to be classify correctly. The main error came from character segmentation and classification, but we got somewhat readable result... 
 
 \begin{figure}[H]
   \begin{subfigure}[t]{\textwidth}
     \centering
-    \frame{\includegraphics[width=12cm]{res/lorem.png}}
+    \frame{\includegraphics[width=12cm]{res/lorem_hq.png}}
     \caption{Original image 'lorem.png' as input image}
   \end{subfigure}
   \begin{subfigure}[t]{\textwidth}
