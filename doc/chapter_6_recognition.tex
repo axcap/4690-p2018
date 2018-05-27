@@ -9,50 +9,58 @@
 \chapter{Recognition}
 \label{chap:Recognition}
 \section{Background Knowledges}
+<<<<<<< HEAD
+\subsection{CNN - Basics}
+\label{Recognition:subsec:MLP}
+\begin{flushleft}
+  AS mention i section \ref{Method:Classification} CNN have a few component to tune. Here we list up them and discuss the different component of a CNN.
+
+  \begin{itemize}
+    \item{Convolutional layer}
+    \begin{itemize}
+      \item{This layer consists of several filters/kernels that are convolved over the image and based on how many filters one uses, the same amount of feature images are made. The purpose of the filters are to grasp some spatial characteristics of the image, and make it available for further processing.
+      The filters here correspond to the weights in the MLP, these are first initialized at random (or with a smart initialization method), then these will be updated as the network is trained.
+      First layer filters are able to spot simple geometry like straight or curved lines, but the deeper we dive into networks topology the more complex shapes the filters can recognize. It is not unusual that last layers on large networks can differentiate between faces, animals, objects.\par
+      In a CNN we can have arbitrary many convolutional layer and arbitrary many filters at each layer. However just like a regular MLP, increasing the number of layers and or filters; can allow the network to fit the training data arbitrarily well, unfortunately at the cost of processing time, mostly during training, but also during prediction phase.}
+    \end{itemize}
+    \item{Pooling}
+    \begin{itemize}
+      \item{The pooling layer allows us to downsize the data. This makes it possible to start with images which are relatively big, and as it's data propagates through the network we downsize it. As for the convolution layer the pooling layer can be used arbitrarily many times in a network.
+      Pooling makes our network rotation invariant to minor changes in angle, as outputs max/min value of a (pooling-size) block regardless of where in the block this value is.}
+    \end{itemize}
+    \item{Fully connected layers (FC)}
+=======
     \subsection{CNN - Basics} 
 \begin{flushleft}
     \label{Recognition:subsec:MLP}
     AS mention i section \ref{Method:Classification} CNN have a few component to tune. Here we list up them and discuss the different component of a CNN. 
     
+>>>>>>> 4d8f077d973b683e0dc1318ac6c34ca12359bf3d
     \begin{itemize}
-        \item{Convolutional layer}
-        \begin{itemize}
-            \item{This layer consists of several filters/kernels that are convolved over the image and based on how many filters one uses, the same amount of feature images are made. The purpose of the filters are to grasp some spatial characteristics of the image, and make it available for further processing.
-            The filters here correspond to the weights in the MLP, these are first initialized at random (or with a smart initialization method), then these will be updated as the network is trained.
-            First layer filters are able to spot simple geometry like straight or curved lines, but the deeper we dive into networks topology the more complex shapes the filters can recognize. It is not unusual that last layers on large networks can differentiate between faces, animals, objects.\par
-            In a CNN we can have arbitrary many convolutional layer and arbitrary many filters at each layer. However just like a regular MLP, increasing the number of layers and or filters; can allow the network to fit the training data arbitrarily well, unfortunately at the cost of processing time, mostly during training, but also during prediction phase.}
-            \end{itemize}
-        \item{Pooling}
-        \begin{itemize}
-            \item{The pooling layer allows us to downsize the data. This makes it possible to start with images which are relatively big, and as it's data propagates through the network we downsize it. As for the convolution layer the pooling layer can be used arbitrarily many times in a network.
-            Pooling makes our network rotation invariant to minor changes in angle, as outputs max/min value of a (pooling-size) block regardless of where in the block this value is.}
-        \end{itemize}
-        \item{Fully connected layers (FC)}
-        \begin{itemize}
-            \item{This layer works basically the same way as the hidden layers in an MLP.
-            The output of last convolution layer is then flattened and send to N fully connected layers (also sometimes referenced as dense layer). At the last layer we have same number of outputs as we have classes, just like in regular MLP.}
-            \end{itemize}
-        \end{itemize}
-    \end{flushleft}
+      \item{This layer works basically the same way as the hidden layers in an MLP.
+      The output of last convolution layer is then flattened and send to N fully connected layers (also sometimes referenced as dense layer). At the last layer we have same number of outputs as we have classes, just like in regular MLP.}
+    \end{itemize}
+  \end{itemize}
+\end{flushleft}
 
 
   \begin{flushleft}
-    \subsection{Deep Neural Network} 
+    \subsection{Deep Neural Network}
     \label{Recognition:subsec:MLP}
     Multilayer perceptron neural networks are relatively straight
     forward to code, however the challenging part is to decide on good hyper-parameters and to not overfit our network. \par
     Research has shown that the choices of parameters can have huge effects on the error rate through empirical testing. As empirical testing has shown that some combinations of parameters are better than others, we will also use the same method to find decent values on several of the hyper-parameters. More on this bellow, where a short description of the hyper-parameters follow. \par
     One obvious disadvantage we might face by using MLP is that slight spatial change on where in the image the characters are located, might lead to characters classified differently. This is because there is no spatial connections on a MLP, or rather MLP can't connect same object on the image but slightly shifted to right/left as it appears like completely different objects due to the fact MLP is build up.
   \end{flushleft}
-  
+
   \begin{figure}[H]
     \centering
     \includegraphics[height=4cm]{res/neural_net2.jpeg}
     \caption{MLP Neural network \href{http://cs231n.github.io/neural-networks-1/}{Source}}
     \label{fig:neural_net2}
   \end{figure}
-  
-  
+
+
   \begin{flushleft}
     \textbf{Hyper-parameters}
     \begin{itemize}
@@ -92,7 +100,7 @@
      \end{itemize}
     \end{itemize}
   \end{flushleft}
-  
+
 
 \section{Datasets}
 \section{Code used}

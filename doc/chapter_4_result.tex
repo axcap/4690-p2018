@@ -3,7 +3,7 @@
 \externaldocument[M-]{chapter_2_method.tex}
 \externaldocument[D-]{chapter_3_discardMethod.tex}
 \externaldocument[C-]{chapter_5_conclusion.tex}
-\externaldocument[RE-]{chapter_6_recognition.tex}
+\externaldocument[RE-]{chapter_6_references.tex}
 
 \begin{document}
 \chapter{Result - Discussion}
@@ -34,7 +34,7 @@ We tried 3 Approaches, Morphological, Stroke Width Transform and OpenCv Scene te
 \section{Result: Preprocessing}
 
 \subsection{Rotation}
-Rotation only work if the angle of rotation is less that 45 degree. This problem is mention in section \ref{Method:Preprocessing} and an attempt to solve the problem was given in section \ref{Discard:rotation}. Below are a result image of a less skew image. 
+Rotation only work if the angle of rotation is less that 45 degree. This problem is mention in section \ref{Method:Preprocessing} and an attempt to solve the problem was given in section \ref{Discard:rotation}. Below are a result image of a less skew image.
 
 \begin{figure}[ht]
   \centering
@@ -53,7 +53,7 @@ Rotation only work if the angle of rotation is less that 45 degree. This problem
 \end{figure}
 
 \subsection{Line segmentation}
-If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images. 
+If the image have no space between lines or is slightly skew, it can cause an error, lines will not be separated. Since our previous steps are to handle these problem our method worked quite well on our test images.
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{6cm}
@@ -71,7 +71,7 @@ If the image have no space between lines or is slightly skew, it can cause an er
 \end{figure}
 
 \subsection{Character segmentation}
-This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions 
+This part worked quiet well, an alternative would be to just using OpenCv findComponent. The steps and result would be much of the same, but we could have dropped cv2.floodFills. A weakness of this approach is if multiple character is merged with one another we would not be able to separate them. A solution for this problem can be to do a morphological opening to separate character better. We did not have test image with that problem, but it came up in latter discussions
 
 \begin{figure}[H]
   \begin{subfigure}[t]{\textwidth}
