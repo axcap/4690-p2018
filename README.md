@@ -2,6 +2,9 @@
 
 ### The purpose of the software is to recognise text from any surface, with uneven lighting.
 
+### Running the demo
+Simply run main.py file from root directory (python3 src/main.py)
+
 ### Tasks:
 
 1. Identify text segments from a picture
